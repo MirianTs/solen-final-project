@@ -11,9 +11,9 @@
 - 2026-10-31 (NucBox_M8): ფაზა 6 — შეფასებები: საჯარო ფორმა (ვარსკვლავები radio-ებით, Turnstile მხოლოდ ფორმასთან მიახლოებისას იტვირთება), server action: zod → Turnstile → 30 დღეში 1 მოწყობილობიდან/IP-დან (SHA-256 + HASH_SALT) → pending. ადმინში ჩანართები (მოლოდინში/გამოქვეყნებული/დამალული), დადასტურება/დამალვა/წაშლა, badge ახლდება. შემოწმდა mock-ით და Cloudflare-ის ტესტ-გასაღებებით.
 - 2026-10-31 (NucBox_M8): ფაზა 7 — SEO: ქართული metadata, OG/Twitter (og ფოტო → ბანერი), JSON-LD HVACBusiness (+aggregateRating), robots.txt, sitemap.xml, icon/apple-icon placeholder, 301 redirect-ები (/inventory, /gallery), preconnect Supabase-ზე. Lighthouse mobile: 96–97 / 100 / 100 / 100.
 - 2026-10-31 (NucBox_M8): ფაზა 8 — backup workflow (ყოველდღე 02:17 UTC + ხელით): keep-alive, pg_dump (PGDG client 17, Session pooler), photos ჩამოტვირთვა, gpg AES-256, artifact 30 დღე. restore სკრიპტი. README დასრულდა: setup ნულიდან, restore, Go live. ფოტოების backup/restore და gpg ლოკალურად შემოწმდა; pg_dump ნაწილი — მხოლოდ რეალურ Supabase-ზე პირველი გაშვებისას.
+- 2026-10-31 (NucBox_M8): Supabase პროექტი `solen` (Frankfurt, Postgres 17.11) შეიქმნა. 3 migration + seed გაეშვა SQL Editor-ში, verify_rls.sql: ALL RLS CHECKS PASSED. მონაცემები: 7 settings, 15 texts, 6 photo slot, 3 სვეტი, 8 სერვისი, 3 შეფასება, photos bucket.
 
 ## დარჩა
-- მომხმარებელმა SQL ფაილები Supabase-ის SQL Editor-ში უნდა გაუშვას (თანმიმდევრობა README-შია).
 - ადმინის შექმნა Supabase-ში (SQL README-შია, „Admin user“).
 - README-ს „Setup from zero“ (Supabase, Turnstile, Vercel, GitHub secrets) და შემდეგ „Go-live checklist“ — ხელით, მომხმარებელმა.
 - ლოგოს ფაილი (icon/apple-icon და header-ში „SOLEN“ ტექსტი ჯერ placeholder-ია).
