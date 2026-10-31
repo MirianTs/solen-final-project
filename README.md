@@ -102,8 +102,9 @@ in this order (each is safe to re-run):
 1. `migrations/20261031000001_tables.sql` — tables, constraints, indexes
 2. `migrations/20261031000002_admins_rls_views.sql` — `admins`, `is_admin()`, grants, RLS, `public_reviews` / `review_stats`
 3. `migrations/20261031000003_storage.sql` — public `photos` bucket + admin-only write policies
-4. `seed.sql` — Georgian placeholder content (skip this when restoring a backup)
-5. `verify_rls.sql` — self-test; must end with `ALL RLS CHECKS PASSED` (rolls back, changes nothing)
+4. `migrations/20261101000001_service_photos.sql` — optional photo per price item (product cards)
+5. `seed.sql` — starter content: texts and prices from the old solen.ge (skip this when restoring a backup)
+6. `verify_rls.sql` — self-test; must end with `ALL RLS CHECKS PASSED` (rolls back, changes nothing)
 
 The editor will warn that `public_reviews` and `review_stats` are security-definer views. That is intended:
 anon reads approved reviews through them without any access to the `reviews` table or its hashes.
@@ -209,7 +210,7 @@ Only the encrypted file leaves the runner. The repository must stay **private**.
 Needs `psql` 17 (Windows: install PostgreSQL 17 from postgresql.org — only *Command Line Tools* are needed)
 and Node.js.
 
-1. Create the new project and run the 3 migrations (**not** `seed.sql`) — see [Database](#database).
+1. Create the new project and run the 4 migrations (**not** `seed.sql`) — see [Database](#database).
 2. Restore admin accounts, then the site data (use the new project's *Session pooler* URI):
 
    ```bash
