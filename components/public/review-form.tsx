@@ -83,7 +83,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
                 {n} ვარსკვლავი — {RATING_LABELS[n - 1]}
               </span>
               <StarIcon
-                className={`size-11 rounded-lg p-1 transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent ${
+                className={`size-11 rounded-lg p-1 transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink ${
                   n <= shown ? "text-accent" : "text-neutral-500"
                 }`}
               />
@@ -107,7 +107,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           onChange={(e) => setName(e.target.value)}
           aria-invalid={error?.field === "name" || undefined}
           aria-describedby={error?.field === "name" ? "review-error" : undefined}
-          className="min-h-12 rounded-xl border border-line bg-bg px-4 text-base focus:border-accent"
+          className="min-h-12 rounded-xl border border-line bg-bg px-4 text-base focus:border-accent-ink"
         />
       </div>
 
@@ -126,7 +126,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           onChange={(e) => setComment(e.target.value)}
           aria-invalid={error?.field === "comment" || undefined}
           aria-describedby={error?.field === "comment" ? "review-error" : undefined}
-          className="rounded-xl border border-line bg-bg px-4 py-3 text-base leading-relaxed focus:border-accent"
+          className="rounded-xl border border-line bg-bg px-4 py-3 text-base leading-relaxed focus:border-accent-ink"
         />
       </div>
 

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* Solen design tokens: dark, bold, yellow accent. */
+/* Solen design tokens: dark, bold, yellow accent. Light values are below (public page only). */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 @theme {
   --color-bg: #000000;
   --color-card: #0e0e0e;
@@ -10,8 +12,42 @@
   --color-accent-hover: #ffb800;
   --color-fg: #ffffff;
   --color-muted: #a3a3a3;
+  /* Accent used as text, icon or border color (the plain accent is for fills behind black text). */
+  --color-accent-ink: #ffd60a;
 
   --radius-card: 1.25rem;
+}
+
+/*
+ * Light theme. data-theme is set before paint by THEME_SCRIPT (lib/theme.ts), which only the public
+ * page includes, so the admin panel always stays dark.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f6f6f3;
+  --color-card: #ffffff;
+  --color-card-raised: #ffffff;
+  --color-line: #e2e2dc;
+  --color-accent: #ffcc00;
+  --color-accent-hover: #f2b600;
+  --color-fg: #111111;
+  --color-muted: #5a5a5a;
+  --color-accent-ink: #8a5a00;
+}
+
+/* Keeps a block dark in both themes (the hero card). Mirrors the dark values in @theme. */
+.theme-dark {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-card: #0e0e0e;
+  --color-card-raised: #161616;
+  --color-line: #222222;
+  --color-accent: #ffd60a;
+  --color-accent-hover: #ffb800;
+  --color-fg: #ffffff;
+  --color-muted: #a3a3a3;
+  --color-accent-ink: #ffd60a;
+  color: var(--color-fg);
 }
 
 @theme inline {
@@ -28,12 +64,13 @@
 
   body {
     background-color: var(--color-bg);
+    transition: background-color 0.3s, color 0.3s;
     color: var(--color-fg);
     font-family: var(--font-sans);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-accent-ink);
     outline-offset: 2px;
   }
 

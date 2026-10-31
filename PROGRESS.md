@@ -17,6 +17,7 @@
 - 2026-10-31 (NucBox_M8): Turnstile-ს დაემატა `solen-v2-website-setup.vercel.app` (4 hostname). ადმინში შესვლა ცოცხალ საიტზე მუშაობს (request log-ით შემოწმდა).
 - 2026-10-31 (NucBox_M8): დიზაინი: ანიმაციები (hero ტექსტი/ღილაკი, ყვითელი „glow“ ფოტოს გარეშე, ბანერის zoom, ღილაკის pulse, ბარათები scroll-ზე ჩნდება და hover-ზე იწევა — მხოლოდ CSS, reduced-motion-ზე გამორთულია); დიდ ეკრანზე container 1280/1440px, უფრო დიდი hero და ტიპოგრაფია; მობილურზე hero-ს გრძელი სიტყვა აღარ იჭრება (320–1280px შემოწმდა). Lighthouse mobile: 96/100/100/100.
 - 2026-10-31 (NucBox_M8): ცოცხალ საიტზე ტესტი გაიარა: ფოტოს ატვირთვა (WebP 1600px, Storage, og:image revalidate-ით, წაშლა) და შეფასება Chrome-ში (Turnstile → hash-ები → pending → დადასტურება → საიტზე → წაშლა). ტესტური მონაცემები წაიშალა.
+- 2026-11-01 (NucBox_M8): ღია/მუქი რეჟიმი საჯარო გვერდზე: პირველად სისტემის პარამეტრით, header-ში მზე/მთვარის ღილაკი, არჩევანი ინახება (localStorage). hero ბარათი ორივე რეჟიმში მუქია. ადმინი ყოველთვის მუქია. 320px-ზე „დარეკე“ მხოლოდ ხატულაა. შემოწმდა mock-ით 320–1280px.
 
 ## დარჩა
 - Backup: GitHub-ში უკვე არის SUPABASE_URL და BACKUP_PASSPHRASE (ეს გაგრძელებისას თავიდან დავაგენერიროთ და მომხმარებელს მივცეთ შესანახად — ძველი არსად ინახება). დასამატებელია SUPABASE_DB_URL (Session pooler: postgres.kepsxmraelydmitsekjx@aws-1-eu-central-1.pooler.supabase.com:5432 + DB პაროლი) და SUPABASE_SERVICE_ROLE_KEY — `gh secret set NAME -R MirianTs/solen-v2-website-setup`. შემდეგ workflow-ს ხელით გაშვება და artifact-ის გახსნის ტესტი. შემდეგ დომეინი solen.ge + „Go-live checklist“ (README). რეალური შიგთავსი/ფოტოები ადმინიდან.
@@ -27,6 +28,7 @@
 - 2026-10-31 (NucBox_M8): შეფასების თარიღი სერვერზე ფორმატდება (dateLabel) — ზოგ ბრაუზერს ka-GE locale არ აქვს და hydration error-ს იძლეოდა.
 - 2026-10-31 (NucBox_M8): redirect-ები `statusCode: 301` (Next-ის `permanent` 308-ს აბრუნებს, სპეციფიკაცია 301-ს ითხოვს).
 - 2026-10-31 (NucBox_M8): browser-image-compression `useWebWorker: false` — სხვაგვარად worker-ს CDN-იდან ტვირთავს.
+- 2026-11-01 (NucBox_M8): თემა — `data-theme` html-ზე, inline script (`lib/theme.ts`) მხოლოდ `/`-ზე, paint-მდე; ღია რეჟიმში ყვითელი ტექსტად ცუდად იკითხება, ამიტომ ტექსტ/ხაზ/ხატულებისთვის ახალი token `accent-ink` (მუქი ქარვისფერი).
 
 ## ღია პრობლემები
 - 2026-10-31 (NucBox_M8): აპის ჩაშენებულ ბრაუზერში Turnstile დასტურს არ იძლევა (Chrome-ში მუშაობს) — ვიზიტორებზე გავლენა არ აქვს.

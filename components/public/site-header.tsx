@@ -2,6 +2,7 @@ import type { ContactLinks } from "@/lib/contact";
 import { ContactButtons } from "./contact-buttons";
 import { PhoneIcon } from "./icons";
 import { MobileMenu } from "./mobile-menu";
+import { ThemeToggle } from "./theme-toggle";
 
 export const NAV_ITEMS = [
   { href: "#prices", label: "ფასები" },
@@ -13,8 +14,8 @@ export const NAV_ITEMS = [
 export function SiteHeader({ links }: { links: ContactLinks }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
-      <div className="container-site relative flex h-16 items-center justify-between gap-4 lg:h-20">
-        <a href="#top" className="text-xl font-extrabold tracking-[0.2em] text-accent lg:text-2xl" aria-label="Solen — მთავარი">
+      <div className="container-site relative flex h-16 items-center justify-between gap-2 lg:h-20">
+        <a href="#top" className="text-xl font-extrabold tracking-[0.2em] text-accent-ink lg:text-2xl" aria-label="Solen — მთავარი">
           SOLEN
         </a>
 
@@ -24,7 +25,7 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-accent lg:px-4 lg:text-base"
+                  className="rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-accent-ink lg:px-4 lg:text-base"
                 >
                   {item.label}
                 </a>
@@ -33,18 +34,21 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
           </ul>
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-1 md:flex">
           <ContactButtons links={links} variant="icon" />
+          <ThemeToggle />
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
           {links.tel && (
             <a
               href={links.tel}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 font-bold text-black transition-colors hover:bg-accent-hover"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-accent font-bold text-black transition-colors hover:bg-accent-hover min-[360px]:px-4"
             >
               <PhoneIcon className="size-5" />
-              დარეკე
+              {/* Icon-only on the narrowest phones so the header fits next to the theme switch. */}
+              <span className="sr-only min-[360px]:not-sr-only">დარეკე</span>
             </a>
           )}
           <MobileMenu>

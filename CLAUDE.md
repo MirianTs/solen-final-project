@@ -10,7 +10,10 @@ One public page (`/`) + an admin panel (`/admin`). All content comes from Supaba
 - Classic ISR caching: `cacheComponents` is **off**. Public page uses `export const revalidate = 3600`
   and is revalidated by `revalidatePath('/')` after every admin save. `/` must stay static (○) in build output.
 - Tailwind CSS v4 — tokens in `app/globals.css` (`@theme`): `bg`, `card`, `card-raised`, `line`, `accent`,
-  `accent-hover`, `fg`, `muted`. Use these, not raw hex values.
+  `accent-hover`, `accent-ink`, `fg`, `muted`. Use these, not raw hex values. `accent` is a fill (behind black
+  text); use `accent-ink` for accent-colored text, icons and borders so they stay readable in light mode.
+- Light/dark: public page only. `THEME_SCRIPT` (`lib/theme.ts`) sets `<html data-theme>` before paint; light values
+  live in `globals.css`, `.theme-dark` keeps a block dark, `light:` variant for theme-specific classes. Admin stays dark.
 - Supabase (Postgres + Auth for admin only + Storage bucket `photos`), zod, Cloudflare Turnstile.
 - Font: Noto Sans Georgian via `next/font/google`.
 

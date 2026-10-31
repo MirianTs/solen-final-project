@@ -7,13 +7,13 @@ type Variant = "icon" | "large";
 const styles: Record<Variant, { link: string; icon: string; list: string }> = {
   icon: {
     list: "flex items-center gap-1",
-    link: "inline-flex size-11 items-center justify-center rounded-full text-fg transition-colors hover:bg-card-raised hover:text-accent",
+    link: "inline-flex size-11 items-center justify-center rounded-full text-fg transition-colors hover:bg-card-raised hover:text-accent-ink",
     icon: "size-5",
   },
   large: {
     list: "grid gap-3 sm:grid-cols-2",
-    link: "flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-card-raised px-5 text-lg font-semibold transition hover:-translate-y-0.5 hover:border-accent hover:text-accent motion-reduce:hover:translate-y-0",
-    icon: "size-6 shrink-0 text-accent",
+    link: "flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-card-raised px-5 text-lg font-semibold transition hover:-translate-y-0.5 hover:border-accent-ink hover:text-accent-ink motion-reduce:hover:translate-y-0",
+    icon: "size-6 shrink-0 text-accent-ink",
   },
 };
 

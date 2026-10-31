@@ -8,12 +8,12 @@ export function SiteFooter({ text, phoneDisplay, tel, address }: Props) {
     <footer className="mt-auto border-t border-line">
       <div className="container-site flex flex-col gap-3 py-10 text-sm text-muted md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
-          <span className="text-lg font-extrabold tracking-[0.2em] text-accent">SOLEN</span>
+          <span className="text-lg font-extrabold tracking-[0.2em] text-accent-ink">SOLEN</span>
           {text && <span>{text}</span>}
         </div>
         <div className="flex flex-col gap-1 md:items-end">
           {tel && phoneDisplay && (
-            <a href={tel} className="font-semibold text-fg hover:text-accent">
+            <a href={tel} className="font-semibold text-fg hover:text-accent-ink">
               {phoneDisplay}
             </a>
           )}

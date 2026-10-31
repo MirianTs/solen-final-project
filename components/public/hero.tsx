@@ -13,7 +13,7 @@ type Props = {
 export function Hero({ slogan, banner, tel, stats }: Props) {
   return (
     <section id="top" aria-labelledby="hero-title" className="container-site pt-3 md:pt-8">
-      <div className="relative isolate overflow-hidden rounded-card border border-line bg-card">
+      <div className="theme-dark relative isolate overflow-hidden rounded-card border border-line bg-card">
         {banner ? (
           <Image
             src={banner.url}
@@ -64,7 +64,7 @@ function RatingStrip({ stats }: { stats: ReviewStats }) {
   return (
     <div className="anim-fade-up anim-delay-2 mt-3 flex items-center justify-between gap-3 rounded-2xl border border-line bg-card px-4 py-3 sm:px-6 lg:py-4">
       {stats.count > 0 ? (
-        <a href="#reviews" className="flex items-center gap-2 font-semibold transition-colors hover:text-accent">
+        <a href="#reviews" className="flex items-center gap-2 font-semibold transition-colors hover:text-accent-ink">
           <span className="text-lg font-bold lg:text-xl">{formatRating(stats.average)}</span>
           <StarIcon className="size-5 text-accent" />
           <span aria-hidden className="text-muted">
@@ -77,7 +77,7 @@ function RatingStrip({ stats }: { stats: ReviewStats }) {
       )}
       <a
         href="#review-form"
-        className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-accent px-5 font-semibold text-accent transition-colors hover:bg-accent hover:text-black"
+        className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-accent-ink px-5 font-semibold text-accent-ink transition-colors hover:bg-accent hover:text-black"
       >
         შეაფასე
       </a>

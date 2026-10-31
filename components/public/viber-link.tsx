@@ -79,7 +79,7 @@ export function ViberLink({ href, numberDisplay, className, ariaLabel, children 
             </button>
           </div>
 
-          <p className="text-2xl font-bold tracking-wide text-accent">{numberDisplay}</p>
+          <p className="text-2xl font-bold tracking-wide text-accent-ink">{numberDisplay}</p>
 
           <div className="flex size-[200px] items-center justify-center rounded-xl bg-white p-2">
             {qr ? (
@@ -94,7 +94,7 @@ export function ViberLink({ href, numberDisplay, className, ariaLabel, children 
 
           <a
             href={href}
-            className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-line px-5 font-semibold transition-colors hover:border-accent hover:text-accent"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-line px-5 font-semibold transition-colors hover:border-accent-ink hover:text-accent-ink"
           >
             Viber Desktop-ში გახსნა
           </a>

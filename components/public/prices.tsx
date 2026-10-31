@@ -9,7 +9,7 @@ export function Prices({ title, columns }: { title: string; columns: PriceColumn
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {columns.map((column) => (
           <article key={column.id} className="reveal rounded-card border border-line bg-card p-5 md:p-7 transition duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_50px_-20px_rgb(255_214_10/0.25)] motion-reduce:hover:translate-y-0">
-            <h3 className="mb-4 text-xl font-bold text-accent lg:text-2xl">{column.title}</h3>
+            <h3 className="mb-4 text-xl font-bold text-accent-ink lg:text-2xl">{column.title}</h3>
             {column.services.length > 0 ? (
               <ul className="divide-y divide-line">
                 {column.services.map((service) => (

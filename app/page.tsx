@@ -11,6 +11,7 @@ import { buildContactLinks, safeHttpUrl } from "@/lib/contact";
 import { getSiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
 import { buildBusinessJsonLd, buildHomeMetadata } from "@/lib/seo";
+import { THEME_SCRIPT } from "@/lib/theme";
 
 // Static page, revalidated on every admin save (revalidatePath('/')) and hourly as a safety net.
 export const revalidate = 3600;
@@ -38,6 +39,8 @@ export default async function Home() {
 
   return (
     <>
+      {/* First in <body>: sets the light/dark theme before anything paints. */}
+      <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       <script
         type="application/ld+json"
         // Escape "<" so content from the database can never close the script tag.
