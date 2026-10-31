@@ -1,20 +1,25 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import {
   createColumn,
   createService,
   deleteColumn,
   deleteService,
+  deleteServicePhoto,
   saveOrder,
+  saveServicePhoto,
   updateColumn,
   updateService,
 } from "@/app/admin/actions/prices";
+import { compressToWebp } from "@/lib/compress-image";
+import { newServicePhotoPath, SERVICE_PHOTO_MAX_WIDTH } from "@/lib/photo-slots";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.types";
 import { SortableItem, SortableList } from "./sortable";
 
-type Service = Pick<Tables<"services">, "id" | "name" | "price">;
+type Service = Pick<Tables<"services">, "id" | "name" | "price"> & { photoUrl: string | null };
 type Column = { id: string; title: string; services: Service[] };
 
 export function PricesEditor({ initial }: { initial: Column[] }) {
@@ -211,7 +216,7 @@ function ServiceRow({
     startTransition(async () => {
       const result = await updateService({ id: service.id, name, price });
       if (result.ok) {
-        onChanged({ id: service.id, name: name.trim(), price: price.trim() });
+        onChanged({ ...service, name: name.trim(), price: price.trim() });
         toast.success("სერვისი შენახულია");
       } else toast.error(result.error);
     });
@@ -233,6 +238,7 @@ function ServiceRow({
   return (
     <div className="flex items-start gap-1 p-2">
       {handle}
+      <ServicePhoto service={service} onChanged={onChanged} />
       {/* Phone: name on its own row, then price + buttons. Wider screens: one row. */}
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
         <input
@@ -273,6 +279,103 @@ function ServiceRow({
   );
 }
 
+const PHOTO_ACCEPT = "image/jpeg,image/png,image/webp,image/heic,image/heif";
+
+/** Optional small photo of a price item (e.g. a boiler model): click to upload or replace. */
+function ServicePhoto({ service, onChanged }: { service: Service; onChanged: (s: Service) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const inputId = `svc-photo-${service.id}`;
+
+  async function onFile(file: File | undefined) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("აირჩიეთ სურათის ფაილი (JPG, PNG, WebP).");
+      return;
+    }
+    const supabase = createSupabaseBrowserClient();
+    let uploadedPath: string | null = null;
+    setBusy(true);
+    try {
+      const { blob, width, height } = await compressToWebp(file, SERVICE_PHOTO_MAX_WIDTH);
+      const path = newServicePhotoPath(service.id);
+      const { error } = await supabase.storage
+        .from("photos")
+        .upload(path, blob, { contentType: "image/webp", cacheControl: "31536000", upsert: false });
+      if (error) throw error;
+      uploadedPath = path;
+
+      const result = await saveServicePhoto({ id: service.id, path, width, height });
+      if (!result.ok) {
+        await supabase.storage.from("photos").remove([path]);
+        toast.error(result.error);
+        return;
+      }
+      onChanged({ ...service, photoUrl: result.data });
+      toast.success(`„${service.name}“ — ფოტო შენახულია`);
+    } catch (error) {
+      if (uploadedPath) await supabase.storage.from("photos").remove([uploadedPath]);
+      const message = error instanceof Error ? error.message : "";
+      toast.error(
+        message === "WEBP_UNSUPPORTED"
+          ? "ეს ბრაუზერი WebP-ს ვერ ქმნის. სცადეთ Chrome-ით."
+          : "ფოტოს ატვირთვა ვერ მოხერხდა. სცადეთ თავიდან.",
+      );
+    } finally {
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  async function onRemove() {
+    if (!window.confirm(`წავშალო „${service.name}“-ის ფოტო?`)) return;
+    setBusy(true);
+    const result = await deleteServicePhoto({ id: service.id });
+    setBusy(false);
+    if (result.ok) {
+      onChanged({ ...service, photoUrl: null });
+      toast.success("ფოტო წაიშალა");
+    } else toast.error(result.error);
+  }
+
+  return (
+    <div className="relative shrink-0">
+      <input
+        ref={inputRef}
+        id={inputId}
+        type="file"
+        accept={PHOTO_ACCEPT}
+        className="sr-only"
+        disabled={busy}
+        onChange={(e) => void onFile(e.target.files?.[0])}
+      />
+      <label
+        htmlFor={inputId}
+        title={service.photoUrl ? "ფოტოს შეცვლა" : "ფოტოს დამატება"}
+        className={`flex size-12 cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-line bg-white text-xl text-neutral-400 transition-colors hover:border-accent ${busy ? "pointer-events-none opacity-50" : ""}`}
+      >
+        {service.photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- admin preview, images are unoptimized anyway
+          <img src={service.photoUrl} alt="" className="size-full object-contain" />
+        ) : (
+          <span aria-hidden>+</span>
+        )}
+        <span className="sr-only">{service.photoUrl ? `„${service.name}“ — ფოტოს შეცვლა` : `„${service.name}“ — ფოტოს დამატება`}</span>
+      </label>
+      {service.photoUrl && !busy && (
+        <button
+          type="button"
+          onClick={() => void onRemove()}
+          aria-label={`„${service.name}“ — ფოტოს წაშლა`}
+          className="absolute -top-1.5 -right-1.5 flex size-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white"
+        >
+          ×
+        </button>
+      )}
+    </div>
+  );
+}
+
 function AddServiceForm({ columnId, onAdded }: { columnId: string; onAdded: (s: Service) => void }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -283,7 +386,7 @@ function AddServiceForm({ columnId, onAdded }: { columnId: string; onAdded: (s: 
     startTransition(async () => {
       const result = await createService({ columnId, name, price });
       if (result.ok) {
-        onAdded({ id: result.data.id, name: result.data.name, price: result.data.price });
+        onAdded({ id: result.data.id, name: result.data.name, price: result.data.price, photoUrl: null });
         setName("");
         setPrice("");
         toast.success("სერვისი დაემატა");

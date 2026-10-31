@@ -21,3 +21,12 @@ export function newPhotoPath(slot: PhotoSlot): string {
 }
 
 export const PHOTO_PATH_RE = /^(banner|p[1-4]|og)-\d{10,16}\.webp$/;
+
+/** Price-list item photos: small product shots, stored next to the slot photos. */
+export const SERVICE_PHOTO_MAX_WIDTH = 480;
+
+export function newServicePhotoPath(serviceId: string): string {
+  return `svc-${serviceId}-${Date.now()}.webp`;
+}
+
+export const SERVICE_PHOTO_PATH_RE = /^svc-[0-9a-f-]{36}-\d{10,16}\.webp$/;

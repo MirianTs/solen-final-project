@@ -19,7 +19,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 /** Vertical sortable list. Mouse, touch (long-press) and keyboard (Space + arrows) all work. */
 export function SortableList<T extends { id: string }>({
@@ -31,6 +31,8 @@ export function SortableList<T extends { id: string }>({
   onReorder: (next: T[]) => void;
   children: ReactNode;
 }) {
+  // Stable id: dnd-kit's own counter differs between server and client render (hydration warning).
+  const dndId = useId();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 6 } }),
@@ -47,6 +49,7 @@ export function SortableList<T extends { id: string }>({
 
   return (
     <DndContext
+      id={dndId}
       sensors={sensors}
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}

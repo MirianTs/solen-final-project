@@ -1,6 +1,6 @@
 import imageCompression from "browser-image-compression";
 
-const MAX_WIDTH = 1600;
+const DEFAULT_MAX_WIDTH = 1600;
 
 /** Natural size of an image file/blob, decoded in the browser. */
 export async function imageSize(file: Blob): Promise<{ width: number; height: number }> {
@@ -11,13 +11,16 @@ export async function imageSize(file: Blob): Promise<{ width: number; height: nu
 }
 
 /**
- * Compresses an image in the browser to WebP, at most 1600px wide, quality ~0.8.
+ * Compresses an image in the browser to WebP, at most `maxWidth` px wide (default 1600), quality ~0.8.
  * Returns the blob and its final dimensions.
  */
-export async function compressToWebp(file: File): Promise<{ blob: Blob; width: number; height: number }> {
+export async function compressToWebp(
+  file: File,
+  maxWidth = DEFAULT_MAX_WIDTH,
+): Promise<{ blob: Blob; width: number; height: number }> {
   const original = await imageSize(file);
-  // The library limits the LONGER side, so for portrait images scale the limit to keep width <= 1600.
-  const scale = Math.min(1, MAX_WIDTH / original.width);
+  // The library limits the LONGER side, so for portrait images scale the limit to keep width <= maxWidth.
+  const scale = Math.min(1, maxWidth / original.width);
   const maxWidthOrHeight = Math.ceil(Math.max(original.width, original.height) * scale);
 
   const blob = await imageCompression(file, {

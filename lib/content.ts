@@ -3,12 +3,13 @@ import { cache } from "react";
 import { publicEnv } from "@/lib/env";
 import { formatDate } from "@/lib/format";
 import { createPublicClient } from "@/lib/supabase/public";
-import type { PhotoSlot, Tables, Views } from "@/lib/supabase/database.types";
+import type { PhotoSlot, Views } from "@/lib/supabase/database.types";
 
 export const REVIEWS_PAGE_SIZE = 6;
 
 export type Photo = { url: string; alt: string; width: number; height: number };
-export type PriceColumn = { id: string; title: string; services: Tables<"services">[] };
+export type PriceItem = { id: string; name: string; price: string; photo: Photo | null };
+export type PriceColumn = { id: string; title: string; services: PriceItem[] };
 // dateLabel is formatted on the server: not every browser ships Georgian (ka-GE) locale data.
 export type PublicReview = Views<"public_reviews"> & { dateLabel: string };
 export type ReviewStats = { average: number; count: number };
@@ -107,7 +108,17 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
     columns: (columns ?? []).map((c) => ({
       id: c.id,
       title: c.title,
-      services: (services ?? []).filter((s) => s.column_id === c.id),
+      services: (services ?? [])
+        .filter((s) => s.column_id === c.id)
+        .map((s) => ({
+          id: s.id,
+          name: s.name,
+          price: s.price,
+          photo:
+            s.photo_path && s.photo_width && s.photo_height
+              ? { url: photoUrl(s.photo_path), alt: s.name, width: s.photo_width, height: s.photo_height }
+              : null,
+        })),
     })),
     stats: { average: Number(stats?.average ?? 0), count: Number(stats?.count ?? 0) },
     reviews: firstReviews.reviews,

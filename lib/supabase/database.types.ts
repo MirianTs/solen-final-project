@@ -50,9 +50,36 @@ export type Database = {
         Relationships: [];
       };
       services: {
-        Row: { id: string; column_id: string; name: string; price: string; position: number };
-        Insert: { id?: string; column_id: string; name: string; price?: string; position?: number };
-        Update: { id?: string; column_id?: string; name?: string; price?: string; position?: number };
+        Row: {
+          id: string;
+          column_id: string;
+          name: string;
+          price: string;
+          position: number;
+          photo_path: string | null;
+          photo_width: number | null;
+          photo_height: number | null;
+        };
+        Insert: {
+          id?: string;
+          column_id: string;
+          name: string;
+          price?: string;
+          position?: number;
+          photo_path?: string | null;
+          photo_width?: number | null;
+          photo_height?: number | null;
+        };
+        Update: {
+          id?: string;
+          column_id?: string;
+          name?: string;
+          price?: string;
+          position?: number;
+          photo_path?: string | null;
+          photo_width?: number | null;
+          photo_height?: number | null;
+        };
         Relationships: [
           {
             foreignKeyName: "services_column_id_fkey";

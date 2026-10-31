@@ -2,7 +2,20 @@
 
 import { z } from "zod";
 import { check, runAdminAction, UserError } from "@/lib/admin-action";
+import { photoUrl } from "@/lib/content";
+import { SERVICE_PHOTO_PATH_RE } from "@/lib/photo-slots";
 import { plainText } from "@/lib/sanitize";
+import type { createSupabaseServerClient } from "@/lib/supabase/server";
+
+type Supabase = Awaited<ReturnType<typeof createSupabaseServerClient>>;
+
+/** Deletes Storage files of removed price items. The rows are gone either way, so failures are only logged. */
+async function removePhotoFiles(supabase: Supabase, paths: (string | null)[]) {
+  const files = paths.filter((p): p is string => !!p);
+  if (files.length === 0) return;
+  const { error } = await supabase.storage.from("photos").remove(files);
+  if (error) console.error("[prices] could not delete photo files", files, error);
+}
 
 const id = z.uuid();
 const title = z
@@ -42,8 +55,12 @@ export async function updateColumn(input: { id: string; title: string }) {
 
 export async function deleteColumn(input: { id: string }) {
   return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
+    const { data: photos } = check(
+      await supabase.from("services").select("photo_path").eq("column_id", data.id).not("photo_path", "is", null),
+    );
     // services are removed by ON DELETE CASCADE
     check(await supabase.from("price_columns").delete().eq("id", data.id));
+    await removePhotoFiles(supabase, (photos ?? []).map((p) => p.photo_path));
   });
 }
 
@@ -75,7 +92,54 @@ export async function updateService(input: { id: string; name: string; price: st
 
 export async function deleteService(input: { id: string }) {
   return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
+    const { data: row } = check(await supabase.from("services").select("photo_path").eq("id", data.id).maybeSingle());
     check(await supabase.from("services").delete().eq("id", data.id));
+    await removePhotoFiles(supabase, [row?.photo_path ?? null]);
+  });
+}
+
+const servicePhotoSchema = z
+  .object({
+    id,
+    path: z.string().regex(SERVICE_PHOTO_PATH_RE, "ფაილის სახელი არასწორია"),
+    width: z.number().int().min(1).max(10_000),
+    height: z.number().int().min(1).max(10_000),
+  })
+  .refine((d) => d.path.startsWith(`svc-${d.id}-`), "ფაილის სახელი არასწორია");
+
+/**
+ * Called after the browser uploaded the compressed photo to Storage; replaces the item's previous photo.
+ * Returns the public URL of the new photo.
+ */
+export async function saveServicePhoto(input: z.input<typeof servicePhotoSchema>) {
+  return runAdminAction(servicePhotoSchema, input, async (data, { supabase }) => {
+    const { data: current } = check(
+      await supabase.from("services").select("photo_path").eq("id", data.id).maybeSingle(),
+    );
+    if (!current) throw new UserError("სერვისი ვერ მოიძებნა. განაახლეთ გვერდი.");
+
+    check(
+      await supabase
+        .from("services")
+        .update({ photo_path: data.path, photo_width: data.width, photo_height: data.height })
+        .eq("id", data.id),
+    );
+    if (current.photo_path !== data.path) await removePhotoFiles(supabase, [current.photo_path]);
+    return photoUrl(data.path);
+  });
+}
+
+export async function deleteServicePhoto(input: { id: string }) {
+  return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
+    const { data: current } = check(
+      await supabase.from("services").select("photo_path").eq("id", data.id).maybeSingle(),
+    );
+    if (!current?.photo_path) throw new UserError("ფოტო უკვე წაშლილია.");
+
+    check(
+      await supabase.from("services").update({ photo_path: null, photo_width: null, photo_height: null }).eq("id", data.id),
+    );
+    await removePhotoFiles(supabase, [current.photo_path]);
   });
 }
 
