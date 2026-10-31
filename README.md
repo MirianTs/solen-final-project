@@ -83,6 +83,23 @@ The submit server action (`app/actions/submit-review.ts`) does, in order:
 and the secret in `TURNSTILE_SECRET_KEY`. For development, `.env.example` already contains Cloudflare's
 official always-pass test keys.
 
+## SEO and performance
+
+- Georgian title/description, `lang="ka"`, canonical URL and Open Graph/Twitter tags; the share image is the
+  **og** photo slot (falls back to the banner). `metadataBase` = `NEXT_PUBLIC_SITE_URL`.
+- JSON-LD `HVACBusiness` (name, phone, address, area served, image, Facebook, `aggregateRating` only when
+  there are approved reviews).
+- `/robots.txt` (blocks `/admin`), `/sitemap.xml`, admin pages send `noindex` (meta + `X-Robots-Tag`).
+- 301 redirects from the old site: `/inventory`, `/inventory/*`, `/gallery`, `/gallery/*` → `/`.
+- `/` is static (ISR): rebuilt on every admin save and at most hourly otherwise.
+
+Lighthouse (mobile, `npm run build && npm run start`, local test data), 3 runs on 2026-10-31:
+Performance 96–97 · Accessibility 100 · Best Practices 100 · SEO 100 (LCP ≈ 2.7 s simulated, CLS 0, TBT ≈ 65 ms).
+
+```bash
+npx lighthouse http://localhost:3000/ --chrome-flags="--headless=new" --view
+```
+
 ## Setup (to be completed)
 
 1. Supabase project — Phase 2 (see "Database" above)

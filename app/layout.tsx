@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_Georgian } from "next/font/google";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE_NAME, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 const notoGeorgian = Noto_Sans_Georgian({
@@ -8,10 +9,13 @@ const notoGeorgian = Noto_Sans_Georgian({
   display: "swap",
 });
 
-// Full SEO metadata (metadataBase, Open Graph, JSON-LD) is added in Phase 7.
+// Site-wide defaults. The home page adds Open Graph images and JSON-LD from the database.
 export const metadata: Metadata = {
-  title: "Solen — გათბობა და კონდიციონერები",
-  description: "გათბობის, რადიატორებისა და კონდიციონერების მონტაჟი და მომსახურება თბილისში.",
+  metadataBase: new URL(siteUrl()),
+  title: { default: DEFAULT_TITLE, template: `%s — ${SITE_NAME}` },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {

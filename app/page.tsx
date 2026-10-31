@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { preconnect } from "react-dom";
 import { ContactSection } from "@/components/public/contact-section";
 import { FeatureBlocks, type FeatureBlock } from "@/components/public/feature-blocks";
 import { Hero } from "@/components/public/hero";
@@ -8,13 +10,20 @@ import { SiteHeader } from "@/components/public/site-header";
 import { buildContactLinks, safeHttpUrl } from "@/lib/contact";
 import { getSiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
+import { buildBusinessJsonLd, buildHomeMetadata } from "@/lib/seo";
 
 // Static page, revalidated on every admin save (revalidatePath('/')) and hourly as a safety net.
 export const revalidate = 3600;
 
+export async function generateMetadata(): Promise<Metadata> {
+  return buildHomeMetadata(await getSiteContent());
+}
+
 export default async function Home() {
   const content = await getSiteContent();
   const { texts, settings, photos } = content;
+  // Photos are served from Supabase Storage (another origin): open the connection early for the banner.
+  preconnect(publicEnv().NEXT_PUBLIC_SUPABASE_URL);
   const links = buildContactLinks(settings);
   const address = settings.address_text?.trim() ?? "";
 
@@ -25,8 +34,15 @@ export default async function Home() {
     photo: photos[slot],
   }));
 
+  const jsonLd = buildBusinessJsonLd(content);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Escape "<" so content from the database can never close the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <a
         href="#main"
         className="sr-only z-50 rounded-full bg-accent px-4 py-2 font-bold text-black focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
