@@ -6,7 +6,7 @@ export function SiteFooter({ text, phoneDisplay, tel, address }: Props) {
 
   return (
     <footer className="mt-auto border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-10 text-sm text-muted md:flex-row md:items-center md:justify-between">
+      <div className="container-site flex flex-col gap-3 py-10 text-sm text-muted md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
           <span className="text-lg font-extrabold tracking-[0.2em] text-accent">SOLEN</span>
           {text && <span>{text}</span>}

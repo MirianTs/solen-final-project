@@ -13,8 +13,8 @@ export const NAV_ITEMS = [
 export function SiteHeader({ links }: { links: ContactLinks }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
-      <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <a href="#top" className="text-xl font-extrabold tracking-[0.2em] text-accent" aria-label="Solen — მთავარი">
+      <div className="container-site relative flex h-16 items-center justify-between gap-4 lg:h-20">
+        <a href="#top" className="text-xl font-extrabold tracking-[0.2em] text-accent lg:text-2xl" aria-label="Solen — მთავარი">
           SOLEN
         </a>
 
@@ -24,7 +24,7 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-fg"
+                  className="rounded-full px-3 py-2 text-sm font-semibold text-muted transition-colors hover:text-accent lg:px-4 lg:text-base"
                 >
                   {item.label}
                 </a>

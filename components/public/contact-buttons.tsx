@@ -12,7 +12,7 @@ const styles: Record<Variant, { link: string; icon: string; list: string }> = {
   },
   large: {
     list: "grid gap-3 sm:grid-cols-2",
-    link: "flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-card-raised px-5 text-lg font-semibold transition-colors hover:border-accent hover:text-accent",
+    link: "flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-card-raised px-5 text-lg font-semibold transition hover:-translate-y-0.5 hover:border-accent hover:text-accent motion-reduce:hover:translate-y-0",
     icon: "size-6 shrink-0 text-accent",
   },
 };

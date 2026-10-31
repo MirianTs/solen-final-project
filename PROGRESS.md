@@ -14,10 +14,11 @@
 - 2026-10-31 (NucBox_M8): Supabase პროექტი `solen` (Frankfurt, Postgres 17.11) შეიქმნა. 3 migration + seed გაეშვა SQL Editor-ში, verify_rls.sql: ALL RLS CHECKS PASSED. მონაცემები: 7 settings, 15 texts, 6 photo slot, 3 სვეტი, 8 სერვისი, 3 შეფასება, photos bucket.
 - 2026-10-31 (NucBox_M8): ადმინი შეიქმნა (1 მომხმარებელი, admins-ში ჩაწერილი, დადასტურებული). Sign-up და anonymous sign-in გამორთულია.
 - 2026-10-31 (NucBox_M8): Turnstile widget `solen.ge` (Managed; localhost, solen.ge, www.solen.ge). Vercel პროექტი `solen-v2-website-setup` შეიქმნა, 7 env ცვლადი შემოწმდა (მნიშვნელობების წაკითხვის გარეშე), deploy Ready → https://solen-v2-website-setup.vercel.app — შიგთავსი Supabase-იდან, redirect-ები, robots, JSON-LD მუშაობს. Supabase Site URL + redirect URL-ები დაყენდა, Vercel function region → fra1.
+- 2026-10-31 (NucBox_M8): Turnstile-ს დაემატა `solen-v2-website-setup.vercel.app` (4 hostname). ადმინში შესვლა ცოცხალ საიტზე მუშაობს (request log-ით შემოწმდა).
+- 2026-10-31 (NucBox_M8): დიზაინი: ანიმაციები (hero ტექსტი/ღილაკი, ყვითელი „glow“ ფოტოს გარეშე, ბანერის zoom, ღილაკის pulse, ბარათები scroll-ზე ჩნდება და hover-ზე იწევა — მხოლოდ CSS, reduced-motion-ზე გამორთულია); დიდ ეკრანზე container 1280/1440px, უფრო დიდი hero და ტიპოგრაფია; მობილურზე hero-ს გრძელი სიტყვა აღარ იჭრება (320–1280px შემოწმდა). Lighthouse mobile: 96/100/100/100.
 
 ## დარჩა
-- Turnstile widget-ში hostname `solen-v2-website-setup.vercel.app` დასამატებელია (ავტომატურად ვერ დაემატა).
-- ადმინში შესვლის და შეფასების ტესტი ცოცხალ საიტზე. GitHub Actions secrets (backup). შემდეგ „Go-live checklist“.
+- ცოცხალ საიტზე: ფოტოს ატვირთვის და შეფასების გაგზავნის ტესტი (ჯერ ვერ დადასტურდა — bucket ცარიელია, შეფასება სერვერამდე არ მივიდა). GitHub Actions secrets (backup). შემდეგ დომეინი + „Go-live checklist“.
 - ლოგოს ფაილი (icon/apple-icon და header-ში „SOLEN“ ტექსტი ჯერ placeholder-ია).
 
 ## გადაწყვეტილებები

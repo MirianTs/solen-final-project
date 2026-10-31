@@ -7,9 +7,9 @@ type Props = { title: string; text: string; address: string; links: ContactLinks
 export function ContactSection({ title, text, address, links }: Props) {
   return (
     <Section id="contact" title={title}>
-      <div className="grid gap-6 rounded-card border border-line bg-card p-5 md:grid-cols-[1fr_1.4fr] md:p-10">
+      <div className="reveal grid gap-6 rounded-card border border-line bg-card p-5 md:grid-cols-[1fr_1.4fr] md:p-10 lg:gap-10 lg:p-14">
         <div className="flex flex-col gap-3">
-          {text && <p className="text-lg leading-relaxed">{text}</p>}
+          {text && <p className="text-lg leading-relaxed lg:text-xl">{text}</p>}
           {address && (
             <address className="text-muted not-italic">
               <span className="block text-sm font-semibold tracking-wide text-fg uppercase">მისამართი</span>

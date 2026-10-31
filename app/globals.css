@@ -57,6 +57,120 @@
   }
 }
 
+/* Public page container: full width on phones, up to 1280px (1440px on very large screens). */
+@utility container-site {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 96rem) {
+    max-width: 90rem;
+  }
+}
+
+/* Motion. Everything below is skipped for visitors who prefer reduced motion. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Transform only (no opacity), so the hero headline still counts as painted for LCP. */
+@keyframes rise {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes glow-drift {
+  from {
+    transform: translate(-8%, -6%) scale(1);
+  }
+  to {
+    transform: translate(10%, 8%) scale(1.2);
+  }
+}
+
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Pulse ring drawn on ::after; only transform + opacity change, so it stays on the GPU. */
+@keyframes ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.25, 1.6);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-rise {
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .anim-fade-up {
+    animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .anim-delay-1 {
+    animation-delay: 0.15s;
+  }
+  .anim-delay-2 {
+    animation-delay: 0.3s;
+  }
+  .anim-glow {
+    animation: glow-drift 14s ease-in-out infinite alternate;
+  }
+  .anim-zoom {
+    animation: slow-zoom 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .anim-ring {
+    position: relative;
+  }
+  .anim-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid var(--color-accent);
+    opacity: 0;
+    pointer-events: none;
+    animation: ring 2.6s ease-out 1.6s infinite;
+  }
+
+  /* Scroll reveal: pure CSS where supported; older browsers simply show the content. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
 /* Shared admin form controls. */
 @layer components {
   .admin-input {
