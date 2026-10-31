@@ -43,6 +43,29 @@ in this order (each is safe to re-run):
 The editor will warn that `public_reviews` and `review_stats` are security-definer views. That is intended:
 anon reads approved reviews through them without any access to the `reviews` table or its hashes.
 
+## Admin user
+
+The admin panel is at `/admin` (email + password, Supabase Auth). There is no public sign-up.
+
+1. **Authentication → Sign In / Providers → Email**: keep Email enabled, turn **Allow new users to sign up** OFF.
+2. **Authentication → Users → Add user → Create new user**: enter the admin email + a strong password,
+   tick **Auto Confirm User**.
+3. **SQL Editor** — make that user an admin (replace the email):
+
+   ```sql
+   insert into public.admins (user_id)
+   select id from auth.users where email = 'admin@example.com'
+   on conflict (user_id) do nothing;
+
+   -- check: should return one row
+   select a.user_id, u.email from public.admins a join auth.users u on u.id = a.user_id;
+   ```
+
+To remove an admin: `delete from public.admins where user_id = (select id from auth.users where email = '...');`
+
+Security: `proxy.ts` refreshes the session and redirects signed-out users to `/admin/login`, but every admin
+page and server action also re-checks the user **and** `is_admin()` on the server.
+
 ## Setup (to be completed)
 
 1. Supabase project — Phase 2 (see "Database" above)

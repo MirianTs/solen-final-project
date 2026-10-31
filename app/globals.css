@@ -56,3 +56,22 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Shared admin form controls. */
+@layer components {
+  .admin-input {
+    @apply min-h-12 w-full rounded-xl border border-line bg-bg px-4 text-base text-fg placeholder:text-muted/60 focus:border-accent;
+  }
+
+  .admin-btn-primary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-6 font-bold text-black transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .admin-btn-ghost {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-line px-4 text-sm font-semibold text-fg transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .admin-btn-danger {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-500/50 px-4 text-sm font-semibold text-red-300 transition-colors hover:bg-red-500/15 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+}
