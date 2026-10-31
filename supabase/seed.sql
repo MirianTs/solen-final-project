@@ -1,4 +1,4 @@
--- Solen v2: starter content (texts and prices from the old solen.ge; reviews are placeholders). Run after the migrations.
+-- Solen v2: starter content (texts and prices from the old solen.ge; no reviews). Run after the migrations.
 -- Safe to re-run: existing rows are left untouched (ON CONFLICT DO NOTHING).
 
 insert into public.settings (key, value) values
@@ -69,10 +69,4 @@ insert into public.services (id, column_id, name, price, position) values
   ('00000000-0000-4000-8000-000000000403', '00000000-0000-4000-8000-000000000004', 'L1PB28-C28WM', '1669 ₾', 2),
   ('00000000-0000-4000-8000-000000000404', '00000000-0000-4000-8000-000000000004', 'L1PB32-C28WL', '1999 ₾', 3),
   ('00000000-0000-4000-8000-000000000405', '00000000-0000-4000-8000-000000000004', 'L1PB36-C28WL', '2149 ₾', 4)
-on conflict (id) do nothing;
-
-insert into public.reviews (id, rating, name, comment, status, created_at) values
-  ('00000000-0000-4000-8000-000000000901', 5, 'გიორგი', 'სწრაფად მოვიდნენ და ქვაბი იმავე დღეს შეაკეთეს. გირჩევთ!', 'approved', now() - interval '20 days'),
-  ('00000000-0000-4000-8000-000000000902', 5, 'ნინო',   'კონდიციონერი სუფთად და პროფესიონალურად დაამონტაჟეს.',      'approved', now() - interval '9 days'),
-  ('00000000-0000-4000-8000-000000000903', 4, 'დავითი', 'კარგი მომსახურება, ფასიც ნორმალურია.',                     'approved', now() - interval '2 days')
 on conflict (id) do nothing;
