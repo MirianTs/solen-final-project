@@ -16,9 +16,10 @@
 - 2026-10-31 (NucBox_M8): Turnstile widget `solen.ge` (Managed; localhost, solen.ge, www.solen.ge). Vercel პროექტი `solen-v2-website-setup` შეიქმნა, 7 env ცვლადი შემოწმდა (მნიშვნელობების წაკითხვის გარეშე), deploy Ready → https://solen-v2-website-setup.vercel.app — შიგთავსი Supabase-იდან, redirect-ები, robots, JSON-LD მუშაობს. Supabase Site URL + redirect URL-ები დაყენდა, Vercel function region → fra1.
 - 2026-10-31 (NucBox_M8): Turnstile-ს დაემატა `solen-v2-website-setup.vercel.app` (4 hostname). ადმინში შესვლა ცოცხალ საიტზე მუშაობს (request log-ით შემოწმდა).
 - 2026-10-31 (NucBox_M8): დიზაინი: ანიმაციები (hero ტექსტი/ღილაკი, ყვითელი „glow“ ფოტოს გარეშე, ბანერის zoom, ღილაკის pulse, ბარათები scroll-ზე ჩნდება და hover-ზე იწევა — მხოლოდ CSS, reduced-motion-ზე გამორთულია); დიდ ეკრანზე container 1280/1440px, უფრო დიდი hero და ტიპოგრაფია; მობილურზე hero-ს გრძელი სიტყვა აღარ იჭრება (320–1280px შემოწმდა). Lighthouse mobile: 96/100/100/100.
+- 2026-10-31 (NucBox_M8): ცოცხალ საიტზე ტესტი გაიარა: ფოტოს ატვირთვა (WebP 1600px, Storage, og:image revalidate-ით, წაშლა) და შეფასება Chrome-ში (Turnstile → hash-ები → pending → დადასტურება → საიტზე → წაშლა). ტესტური მონაცემები წაიშალა.
 
 ## დარჩა
-- ცოცხალ საიტზე: ფოტოს ატვირთვის და შეფასების გაგზავნის ტესტი (ჯერ ვერ დადასტურდა — bucket ცარიელია, შეფასება სერვერამდე არ მივიდა). GitHub Actions secrets (backup). შემდეგ დომეინი + „Go-live checklist“.
+- GitHub Actions secrets (backup) + პირველი ხელით გაშვება. შემდეგ დომეინი solen.ge + „Go-live checklist“ (README). რეალური შიგთავსი/ფოტოები ადმინიდან.
 - ლოგოს ფაილი (icon/apple-icon და header-ში „SOLEN“ ტექსტი ჯერ placeholder-ია).
 
 ## გადაწყვეტილებები
@@ -28,4 +29,4 @@
 - 2026-10-31 (NucBox_M8): browser-image-compression `useWebWorker: false` — სხვაგვარად worker-ს CDN-იდან ტვირთავს.
 
 ## ღია პრობლემები
-- 2026-10-31 (NucBox_M8): ჯერ არაფერი შემოწმებულა რეალურ Supabase-ზე / Vercel-ზე — ყველა ტესტი mock-ით იყო. პირველი deploy-ის შემდეგ: შესვლა, ფოტოს ატვირთვა, შეფასება, Backup workflow-ს ხელით გაშვება.
+- 2026-10-31 (NucBox_M8): აპის ჩაშენებულ ბრაუზერში Turnstile დასტურს არ იძლევა (Chrome-ში მუშაობს) — ვიზიტორებზე გავლენა არ აქვს.
