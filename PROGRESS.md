@@ -19,7 +19,7 @@
 - 2026-10-31 (NucBox_M8): ცოცხალ საიტზე ტესტი გაიარა: ფოტოს ატვირთვა (WebP 1600px, Storage, og:image revalidate-ით, წაშლა) და შეფასება Chrome-ში (Turnstile → hash-ები → pending → დადასტურება → საიტზე → წაშლა). ტესტური მონაცემები წაიშალა.
 
 ## დარჩა
-- GitHub Actions secrets (backup) + პირველი ხელით გაშვება. შემდეგ დომეინი solen.ge + „Go-live checklist“ (README). რეალური შიგთავსი/ფოტოები ადმინიდან.
+- Backup: GitHub-ში უკვე არის SUPABASE_URL და BACKUP_PASSPHRASE (ეს გაგრძელებისას თავიდან დავაგენერიროთ და მომხმარებელს მივცეთ შესანახად — ძველი არსად ინახება). დასამატებელია SUPABASE_DB_URL (Session pooler: postgres.kepsxmraelydmitsekjx@aws-1-eu-central-1.pooler.supabase.com:5432 + DB პაროლი) და SUPABASE_SERVICE_ROLE_KEY — `gh secret set NAME -R MirianTs/solen-v2-website-setup`. შემდეგ workflow-ს ხელით გაშვება და artifact-ის გახსნის ტესტი. შემდეგ დომეინი solen.ge + „Go-live checklist“ (README). რეალური შიგთავსი/ფოტოები ადმინიდან.
 - ლოგოს ფაილი (icon/apple-icon და header-ში „SOLEN“ ტექსტი ჯერ placeholder-ია).
 
 ## გადაწყვეტილებები
