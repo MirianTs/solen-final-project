@@ -1,5 +1,6 @@
 import type { PublicReview, ReviewStats } from "@/lib/content";
 import { formatRating } from "@/lib/format";
+import { ReviewForm } from "./review-form";
 import { ReviewsList } from "./reviews-list";
 import { Section } from "./section";
 import { Stars } from "./stars";
@@ -10,9 +11,10 @@ type Props = {
   reviews: PublicReview[];
   hasMore: boolean;
   googleReviewUrl: string | null;
+  turnstileSiteKey: string;
 };
 
-export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl }: Props) {
+export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl, turnstileSiteKey }: Props) {
   return (
     <Section id="reviews" title={title}>
       {stats.count > 0 && (
@@ -38,8 +40,9 @@ export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl
         </p>
       )}
 
-      {/* Review form (Turnstile + anti-spam) is added in Phase 6. */}
-      <div id="review-form" className="mt-10 scroll-mt-24" />
+      <div id="review-form" className="mt-10 scroll-mt-24">
+        <ReviewForm siteKey={turnstileSiteKey} />
+      </div>
     </Section>
   );
 }

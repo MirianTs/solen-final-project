@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/public/site-footer";
 import { SiteHeader } from "@/components/public/site-header";
 import { buildContactLinks, safeHttpUrl } from "@/lib/contact";
 import { getSiteContent } from "@/lib/content";
+import { publicEnv } from "@/lib/env";
 
 // Static page, revalidated on every admin save (revalidatePath('/')) and hourly as a safety net.
 export const revalidate = 3600;
@@ -43,6 +44,7 @@ export default async function Home() {
           reviews={content.reviews}
           hasMore={content.hasMoreReviews}
           googleReviewUrl={safeHttpUrl(settings.google_review_url)}
+          turnstileSiteKey={publicEnv().NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         />
         <ContactSection title={texts.contact_title} text={texts.contact_text} address={address} links={links} />
       </main>

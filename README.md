@@ -66,6 +66,23 @@ To remove an admin: `delete from public.admins where user_id = (select id from a
 Security: `proxy.ts` refreshes the session and redirects signed-out users to `/admin/login`, but every admin
 page and server action also re-checks the user **and** `is_admin()` on the server.
 
+## Reviews and anti-spam
+
+Visitors leave reviews on the public page. Each one is stored as `pending` and appears on the site
+only after an admin approves it in **/admin → შეფასებები**.
+
+The submit server action (`app/actions/submit-review.ts`) does, in order:
+1. zod validation (rating 1–5, name ≤ 60, comment ≤ 1000, HTML tags stripped);
+2. Cloudflare Turnstile verification on the server (`TURNSTILE_SECRET_KEY` + visitor IP);
+3. one review per device **and** per IP per 30 days — a random httpOnly cookie id (1 year) and the IP
+   are stored only as salted SHA-256 hashes (`HASH_SALT`);
+4. insert with the service-role key (anon has no access to the `reviews` table).
+
+**Turnstile**: Cloudflare dashboard → Turnstile → Add widget → hostnames `solen.ge`, `www.solen.ge`
+(and `localhost` for local testing), mode *Managed*. Put the site key in `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+and the secret in `TURNSTILE_SECRET_KEY`. For development, `.env.example` already contains Cloudflare's
+official always-pass test keys.
+
 ## Setup (to be completed)
 
 1. Supabase project — Phase 2 (see "Database" above)
