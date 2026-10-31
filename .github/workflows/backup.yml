@@ -1,0 +1,118 @@
+# Daily encrypted backup of the Supabase database + photos, and a keep-alive ping so the
+# free Supabase project never pauses. The repository must be PRIVATE.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL            Session pooler connection string (IPv4; GitHub runners have no IPv6)
+#   SUPABASE_URL               https://<project-ref>.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY  service_role (or sb_secret_...) key
+#   BACKUP_PASSPHRASE          long random passphrase for gpg — store it in a password manager too
+#
+# Restore instructions: README.md → "Backups and restore".
+name: Backup
+
+on:
+  schedule:
+    - cron: "17 2 * * *" # daily 02:17 UTC (06:17 Tbilisi)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+env:
+  # Must be >= the Supabase Postgres major version (Dashboard → Settings → Infrastructure).
+  PG_MAJOR: "17"
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Keep-alive request to the Supabase API
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          auth=()
+          case "$SUPABASE_SERVICE_ROLE_KEY" in eyJ*) auth=(-H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY");; esac
+          curl --fail --silent --show-error --max-time 30 -o /dev/null \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" "${auth[@]}" \
+            "${SUPABASE_URL%/}/rest/v1/settings?select=key&limit=1"
+          echo "Supabase API reachable."
+
+      - name: Install PostgreSQL ${{ env.PG_MAJOR }} client (official PGDG apt repo)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq "postgresql-client-${PG_MAJOR}"
+          echo "/usr/lib/postgresql/${PG_MAJOR}/bin" >> "$GITHUB_PATH"
+
+      - name: Check client vs server version
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          pg_dump --version
+          server=$(psql "$SUPABASE_DB_URL" -tAc "show server_version_num")
+          major=$((server / 10000))
+          echo "Supabase Postgres major version: $major"
+          if [ "$major" -gt "$PG_MAJOR" ]; then
+            echo "::error::Supabase runs Postgres $major but the client is $PG_MAJOR. Set PG_MAJOR to $major in .github/workflows/backup.yml."
+            exit 1
+          fi
+
+      - name: Dump database
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          mkdir -p backup/db
+          common=(--no-owner --no-privileges)
+          # Full public schema + data (reference / manual restore).
+          pg_dump "$SUPABASE_DB_URL" "${common[@]}" --schema=public --file=backup/db/public_full.sql
+          # Data only: restored on top of supabase/migrations in a fresh project.
+          pg_dump "$SUPABASE_DB_URL" "${common[@]}" --schema=public --data-only --file=backup/db/public_data.sql
+          # Admin login accounts (needed by public.admins).
+          pg_dump "$SUPABASE_DB_URL" "${common[@]}" --data-only \
+            --table=auth.users --table=auth.identities --file=backup/db/auth_users.sql
+          for f in backup/db/*.sql; do
+            test -s "$f" || { echo "::error::$f is empty"; exit 1; }
+          done
+          ls -la backup/db
+
+      - name: Download photos bucket
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/backup-photos.mjs backup/photos
+
+      - name: Encrypt archive
+        id: pack
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          test -n "$BACKUP_PASSPHRASE" || { echo "::error::BACKUP_PASSPHRASE secret is missing"; exit 1; }
+          stamp=$(date -u +%Y-%m-%d_%H%M)
+          name="solen-backup-${stamp}"
+          tar -czf "${name}.tar.gz" -C backup .
+          # Passphrase goes through stdin, never on the command line.
+          printf '%s' "$BACKUP_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+            --symmetric --cipher-algo AES256 --output "${name}.tar.gz.gpg" "${name}.tar.gz"
+          rm -rf backup "${name}.tar.gz"
+          ls -la "${name}.tar.gz.gpg"
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload encrypted backup (30 days)
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.pack.outputs.name }}
+          path: ${{ steps.pack.outputs.name }}.tar.gz.gpg
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0 # already compressed + encrypted

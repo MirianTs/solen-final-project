@@ -35,7 +35,9 @@ One public page (`/`) + an admin panel (`/admin`). All content comes from Supaba
 
 ## Layout
 - `app/` routes · `components/public|admin|ui` · `lib/` helpers · `supabase/migrations` + `supabase/seed.sql`
-- `scripts/` Node scripts (backup) · `.github/workflows/backup.yml`
+- `scripts/` dependency-free Node scripts (`backup-photos.mjs`, `restore-photos.mjs`)
+- `.github/workflows/backup.yml` — daily encrypted backup + Supabase keep-alive (`PG_MAJOR` must be >= Supabase Postgres major)
+- Setup, restore and go-live steps live in README.md — keep them in sync with code changes.
 
 ## Commands
 - `npm run dev` · `npm run build` · `npm run start`

@@ -10,11 +10,13 @@
 - 2026-10-31 (NucBox_M8): ფაზა 5 — admin სექციები: ფოტოები (ბრაუზერში WebP-ად შეკუმშვა, მაქს. 1600px, ახალი სახელი ყოველ ატვირთვაზე, ძველის წაშლა), ფასები (სვეტები/სერვისები, drag-and-drop მაუსით/თითით/კლავიატურით, რიგი ავტომატურად ინახება), ტექსტები, კონტაქტები (URL/ტელეფონის შემოწმება). ყველა action: admin check → zod → ჩაწერა → revalidatePath. შემოწმდა mock Supabase-ით.
 - 2026-10-31 (NucBox_M8): ფაზა 6 — შეფასებები: საჯარო ფორმა (ვარსკვლავები radio-ებით, Turnstile მხოლოდ ფორმასთან მიახლოებისას იტვირთება), server action: zod → Turnstile → 30 დღეში 1 მოწყობილობიდან/IP-დან (SHA-256 + HASH_SALT) → pending. ადმინში ჩანართები (მოლოდინში/გამოქვეყნებული/დამალული), დადასტურება/დამალვა/წაშლა, badge ახლდება. შემოწმდა mock-ით და Cloudflare-ის ტესტ-გასაღებებით.
 - 2026-10-31 (NucBox_M8): ფაზა 7 — SEO: ქართული metadata, OG/Twitter (og ფოტო → ბანერი), JSON-LD HVACBusiness (+aggregateRating), robots.txt, sitemap.xml, icon/apple-icon placeholder, 301 redirect-ები (/inventory, /gallery), preconnect Supabase-ზე. Lighthouse mobile: 96–97 / 100 / 100 / 100.
+- 2026-10-31 (NucBox_M8): ფაზა 8 — backup workflow (ყოველდღე 02:17 UTC + ხელით): keep-alive, pg_dump (PGDG client 17, Session pooler), photos ჩამოტვირთვა, gpg AES-256, artifact 30 დღე. restore სკრიპტი. README დასრულდა: setup ნულიდან, restore, Go live. ფოტოების backup/restore და gpg ლოკალურად შემოწმდა; pg_dump ნაწილი — მხოლოდ რეალურ Supabase-ზე პირველი გაშვებისას.
 
 ## დარჩა
 - მომხმარებელმა SQL ფაილები Supabase-ის SQL Editor-ში უნდა გაუშვას (თანმიმდევრობა README-შია).
 - ადმინის შექმნა Supabase-ში (SQL README-შია, „Admin user“).
-- ფაზა 8: backup workflow + სრული README + Go live.
+- README-ს „Setup from zero“ (Supabase, Turnstile, Vercel, GitHub secrets) და შემდეგ „Go-live checklist“ — ხელით, მომხმარებელმა.
+- ლოგოს ფაილი (icon/apple-icon და header-ში „SOLEN“ ტექსტი ჯერ placeholder-ია).
 
 ## გადაწყვეტილებები
 - 2026-10-31 (NucBox_M8): Cache Components გამორთულია — კლასიკური ISR (`revalidate = 3600` + `revalidatePath('/')`), მომხმარებლის არჩევანით.
@@ -23,3 +25,4 @@
 - 2026-10-31 (NucBox_M8): browser-image-compression `useWebWorker: false` — სხვაგვარად worker-ს CDN-იდან ტვირთავს.
 
 ## ღია პრობლემები
+- 2026-10-31 (NucBox_M8): ჯერ არაფერი შემოწმებულა რეალურ Supabase-ზე / Vercel-ზე — ყველა ტესტი mock-ით იყო. პირველი deploy-ის შემდეგ: შესვლა, ფოტოს ატვირთვა, შეფასება, Backup workflow-ს ხელით გაშვება.
