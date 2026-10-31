@@ -8,6 +8,9 @@ do $$
 declare
   n int;
 begin
+  -- One approved review to read through the public view (rolled back with everything else).
+  insert into public.reviews (rating, name, status) values (5, 'rls-test', 'approved');
+
   -- ---------------- anon ----------------
   perform set_config('role', 'anon', true);
   perform set_config('request.jwt.claims', '{"role":"anon"}', true);
