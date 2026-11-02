@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { preconnect } from "react-dom";
 import { ContactSection } from "@/components/public/contact-section";
-import { FeatureBlocks, type FeatureBlock } from "@/components/public/feature-blocks";
 import { Hero } from "@/components/public/hero";
-import { Prices } from "@/components/public/prices";
 import { ReviewsSection } from "@/components/public/reviews-section";
+import { ServicesPrices } from "@/components/public/services-prices";
 import { SiteFooter } from "@/components/public/site-footer";
 import { SiteHeader } from "@/components/public/site-header";
 import { buildContactLinks, safeHttpUrl } from "@/lib/contact";
@@ -28,13 +27,6 @@ export default async function Home() {
   const links = buildContactLinks(settings);
   const address = settings.address_text?.trim() ?? "";
 
-  const blocks: FeatureBlock[] = (["p1", "p2", "p3", "p4"] as const).map((slot) => ({
-    key: slot,
-    title: texts[`${slot}_title`] ?? "",
-    text: texts[`${slot}_text`] ?? "",
-    photo: photos[slot],
-  }));
-
   const jsonLd = buildBusinessJsonLd(content);
 
   return (
@@ -55,8 +47,7 @@ export default async function Home() {
       <SiteHeader links={links} />
       <main id="main" className="flex flex-col">
         <Hero slogan={texts.hero_slogan} banner={photos.banner} tel={links.tel} stats={content.stats} />
-        <Prices title={texts.prices_title} columns={content.columns} />
-        <FeatureBlocks title={texts.services_title} blocks={blocks} />
+        <ServicesPrices title={texts.services_title} note={texts.prices_note} columns={content.columns} />
         <ReviewsSection
           title={texts.reviews_title}
           stats={content.stats}
@@ -67,7 +58,7 @@ export default async function Home() {
         />
         <ContactSection title={texts.contact_title} text={texts.contact_text} address={address} links={links} />
       </main>
-      <SiteFooter text={texts.footer_text} phoneDisplay={links.phoneDisplay} tel={links.tel} address={address} />
+      <SiteFooter text={texts.footer_text} links={links} address={address} />
     </>
   );
 }

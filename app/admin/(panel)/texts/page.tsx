@@ -15,7 +15,7 @@ export default async function TextsPage() {
   return (
     <>
       <h1 className="mb-2 text-2xl font-bold">ტექსტები</h1>
-      <p className="mb-6 text-sm text-muted">ბლოკი, რომლის სათაურიც და ტექსტიც ცარიელია, საიტზე არ გამოჩნდება.</p>
+      <p className="mb-6 text-sm text-muted">ცარიელი ველის ნაცვლად საიტზე სტანდარტული ტექსტი გამოჩნდება.</p>
       <KeyValueForm
         groups={TEXT_GROUPS.map((g) => ({
           title: g.title,

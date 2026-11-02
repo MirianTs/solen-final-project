@@ -6,8 +6,7 @@ import { MobileMenu } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
 
 export const NAV_ITEMS = [
-  { href: "#prices", label: "ფასები" },
-  { href: "#services", label: "სერვისები" },
+  { href: "#services", label: "სერვისები და ფასები" },
   { href: "#reviews", label: "შეფასებები" },
   { href: "#contact", label: "კონტაქტი" },
 ] as const;
@@ -17,7 +16,7 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
     <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
       <div className="container-site relative flex h-16 items-center justify-between gap-2 lg:h-20">
         <a href="#top" className="shrink-0" aria-label="Solen — მთავარი">
-          <Logo adaptive className="h-6 w-auto min-[400px]:h-8 lg:h-10" />
+          <Logo adaptive className="h-7 w-auto min-[400px]:h-8 lg:h-10" />
         </a>
 
         <nav aria-label="მთავარი ნავიგაცია" className="hidden md:block">
@@ -41,7 +40,6 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
-          <ThemeToggle />
           {links.tel && (
             <a
               href={links.tel}
@@ -69,6 +67,12 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
             </div>
           </MobileMenu>
         </div>
+      </div>
+
+      {/* Phones: Viber / WhatsApp / Facebook always visible in a second row (desktop has them in the main row). */}
+      <div className="container-site flex h-12 items-center justify-between gap-2 border-t border-line md:hidden">
+        <ContactButtons links={links} variant="social" />
+        <ThemeToggle />
       </div>
     </header>
   );

@@ -11,19 +11,15 @@ export const TEXT_GROUPS: { title: string; fields: TextField[] }[] = [
   {
     title: "სექციების სათაურები",
     fields: [
-      { key: "prices_title", label: "ფასები", multiline: false, max: 80 },
-      { key: "services_title", label: "სერვისები", multiline: false, max: 80 },
+      { key: "services_title", label: "სერვისები და ფასები", multiline: false, max: 80 },
       { key: "reviews_title", label: "შეფასებები", multiline: false, max: 80 },
       { key: "contact_title", label: "კონტაქტი", multiline: false, max: 80 },
     ],
   },
-  ...[1, 2, 3, 4].map((n) => ({
-    title: `ბლოკი P${n}`,
-    fields: [
-      { key: `p${n}_title`, label: "სათაური", multiline: false, max: 120 },
-      { key: `p${n}_text`, label: "ტექსტი", multiline: true, max: 2000 },
-    ],
-  })),
+  {
+    title: "სერვისები და ფასები",
+    fields: [{ key: "prices_note", label: "შენიშვნა ფასებზე (სათაურის ქვეშ)", multiline: true, max: 300 }],
+  },
   {
     title: "კონტაქტი და ფუტერი",
     fields: [

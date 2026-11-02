@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { loadMoreReviews } from "@/app/actions/reviews";
 import type { PublicReview } from "@/lib/content";
 import { ReviewCard } from "./review-card";
+import { ReviewDialog } from "./review-dialog";
 
 type Props = { initial: PublicReview[]; initialHasMore: boolean };
 
@@ -12,6 +13,7 @@ export function ReviewsList({ initial, initialHasMore }: Props) {
   const [reviews, setReviews] = useState(initial);
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [failed, setFailed] = useState(false);
+  const [opened, setOpened] = useState<PublicReview | null>(null);
   const [pending, startTransition] = useTransition();
 
   function loadMore() {
@@ -38,9 +40,10 @@ export function ReviewsList({ initial, initialHasMore }: Props) {
     <div className="flex flex-col gap-6">
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-live="polite">
         {reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
+          <ReviewCard key={review.id} review={review} onOpen={() => setOpened(review)} />
         ))}
       </ul>
+      <ReviewDialog review={opened} onClose={() => setOpened(null)} />
       {failed && (
         <p role="alert" className="text-center text-red-400">
           ვერ ჩაიტვირთა. სცადეთ თავიდან.

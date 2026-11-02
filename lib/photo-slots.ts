@@ -2,10 +2,6 @@ import type { PhotoSlot } from "@/lib/supabase/database.types";
 
 export const PHOTO_SLOTS: { slot: PhotoSlot; label: string; hint: string }[] = [
   { slot: "banner", label: "მთავარი ბანერი", hint: "ჰორიზონტალური ფოტო, საუკეთესოა 1600×900" },
-  { slot: "p1", label: "ბლოკი P1", hint: "საუკეთესოა 4:3 (მაგ. 1200×900)" },
-  { slot: "p2", label: "ბლოკი P2", hint: "საუკეთესოა 4:3 (მაგ. 1200×900)" },
-  { slot: "p3", label: "ბლოკი P3", hint: "საუკეთესოა 4:3 (მაგ. 1200×900)" },
-  { slot: "p4", label: "ბლოკი P4", hint: "საუკეთესოა 4:3 (მაგ. 1200×900)" },
   {
     slot: "og",
     label: "გაზიარების ფოტო",
@@ -21,12 +17,3 @@ export function newPhotoPath(slot: PhotoSlot): string {
 }
 
 export const PHOTO_PATH_RE = /^(banner|p[1-4]|og)-\d{10,16}\.webp$/;
-
-/** Price-list item photos: small product shots, stored next to the slot photos. */
-export const SERVICE_PHOTO_MAX_WIDTH = 480;
-
-export function newServicePhotoPath(serviceId: string): string {
-  return `svc-${serviceId}-${Date.now()}.webp`;
-}
-
-export const SERVICE_PHOTO_PATH_RE = /^svc-[0-9a-f-]{36}-\d{10,16}\.webp$/;

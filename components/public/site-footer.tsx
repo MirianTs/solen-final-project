@@ -1,8 +1,11 @@
 import { Logo } from "@/components/ui/logo";
+import type { ContactLinks } from "@/lib/contact";
+import { ContactButtons } from "./contact-buttons";
 
-type Props ={ text: string; phoneDisplay: string | null; tel: string | null; address: string };
+type Props = { text: string; links: ContactLinks; address: string };
 
-export function SiteFooter({ text, phoneDisplay, tel, address }: Props) {
+export function SiteFooter({ text, links, address }: Props) {
+  const { phoneDisplay, tel } = links;
   // Rendered statically and revalidated hourly, so the year stays current.
   const year = new Date().getFullYear();
 
@@ -12,6 +15,9 @@ export function SiteFooter({ text, phoneDisplay, tel, address }: Props) {
         <div className="flex flex-col gap-1">
           <Logo adaptive className="h-7 w-auto" />
           {text && <span>{text}</span>}
+          <div className="mt-2">
+            <ContactButtons links={links} variant="social" />
+          </div>
         </div>
         <div className="flex flex-col gap-1 md:items-end">
           {tel && phoneDisplay && (

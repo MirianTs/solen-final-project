@@ -8,7 +8,7 @@ import type { PhotoSlot, Views } from "@/lib/supabase/database.types";
 export const REVIEWS_PAGE_SIZE = 6;
 
 export type Photo = { url: string; alt: string; width: number; height: number };
-export type PriceItem = { id: string; name: string; price: string; photo: Photo | null };
+export type PriceItem = { id: string; name: string; price: string };
 export type PriceColumn = { id: string; title: string; services: PriceItem[] };
 // dateLabel is formatted on the server: not every browser ships Georgian (ka-GE) locale data.
 export type PublicReview = Views<"public_reviews"> & { dateLabel: string };
@@ -27,8 +27,8 @@ export type SiteContent = {
 // Generic fallbacks so the page still renders when a row (or the whole DB) is missing.
 const TEXT_FALLBACKS: Record<string, string> = {
   hero_slogan: "გათბობა და კონდიციონერები",
-  prices_title: "ფასები",
-  services_title: "სერვისები",
+  services_title: "სერვისები და ფასები",
+  prices_note: "ფასები საწყისია. საბოლოო ღირებულება დამოკიდებულია სამუშაოს სირთულესა და მოცულობაზე.",
   reviews_title: "შეფასებები",
   contact_title: "დაგვიკავშირდით",
   contact_text: "",
@@ -110,15 +110,7 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
       title: c.title,
       services: (services ?? [])
         .filter((s) => s.column_id === c.id)
-        .map((s) => ({
-          id: s.id,
-          name: s.name,
-          price: s.price,
-          photo:
-            s.photo_path && s.photo_width && s.photo_height
-              ? { url: photoUrl(s.photo_path), alt: s.name, width: s.photo_width, height: s.photo_height }
-              : null,
-        })),
+        .map((s) => ({ id: s.id, name: s.name, price: s.price })),
     })),
     stats: { average: Number(stats?.average ?? 0), count: Number(stats?.count ?? 0) },
     reviews: firstReviews.reviews,

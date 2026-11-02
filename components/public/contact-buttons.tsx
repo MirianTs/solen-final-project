@@ -2,9 +2,15 @@ import type { ContactLinks } from "@/lib/contact";
 import { FacebookIcon, MapPinIcon, PhoneIcon, ViberIcon, WhatsAppIcon } from "./icons";
 import { ViberLink } from "./viber-link";
 
-type Variant = "icon" | "large";
+type Variant = "icon" | "large" | "social";
 
 const styles: Record<Variant, { link: string; icon: string; list: string }> = {
+  // Viber, WhatsApp and Facebook only: mobile header row and footer.
+  social: {
+    list: "flex items-center gap-2",
+    link: "inline-flex size-10 items-center justify-center rounded-full border border-line bg-card text-fg transition-colors hover:border-accent-ink hover:text-accent-ink",
+    icon: "size-5",
+  },
   icon: {
     list: "flex items-center gap-1",
     link: "inline-flex size-11 items-center justify-center rounded-full text-fg transition-colors hover:bg-card-raised hover:text-accent-ink",
@@ -19,13 +25,14 @@ const styles: Record<Variant, { link: string; icon: string; list: string }> = {
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-/** Contact links (phone, Viber, WhatsApp, Facebook, map). Any link with an empty setting is hidden. */
+/** Contact links (phone, Viber, WhatsApp, Facebook, map; "social": the middle three). Empty settings are hidden. */
 export function ContactButtons({ links, variant }: { links: ContactLinks; variant: Variant }) {
   const s = styles[variant];
   const large = variant === "large";
+  const social = variant === "social";
 
   const items = [
-    links.tel && (
+    !social && links.tel && (
       <a href={links.tel} className={s.link} aria-label={large ? undefined : "დარეკვა"}>
         <PhoneIcon className={s.icon} />
         {large && <span>{links.phoneDisplay}</span>}
@@ -54,7 +61,7 @@ export function ContactButtons({ links, variant }: { links: ContactLinks; varian
         {large && <span>Facebook</span>}
       </a>
     ),
-    links.maps && (
+    !social && links.maps && (
       <a href={links.maps} {...external} className={s.link} aria-label={large ? undefined : "მისამართი რუკაზე"}>
         <MapPinIcon className={s.icon} />
         {large && <span>რუკაზე ნახვა</span>}

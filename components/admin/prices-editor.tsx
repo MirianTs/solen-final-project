@@ -1,25 +1,21 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import {
   createColumn,
   createService,
   deleteColumn,
   deleteService,
-  deleteServicePhoto,
   saveOrder,
-  saveServicePhoto,
   updateColumn,
   updateService,
 } from "@/app/admin/actions/prices";
-import { compressToWebp } from "@/lib/compress-image";
-import { newServicePhotoPath, SERVICE_PHOTO_MAX_WIDTH } from "@/lib/photo-slots";
-import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.types";
 import { SortableItem, SortableList } from "./sortable";
 
-type Service = Pick<Tables<"services">, "id" | "name" | "price"> & { photoUrl: string | null };
+// In the UI a price column is a "სექცია" (group on the site) and a service is a "ბარათი" (one card with a price).
+type Service = Pick<Tables<"services">, "id" | "name" | "price">;
 type Column = { id: string; title: string; services: Service[] };
 
 export function PricesEditor({ initial }: { initial: Column[] }) {
@@ -48,11 +44,15 @@ export function PricesEditor({ initial }: { initial: Column[] }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-sm text-muted">
-        რიგის შესაცვლელად გადაათრიეთ ⠿ ღილაკით (ტელეფონზე — ხანგრძლივი დაჭერით). რიგი ავტომატურად ინახება.
-      </p>
+      <div className="rounded-card border border-line bg-card p-4 text-sm leading-relaxed text-muted">
+        <p>
+          <b className="text-fg">ბარათი</b> — ერთი სერვისი და მისი ფასი (მაგ. „რადიატორის მონტაჟი“ — „60₾-დან“).{" "}
+          <b className="text-fg">სექცია</b> — ბარათების ჯგუფი. თუ მხოლოდ ერთი სექციაა, მისი სათაური საიტზე არ ჩანს.
+        </p>
+        <p className="mt-2">რიგის შესაცვლელად გადაათრიეთ ⠿ ღილაკით (ტელეფონზე — ხანგრძლივი დაჭერით). რიგი თავისით ინახება.</p>
+      </div>
 
-      {columns.length === 0 && <p className="text-muted">სვეტები ჯერ არ არის. დაამატეთ ქვემოთ.</p>}
+      {columns.length === 0 && <p className="text-muted">სექციები ჯერ არ არის. დაამატეთ ქვემოთ.</p>}
 
       <SortableList items={columns} onReorder={(next) => persistOrder(next, columns)}>
         <ul className="flex flex-col gap-5">
@@ -60,7 +60,7 @@ export function PricesEditor({ initial }: { initial: Column[] }) {
             <SortableItem
               key={column.id}
               id={column.id}
-              handleLabel={`სვეტის „${column.title}“ გადაადგილება`}
+              handleLabel={`სექციის „${column.title}“ გადაადგილება`}
               className="rounded-card border border-line bg-card"
             >
               {(handle) => (
@@ -130,14 +130,14 @@ function ColumnCard({
   function remove() {
     const n = column.services.length;
     const msg = n
-      ? `წავშალო სვეტი „${column.title}“ და მისი ${n} სერვისი?`
-      : `წავშალო სვეტი „${column.title}“?`;
+      ? `წავშალო სექცია „${column.title}“ და მისი ${n} ბარათი?`
+      : `წავშალო სექცია „${column.title}“?`;
     if (!window.confirm(msg)) return;
     startTransition(async () => {
       const result = await deleteColumn({ id: column.id });
       if (result.ok) {
         onDeleted();
-        toast.success("სვეტი წაიშალა");
+        toast.success("სექცია წაიშალა");
       } else toast.error(result.error);
     });
   }
@@ -147,7 +147,7 @@ function ColumnCard({
       <div className="flex items-center gap-2">
         {handle}
         <label className="sr-only" htmlFor={`col-${column.id}`}>
-          სვეტის სათაური
+          სექციის სათაური
         </label>
         <input
           id={`col-${column.id}`}
@@ -167,7 +167,7 @@ function ColumnCard({
         </button>
       </div>
 
-      {column.services.length > 0 && (
+      {column.services.length > 0 ? (
         <SortableList items={column.services} onReorder={onServicesReordered}>
           <ul className="flex flex-col gap-2">
             {column.services.map((s) => (
@@ -189,6 +189,8 @@ function ColumnCard({
             ))}
           </ul>
         </SortableList>
+      ) : (
+        <p className="text-sm text-muted">ამ სექციაში ბარათები ჯერ არ არის.</p>
       )}
 
       <AddServiceForm columnId={column.id} onAdded={onServiceAdded} />
@@ -217,7 +219,7 @@ function ServiceRow({
       const result = await updateService({ id: service.id, name, price });
       if (result.ok) {
         onChanged({ ...service, name: name.trim(), price: price.trim() });
-        toast.success("სერვისი შენახულია");
+        toast.success("ბარათი შენახულია");
       } else toast.error(result.error);
     });
   }
@@ -228,7 +230,7 @@ function ServiceRow({
       const result = await deleteService({ id: service.id });
       if (result.ok) {
         onDeleted();
-        toast.success("სერვისი წაიშალა");
+        toast.success("ბარათი წაიშალა");
       } else toast.error(result.error);
     });
   }
@@ -238,7 +240,6 @@ function ServiceRow({
   return (
     <div className="flex items-start gap-1 p-2">
       {handle}
-      <ServicePhoto service={service} onChanged={onChanged} />
       {/* Phone: name on its own row, then price + buttons. Wider screens: one row. */}
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
         <input
@@ -259,7 +260,7 @@ function ServiceRow({
           className="admin-input w-auto min-w-0 flex-1 sm:w-36 sm:flex-none"
         />
         {dirty && (
-          <button type="button" onClick={save} disabled={pending} className="admin-btn-ghost min-h-12">
+          <button type="button" onClick={save} disabled={pending} className="admin-btn-primary min-h-12">
             შენახვა
           </button>
         )}
@@ -279,142 +280,60 @@ function ServiceRow({
   );
 }
 
-const PHOTO_ACCEPT = "image/jpeg,image/png,image/webp,image/heic,image/heif";
-
-/** Optional small photo of a price item (e.g. a boiler model): click to upload or replace. */
-function ServicePhoto({ service, onChanged }: { service: Service; onChanged: (s: Service) => void }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [busy, setBusy] = useState(false);
-  const inputId = `svc-photo-${service.id}`;
-
-  async function onFile(file: File | undefined) {
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      toast.error("აირჩიეთ სურათის ფაილი (JPG, PNG, WebP).");
-      return;
-    }
-    const supabase = createSupabaseBrowserClient();
-    let uploadedPath: string | null = null;
-    setBusy(true);
-    try {
-      const { blob, width, height } = await compressToWebp(file, SERVICE_PHOTO_MAX_WIDTH);
-      const path = newServicePhotoPath(service.id);
-      const { error } = await supabase.storage
-        .from("photos")
-        .upload(path, blob, { contentType: "image/webp", cacheControl: "31536000", upsert: false });
-      if (error) throw error;
-      uploadedPath = path;
-
-      const result = await saveServicePhoto({ id: service.id, path, width, height });
-      if (!result.ok) {
-        await supabase.storage.from("photos").remove([path]);
-        toast.error(result.error);
-        return;
-      }
-      onChanged({ ...service, photoUrl: result.data });
-      toast.success(`„${service.name}“ — ფოტო შენახულია`);
-    } catch (error) {
-      if (uploadedPath) await supabase.storage.from("photos").remove([uploadedPath]);
-      const message = error instanceof Error ? error.message : "";
-      toast.error(
-        message === "WEBP_UNSUPPORTED"
-          ? "ეს ბრაუზერი WebP-ს ვერ ქმნის. სცადეთ Chrome-ით."
-          : "ფოტოს ატვირთვა ვერ მოხერხდა. სცადეთ თავიდან.",
-      );
-    } finally {
-      setBusy(false);
-      if (inputRef.current) inputRef.current.value = "";
-    }
-  }
-
-  async function onRemove() {
-    if (!window.confirm(`წავშალო „${service.name}“-ის ფოტო?`)) return;
-    setBusy(true);
-    const result = await deleteServicePhoto({ id: service.id });
-    setBusy(false);
-    if (result.ok) {
-      onChanged({ ...service, photoUrl: null });
-      toast.success("ფოტო წაიშალა");
-    } else toast.error(result.error);
-  }
-
-  return (
-    <div className="relative shrink-0">
-      <input
-        ref={inputRef}
-        id={inputId}
-        type="file"
-        accept={PHOTO_ACCEPT}
-        className="sr-only"
-        disabled={busy}
-        onChange={(e) => void onFile(e.target.files?.[0])}
-      />
-      <label
-        htmlFor={inputId}
-        title={service.photoUrl ? "ფოტოს შეცვლა" : "ფოტოს დამატება"}
-        className={`flex size-12 cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-line bg-white text-xl text-neutral-400 transition-colors hover:border-accent ${busy ? "pointer-events-none opacity-50" : ""}`}
-      >
-        {service.photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- admin preview, images are unoptimized anyway
-          <img src={service.photoUrl} alt="" className="size-full object-contain" />
-        ) : (
-          <span aria-hidden>+</span>
-        )}
-        <span className="sr-only">{service.photoUrl ? `„${service.name}“ — ფოტოს შეცვლა` : `„${service.name}“ — ფოტოს დამატება`}</span>
-      </label>
-      {service.photoUrl && !busy && (
-        <button
-          type="button"
-          onClick={() => void onRemove()}
-          aria-label={`„${service.name}“ — ფოტოს წაშლა`}
-          className="absolute -top-1.5 -right-1.5 flex size-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white"
-        >
-          ×
-        </button>
-      )}
-    </div>
-  );
-}
-
 function AddServiceForm({ columnId, onAdded }: { columnId: string; onAdded: (s: Service) => void }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [pending, startTransition] = useTransition();
+  const nameId = `new-svc-${columnId}`;
+  const priceId = `new-price-${columnId}`;
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
     startTransition(async () => {
       const result = await createService({ columnId, name, price });
       if (result.ok) {
-        onAdded({ id: result.data.id, name: result.data.name, price: result.data.price, photoUrl: null });
+        onAdded({ id: result.data.id, name: result.data.name, price: result.data.price });
         setName("");
         setPrice("");
-        toast.success("სერვისი დაემატა");
+        toast.success("ბარათი დაემატა");
       } else toast.error(result.error);
     });
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-wrap gap-2 border-t border-line pt-4">
-      <input
-        aria-label="ახალი სერვისის სახელი"
-        placeholder="ახალი სერვისი"
-        value={name}
-        maxLength={200}
-        onChange={(e) => setName(e.target.value)}
-        className="admin-input min-w-0 basis-full sm:basis-0 sm:flex-[1_1_0]"
-      />
-      <input
-        aria-label="ახალი სერვისის ფასი"
-        placeholder="ფასი, მაგ. 50 ₾"
-        value={price}
-        maxLength={100}
-        onChange={(e) => setPrice(e.target.value)}
-        className="admin-input w-auto min-w-0 flex-1 sm:w-36 sm:flex-none"
-      />
-      <button type="submit" disabled={pending || !name.trim()} className="admin-btn-ghost min-h-12 shrink-0">
-        + დამატება
-      </button>
+    <form onSubmit={submit} className="flex flex-col gap-3 rounded-2xl border border-dashed border-line p-3 sm:p-4">
+      <p className="font-semibold">+ ახალი ბარათი</p>
+      <div className="flex flex-wrap items-end gap-2">
+        <div className="flex min-w-0 basis-full flex-col gap-1 sm:basis-0 sm:flex-[1_1_0]">
+          <label htmlFor={nameId} className="text-sm text-muted">
+            სერვისის სახელი
+          </label>
+          <input
+            id={nameId}
+            placeholder="მაგ. რადიატორის მონტაჟი"
+            value={name}
+            maxLength={200}
+            onChange={(e) => setName(e.target.value)}
+            className="admin-input"
+          />
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-1 sm:w-36 sm:flex-none">
+          <label htmlFor={priceId} className="text-sm text-muted">
+            ფასი
+          </label>
+          <input
+            id={priceId}
+            placeholder="მაგ. 60₾-დან"
+            value={price}
+            maxLength={100}
+            onChange={(e) => setPrice(e.target.value)}
+            className="admin-input"
+          />
+        </div>
+        <button type="submit" disabled={pending || !name.trim()} className="admin-btn-primary min-h-12 shrink-0">
+          დამატება
+        </button>
+      </div>
     </form>
   );
 }
@@ -430,30 +349,29 @@ function AddColumnForm({ onAdded }: { onAdded: (c: Column) => void }) {
       if (result.ok) {
         onAdded({ id: result.data.id, title: result.data.title, services: [] });
         setTitle("");
-        toast.success("სვეტი დაემატა");
+        toast.success("სექცია დაემატა");
       } else toast.error(result.error);
     });
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="flex flex-col gap-2 rounded-card border border-dashed border-line p-4 sm:flex-row sm:items-center"
-    >
-      <label htmlFor="new-column" className="sr-only">
-        ახალი სვეტის სათაური
+    <form onSubmit={submit} className="flex flex-col gap-2 rounded-card border border-dashed border-line p-4">
+      <label htmlFor="new-column" className="font-semibold">
+        + ახალი სექცია
       </label>
-      <input
-        id="new-column"
-        placeholder="ახალი სვეტი, მაგ. ბოილერი"
-        value={title}
-        maxLength={100}
-        onChange={(e) => setTitle(e.target.value)}
-        className="admin-input"
-      />
-      <button type="submit" disabled={pending || !title.trim()} className="admin-btn-primary shrink-0">
-        + სვეტის დამატება
-      </button>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <input
+          id="new-column"
+          placeholder="მაგ. სანტექნიკა"
+          value={title}
+          maxLength={100}
+          onChange={(e) => setTitle(e.target.value)}
+          className="admin-input"
+        />
+        <button type="submit" disabled={pending || !title.trim()} className="admin-btn-primary shrink-0">
+          სექციის დამატება
+        </button>
+      </div>
     </form>
   );
 }
