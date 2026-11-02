@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { Logo } from "@/components/ui/logo";
 import { requireAdmin } from "@/lib/auth";
 import { signOut } from "../actions/auth";
 
@@ -15,8 +16,9 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
     <div className="flex min-h-full flex-1 flex-col">
       <header className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
-          <Link href="/admin" className="font-extrabold tracking-[0.2em] text-accent">
-            SOLEN <span className="text-xs font-semibold tracking-normal text-muted">ადმინი</span>
+          <Link href="/admin" className="flex items-center gap-2" aria-label="Solen ადმინი — მთავარი">
+            <Logo className="h-6 w-auto" />
+            <span className="text-xs font-semibold text-muted">ადმინი</span>
           </Link>
           <div className="flex items-center gap-2">
             <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">{user.email}</span>

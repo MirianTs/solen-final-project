@@ -64,6 +64,7 @@ export function buildBusinessJsonLd(content: SiteContent) {
     name: SITE_NAME,
     description: description(content),
     url,
+    logo: `${url}/brand/solen-icon-512.png`,
     ...(image && { image: image.url }),
     ...(phone && { telephone: `+${phone}` }),
     address: {

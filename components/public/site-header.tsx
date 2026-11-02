@@ -1,3 +1,4 @@
+import { Logo } from "@/components/ui/logo";
 import type { ContactLinks } from "@/lib/contact";
 import { ContactButtons } from "./contact-buttons";
 import { PhoneIcon } from "./icons";
@@ -15,8 +16,8 @@ export function SiteHeader({ links }: { links: ContactLinks }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur supports-[backdrop-filter]:bg-bg/75">
       <div className="container-site relative flex h-16 items-center justify-between gap-2 lg:h-20">
-        <a href="#top" className="text-xl font-extrabold tracking-[0.2em] text-accent-ink lg:text-2xl" aria-label="Solen — მთავარი">
-          SOLEN
+        <a href="#top" className="shrink-0" aria-label="Solen — მთავარი">
+          <Logo adaptive className="h-6 w-auto min-[400px]:h-8 lg:h-10" />
         </a>
 
         <nav aria-label="მთავარი ნავიგაცია" className="hidden md:block">
