@@ -35,6 +35,9 @@ const TEXT_FALLBACKS: Record<string, string> = {
   footer_text: "",
 };
 
+// Texts the admin may clear on purpose: a saved empty value hides the text instead of using the fallback.
+const CLEARABLE_TEXTS = new Set(["hero_slogan"]);
+
 export function photoUrl(path: string): string {
   const base = publicEnv().NEXT_PUBLIC_SUPABASE_URL.replace(/\/$/, "");
   const encoded = path.split("/").map(encodeURIComponent).join("/");
@@ -103,7 +106,7 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
 
   return {
     settings: toRecord(settings),
-    texts: { ...TEXT_FALLBACKS, ...Object.fromEntries(Object.entries(toRecord(texts)).filter(([, v]) => v.trim())) },
+    texts: { ...TEXT_FALLBACKS, ...Object.fromEntries(Object.entries(toRecord(texts)).filter(([k, v]) => v.trim() || CLEARABLE_TEXTS.has(k))) },
     photos: photoMap,
     columns: (columns ?? []).map((c) => ({
       id: c.id,

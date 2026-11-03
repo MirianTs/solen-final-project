@@ -37,12 +37,19 @@ export function Hero({ slogan, banner, tel, stats }: Props) {
         <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/55 to-black/5" />
 
         <div className="flex min-h-[23rem] flex-col justify-end gap-6 p-5 sm:min-h-[26rem] sm:p-10 md:min-h-[32rem] md:p-14 lg:min-h-[36rem] 2xl:min-h-[40rem]">
-          <h1
-            id="hero-title"
-            className="anim-rise max-w-4xl text-[1.75rem] leading-[1.18] font-extrabold text-balance [overflow-wrap:anywhere] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl 2xl:text-7xl"
-          >
-            {slogan}
-          </h1>
+          {slogan.trim() ? (
+            <h1
+              id="hero-title"
+              className="anim-rise max-w-4xl text-[1.75rem] leading-[1.18] font-extrabold text-balance [overflow-wrap:anywhere] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl 2xl:text-7xl"
+            >
+              {slogan}
+            </h1>
+          ) : (
+            // Slogan cleared in the admin: nothing on screen, but the page keeps its h1.
+            <h1 id="hero-title" className="sr-only">
+              Solen — გათბობა და კონდიციონერები
+            </h1>
+          )}
           {tel && (
             <a
               href={tel}
