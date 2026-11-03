@@ -11,6 +11,8 @@ export type KVField = {
   max?: number;
   type?: "text" | "tel" | "url";
   placeholder?: string;
+  /** Key of a "1"/"0" value shown as an on/off switch next to the label. */
+  visibleKey?: string;
 };
 
 type Props = {
@@ -52,17 +54,41 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
           {group.fields.map((f) => {
             const value = values[f.key] ?? "";
             const id = `field-${f.key}`;
+            const visibleKey = f.visibleKey;
+            const visible = visibleKey ? values[visibleKey] !== "0" : true;
             return (
               <div key={f.key} className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between gap-3">
+                <div className="flex items-center justify-between gap-3">
                   <label htmlFor={id} className="text-sm font-semibold">
                     {f.label}
                   </label>
-                  {f.max && (
-                    <span className={`text-xs ${value.length > f.max ? "text-red-400" : "text-muted"}`}>
-                      {value.length}/{f.max}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-4">
+                    {f.max && (
+                      <span className={`text-xs ${value.length > f.max ? "text-red-400" : "text-muted"}`}>
+                        {value.length}/{f.max}
+                      </span>
+                    )}
+                    {visibleKey && (
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={visible}
+                        aria-label={`${f.label} — საიტზე ჩვენება`}
+                        onClick={() => setValues((v) => ({ ...v, [visibleKey]: visible ? "0" : "1" }))}
+                        className="flex items-center gap-2 rounded-full text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                      >
+                        <span className={visible ? "text-accent" : "text-muted"}>{visible ? "ჩანს" : "დამალულია"}</span>
+                        <span
+                          aria-hidden
+                          className={`relative h-6 w-11 rounded-full transition-colors ${visible ? "bg-accent" : "bg-line"}`}
+                        >
+                          <span
+                            className={`absolute top-0.5 left-0.5 size-5 rounded-full bg-black transition-transform motion-reduce:transition-none ${visible ? "translate-x-5" : ""}`}
+                          />
+                        </span>
+                      </button>
+                    )}
+                  </div>
                 </div>
                 {f.multiline ? (
                   <textarea

@@ -8,12 +8,15 @@ import { plainText } from "@/lib/sanitize";
 
 const textsSchema = z.object(
   Object.fromEntries(
-    TEXT_FIELDS.map((f) => [
-      f.key,
-      z
-        .string()
-        .transform(plainText)
-        .pipe(z.string().max(f.max, `„${f.fullLabel}“: მაქსიმუმ ${f.max} სიმბოლო`)),
+    TEXT_FIELDS.flatMap((f) => [
+      [
+        f.key,
+        z
+          .string()
+          .transform(plainText)
+          .pipe(z.string().max(f.max, `„${f.fullLabel}“: მაქსიმუმ ${f.max} სიმბოლო`)),
+      ],
+      ...(f.visibleKey ? [[f.visibleKey, z.enum(["1", "0"])]] : []),
     ]),
   ),
 );

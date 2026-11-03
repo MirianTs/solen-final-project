@@ -46,7 +46,7 @@ export default async function Home() {
       </a>
       <SiteHeader links={links} />
       <main id="main" className="flex flex-col">
-        <Hero slogan={texts.hero_slogan} banner={photos.banner} tel={links.tel} stats={content.stats} />
+        <Hero slogan={texts.hero_slogan_visible === "0" ? "" : texts.hero_slogan}banner={photos.banner} tel={links.tel} stats={content.stats} />
         <ServicesPrices title={texts.services_title} note={texts.prices_note} columns={content.columns} />
         <ReviewsSection
           title={texts.reviews_title}

@@ -1,12 +1,13 @@
 // Editable keys of the `texts` and `settings` tables with their Georgian admin labels.
 // Shared by the admin forms and the server actions (which reject unknown keys).
 
-export type TextField = { key: string; label: string; multiline: boolean; max: number };
+// visibleKey: a second `texts` key holding "1" (shown) or "0" (hidden), edited with an on/off switch.
+export type TextField = { key: string; label: string; multiline: boolean; max: number; visibleKey?: string };
 
 export const TEXT_GROUPS: { title: string; fields: TextField[] }[] = [
   {
     title: "მთავარი ბანერი",
-    fields: [{ key: "hero_slogan", label: "სლოგანი", multiline: true, max: 200 }],
+    fields: [{ key: "hero_slogan", label: "სლოგანი", multiline: true, max: 200, visibleKey: "hero_slogan_visible" }],
   },
   {
     title: "სექციების სათაურები",
