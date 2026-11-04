@@ -265,7 +265,7 @@ Moving **solen.ge** from the old Vercel project to this one:
 - [ ] Old Vercel project → **Settings → Domains** → remove `solen.ge` and `www.solen.ge`.
 - [ ] This project → **Settings → Domains** → add `solen.ge` and `www.solen.ge`
       (make `solen.ge` primary; `www` redirects to it).
-- [ ] **domeinebi.ge** DNS:
+- [ ] **domenebi.ge** DNS:
   - update the **`www` CNAME** to the exact value Vercel shows for `www.solen.ge`;
   - **keep** the **A record `76.76.21.21`** for `solen.ge`;
   - **keep** the **`google-site-verification` TXT** record.
