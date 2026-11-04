@@ -2,10 +2,14 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { changePassword, type PasswordState } from "@/app/admin/actions/account";
+import { changePassword, resetPassword, type PasswordState } from "@/app/admin/actions/account";
 
-export function PasswordForm({ email }: { email: string }) {
-  const [state, action, pending] = useActionState<PasswordState, FormData>(changePassword, {});
+/** "change" asks for the current password; "reset" is for the session opened by a reset link. */
+export function PasswordForm({ email, mode = "change" }: { email: string; mode?: "change" | "reset" }) {
+  const [state, action, pending] = useActionState<PasswordState, FormData>(
+    mode === "reset" ? resetPassword : changePassword,
+    {},
+  );
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -26,10 +30,12 @@ export function PasswordForm({ email }: { email: string }) {
         </p>
       )}
 
-      <label className="flex flex-col gap-1.5">
-        <span className="text-sm font-semibold">მიმდინარე პაროლი</span>
-        <input name="current" type="password" autoComplete="current-password" required className="admin-input" />
-      </label>
+      {mode === "change" && (
+        <label className="flex flex-col gap-1.5">
+          <span className="text-sm font-semibold">მიმდინარე პაროლი</span>
+          <input name="current" type="password" autoComplete="current-password" required className="admin-input" />
+        </label>
+      )}
 
       <label className="flex flex-col gap-1.5">
         <span className="text-sm font-semibold">ახალი პაროლი</span>
@@ -53,7 +59,7 @@ export function PasswordForm({ email }: { email: string }) {
       </label>
 
       <button type="submit" disabled={pending} className="admin-btn-primary mt-2">
-        {pending ? "მიმდინარეობს…" : "პაროლის შეცვლა"}
+        {pending ? "მიმდინარეობს…" : mode === "reset" ? "პაროლის შენახვა" : "პაროლის შეცვლა"}
       </button>
     </form>
   );

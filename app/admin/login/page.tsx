@@ -11,7 +11,12 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
   if (admin?.isAdmin) redirect("/admin");
 
   const { error } = await searchParams;
-  const notice = error === "forbidden" || admin ? "ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს." : undefined;
+  const notice =
+    error === "forbidden" || admin
+      ? "ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს."
+      : error === "link"
+        ? "ბმული არასწორია ან ვადა გაუვიდა. მოითხოვეთ ახალი „პაროლი დაგავიწყდა?“-დან."
+        : undefined;
 
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-12">
