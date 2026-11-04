@@ -3,14 +3,14 @@
 import { THEME_STORAGE_KEY, type Theme } from "@/lib/theme";
 import { MoonIcon, SunIcon } from "./icons";
 
-/** Switches the public page between light and dark and remembers the choice. */
+/** Switches the public page between light and dark; the choice lasts for this tab only (next visit is dark). */
 export function ThemeToggle() {
   function toggle() {
     const root = document.documentElement;
     const next: Theme = root.dataset.theme === "light" ? "dark" : "light";
     root.dataset.theme = next;
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
+      sessionStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // Storage blocked (private mode): the switch still works for this visit.
     }

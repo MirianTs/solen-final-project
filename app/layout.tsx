@@ -19,10 +19,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f6f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
+  // The site always opens dark (lib/theme.ts), so the browser bar is dark too.
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -3,7 +3,8 @@ export const THEME_STORAGE_KEY = "solen-theme";
 export type Theme = "light" | "dark";
 
 /**
- * Inline script for the public page. Runs before the first paint and sets <html data-theme>:
- * the visitor's saved choice, otherwise the system setting (followed live until they pick one).
+ * Inline script for the public page. Runs before the first paint and sets <html data-theme>.
+ * Every visit starts dark; a switch to light is kept only for this tab (sessionStorage).
+ * Also drops the old localStorage choice, so earlier visitors start dark too.
  */
-export const THEME_SCRIPT = `(function(){var d=document.documentElement,m=matchMedia("(prefers-color-scheme: light)");function a(){var s=null;try{s=localStorage.getItem("${THEME_STORAGE_KEY}")}catch(e){}d.dataset.theme=s==="light"||s==="dark"?s:m.matches?"light":"dark"}a();m.addEventListener("change",a)})()`;
+export const THEME_SCRIPT = `(function(){var s=null;try{s=sessionStorage.getItem("${THEME_STORAGE_KEY}");localStorage.removeItem("${THEME_STORAGE_KEY}")}catch(e){}document.documentElement.dataset.theme=s==="light"?"light":"dark"})()`;
