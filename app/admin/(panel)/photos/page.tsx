@@ -16,7 +16,7 @@ export default async function PhotosPage() {
     <>
       <h1 className="mb-2 text-2xl font-bold">ფოტოები</h1>
       <p className="mb-6 text-sm text-muted">
-        ფოტო ავტომატურად მცირდება (მაქს. 1600px სიგანე, WebP), ასე რომ ტელეფონის ფოტოც პირდაპირ შეგიძლიათ ატვირთოთ.
+        ფოტო ავტომატურად მცირდება (მაქს. 1600px სიგანე, WebP; iPhone-ზე JPEG), ასე რომ ტელეფონის ფოტოც პირდაპირ შეგიძლიათ ატვირთოთ.
       </p>
       <div className="grid gap-4 md:grid-cols-2">
         {PHOTO_SLOTS.map(({ slot, label, hint }) => {

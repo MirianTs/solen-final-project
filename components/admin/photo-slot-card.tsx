@@ -3,7 +3,7 @@
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { deletePhoto, saveAlt, savePhoto } from "@/app/admin/actions/photos";
-import { compressToWebp } from "@/lib/compress-image";
+import { compressImage } from "@/lib/compress-image";
 import { newPhotoPath } from "@/lib/photo-slots";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { PhotoSlot } from "@/lib/supabase/database.types";
@@ -45,13 +45,13 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
     let uploadedPath: string | null = null;
     try {
       setStatus("იკუმშება…");
-      const { blob, width, height } = await compressToWebp(file);
+      const { blob, width, height, type, ext } = await compressImage(file);
 
       setStatus("იტვირთება…");
-      const path = newPhotoPath(slot);
+      const path = newPhotoPath(slot, ext);
       const { error: uploadError } = await supabase.storage
         .from("photos")
-        .upload(path, blob, { contentType: "image/webp", cacheControl: "31536000", upsert: false });
+        .upload(path, blob, { contentType: type, cacheControl: "31536000", upsert: false });
       if (uploadError) throw uploadError;
       uploadedPath = path;
 
@@ -71,8 +71,8 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
       if (uploadedPath) await supabase.storage.from("photos").remove([uploadedPath]);
       const message = error instanceof Error ? error.message : "";
       toast.error(
-        message === "WEBP_UNSUPPORTED"
-          ? "ეს ბრაუზერი WebP-ს ვერ ქმნის. სცადეთ Chrome-ით."
+        message === "ENCODE_UNSUPPORTED"
+          ? "ეს ბრაუზერი ფოტოს ვერ ამუშავებს. სცადეთ სხვა ბრაუზერით."
           : "ფოტოს ატვირთვა ვერ მოხერხდა. სცადეთ თავიდან.",
       );
     } finally {

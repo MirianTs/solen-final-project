@@ -12,8 +12,8 @@ export const PHOTO_SLOTS: { slot: PhotoSlot; label: string; hint: string }[] = [
 export const PHOTO_SLOT_IDS = PHOTO_SLOTS.map((s) => s.slot) as [PhotoSlot, ...PhotoSlot[]];
 
 /** New unique object name per upload, so CDN caches never serve an old image. */
-export function newPhotoPath(slot: PhotoSlot): string {
-  return `${slot}-${Date.now()}.webp`;
+export function newPhotoPath(slot: PhotoSlot, ext: "webp" | "jpg" = "webp"): string {
+  return `${slot}-${Date.now()}.${ext}`;
 }
 
-export const PHOTO_PATH_RE = /^(banner|p[1-4]|og)-\d{10,16}\.webp$/;
+export const PHOTO_PATH_RE = /^(banner|p[1-4]|og)-\d{10,16}\.(webp|jpg)$/;
