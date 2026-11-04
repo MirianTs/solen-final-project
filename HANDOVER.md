@@ -24,7 +24,7 @@
 
 ---
 
-## 2. დომეინის მიბმა (~20 წთ + ლოდინი)
+## 2. დომეინის მიბმა — ✅ გაკეთდა 2026-11-04 (ძველი საიტი უკვე გათიშული იყო; DNS: domenebi.ge → NS-ის მართვა → Premium DNS)
 
 1. [ ] **ძველი Vercel პროექტი** → Settings → Domains → წაშალე `solen.ge` და `www.solen.ge`.
 2. [ ] **ახალი პროექტი** `solen-v2-website-setup` → Settings → Domains → დაამატე `solen.ge` და `www.solen.ge`.
@@ -38,7 +38,7 @@
 
 ---
 
-## 3. ცვლილებები დომეინის შემდეგ (~15 წთ)
+## 3. ცვლილებები დომეინის შემდეგ — ✅ გაკეთდა 2026-11-04 (Vercel env, Supabase URL-ები; Turnstile-ში solen.ge უკვე იყო)
 
 - [ ] **Vercel → Settings → Environment Variables**: `NEXT_PUBLIC_SITE_URL` = `https://solen.ge` → **Redeploy**.
 - [ ] **Supabase → Authentication → URL Configuration**:
