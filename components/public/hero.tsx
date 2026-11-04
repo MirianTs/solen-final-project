@@ -30,10 +30,6 @@ export function Hero({ slogan, banner, tel, stats }: Props) {
               sizes="(min-width: 1536px) 1376px, (min-width: 1280px) 1216px, 100vw"
               className="anim-zoom block h-auto w-full"
             />
-            {hasSlogan && (
-              // Darkens the photo under the slogan (only when the slogan sits on top of it, from sm up).
-              <div aria-hidden className="absolute inset-0 hidden bg-gradient-to-t from-black via-black/55 to-black/5 sm:block" />
-            )}
           </div>
         ) : (
           <>
@@ -49,15 +45,19 @@ export function Hero({ slogan, banner, tel, stats }: Props) {
         <div
           className={
             banner
-              ? // With a photo: under it on phones, over its bottom edge from sm up.
-                "flex flex-col gap-4 p-4 sm:absolute sm:inset-x-0 sm:bottom-0 sm:gap-6 sm:p-10 md:p-14"
+              ? // With a photo: always under it, so the yellow button never sits on a yellow banner.
+                "flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-5 lg:px-10"
               : "flex min-h-[23rem] flex-col justify-end gap-6 p-5 sm:min-h-[26rem] sm:p-10 md:min-h-[32rem] md:p-14 lg:min-h-[36rem] 2xl:min-h-[40rem]"
           }
         >
           {hasSlogan ? (
             <h1
               id="hero-title"
-              className="anim-rise max-w-4xl text-[1.75rem] leading-[1.18] font-extrabold text-balance [overflow-wrap:anywhere] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl 2xl:text-7xl"
+              className={`anim-rise max-w-4xl leading-[1.18] font-extrabold text-balance [overflow-wrap:anywhere] ${
+                banner
+                  ? "text-2xl sm:text-3xl lg:text-4xl"
+                  : "text-[1.75rem] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl 2xl:text-7xl"
+              }`}
             >
               {slogan}
             </h1>
@@ -70,7 +70,7 @@ export function Hero({ slogan, banner, tel, stats }: Props) {
           {tel && (
             <a
               href={tel}
-              className={`anim-fade-up anim-delay-1 anim-ring inline-flex min-h-13 items-center gap-2 rounded-full ${banner ? "w-full justify-center sm:w-fit" : "w-fit"} bg-accent px-8 text-lg font-bold text-black transition hover:scale-[1.03] hover:bg-accent-hover hover:shadow-[0_0_32px_rgb(255_214_10/0.35)] motion-reduce:hover:scale-100 lg:min-h-14 lg:px-10 lg:text-xl`}
+              className={`anim-fade-up anim-delay-1 anim-ring inline-flex min-h-13 items-center gap-2 rounded-full ${banner ? "w-full justify-center sm:w-fit sm:shrink-0" : "w-fit"} bg-accent px-8 text-lg font-bold text-black transition hover:scale-[1.03] hover:bg-accent-hover hover:shadow-[0_0_32px_rgb(255_214_10/0.35)] motion-reduce:hover:scale-100 lg:min-h-14 lg:px-10 lg:text-xl`}
             >
               <PhoneIcon className="size-5" />
               დარეკე
