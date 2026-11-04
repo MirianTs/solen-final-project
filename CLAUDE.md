@@ -32,7 +32,8 @@ One public page (`/`) + an admin panel (`/admin`). All content comes from Supaba
 
 ## Security model
 - RLS on every table. Content tables: public SELECT, writes only for `is_admin()`.
-- `reviews` base table has no anon policy; public reads go through the `public_reviews` / `review_stats` views.
+- `reviews`: anon may read approved rows only (RLS) and only safe columns (column grants, no `device_hash`/`ip_hash`).
+  Public reads go through the `security_invoker` views `public_reviews` / `review_stats`.
 - Every admin page and server action re-checks the user AND `is_admin()` — never rely on `proxy.ts` alone.
 - Every mutation: check admin → zod validate → write → `revalidatePath('/')`.
 

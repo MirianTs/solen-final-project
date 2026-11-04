@@ -103,14 +103,15 @@ in this order (each is safe to re-run):
 2. `migrations/20261031000002_admins_rls_views.sql` — `admins`, `is_admin()`, grants, RLS, `public_reviews` / `review_stats`
 3. `migrations/20261031000003_storage.sql` — public `photos` bucket + admin-only write policies
 4. `migrations/20261101000001_service_photos.sql` — optional photo per price item (product cards)
-5. `seed.sql` — starter content: texts and prices from the old solen.ge (skip this when restoring a backup)
-6. `verify_rls.sql` — self-test; must end with `ALL RLS CHECKS PASSED` (rolls back, changes nothing)
+5. `migrations/20261103000001_services_only.sql` — one "services and prices" section
+6. `migrations/20261104000001_invoker_review_views.sql` — review views run as the caller (`security_invoker`)
+7. `seed.sql` — starter content: texts and prices from the old solen.ge (skip this when restoring a backup)
+8. `verify_rls.sql` — self-test; must end with `ALL RLS CHECKS PASSED` (rolls back, changes nothing)
 
-The editor will warn that `public_reviews` and `review_stats` are security-definer views. That is intended:
-anon reads approved reviews through them without any access to the `reviews` table or its hashes.
-
-Security model: RLS on every table; everyone may read content tables; only `is_admin()` may write;
-the `reviews` table has no anon policy at all — new reviews are inserted only by the server action with the service-role key.
+Security model: RLS on every table; everyone may read content tables; only `is_admin()` may write.
+`reviews`: anon may SELECT only approved rows (RLS) and only the safe columns (column grants — `device_hash` and
+`ip_hash` are not granted). `public_reviews` / `review_stats` are `security_invoker` views on top of that.
+New reviews are inserted only by the server action with the service-role key.
 
 ---
 

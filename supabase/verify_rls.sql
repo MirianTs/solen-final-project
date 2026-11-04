@@ -8,8 +8,9 @@ do $$
 declare
   n int;
 begin
-  -- One approved review to read through the public view (rolled back with everything else).
-  insert into public.reviews (rating, name, status) values (5, 'rls-test', 'approved');
+  -- One approved and one pending review (rolled back with everything else).
+  insert into public.reviews (rating, name, status, device_hash, ip_hash)
+    values (5, 'rls-test', 'approved', 'd', 'i'), (1, 'rls-pending', 'pending', 'd', 'i');
 
   -- ---------------- anon ----------------
   perform set_config('role', 'anon', true);
@@ -19,13 +20,24 @@ begin
   if n = 0 then raise exception 'FAIL: anon cannot read settings'; end if;
 
   select count(*) into n from public.public_reviews;
-  if n = 0 then raise exception 'FAIL: anon cannot read public_reviews'; end if;
+  if n <> 1 then raise exception 'FAIL: anon should see exactly the 1 approved review, saw %', n; end if;
 
-  perform * from public.review_stats;
+  select count into n from public.review_stats;
+  if n <> 1 then raise exception 'FAIL: review_stats should count 1 approved review, counted %', n; end if;
+
+  -- Base table: anon sees approved rows only, and never the hashes.
+  select count(*) into n from public.reviews;
+  if n <> 1 then raise exception 'FAIL: anon sees % reviews rows (pending must be hidden)', n; end if;
 
   begin
-    perform count(*) from public.reviews;
-    raise exception 'FAIL: anon can read reviews base table';
+    perform device_hash from public.reviews;
+    raise exception 'FAIL: anon can read reviews.device_hash';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform ip_hash from public.reviews;
+    raise exception 'FAIL: anon can read reviews.ip_hash';
   exception when insufficient_privilege then null;
   end;
 
