@@ -46,6 +46,20 @@
   - Redirect URLs: დაამატე `https://solen.ge/**` და `https://www.solen.ge/**` (vercel.app-ის ძველი დატოვე).
 - [ ] **Cloudflare → Turnstile** → widget `solen.ge` → hostnames: `solen.ge` და `www.solen.ge` უკვე უნდა იყოს — შეამოწმე.
 
+### 3ა. მეილი „პაროლი დაგავიწყდა?“-სთვის (Resend, უფასო, ~20 წთ + ლოდინი)
+
+ამის გარეშე აღდგენის მეილი მფლობელს არ მივა (Supabase-ის ჩაშენებული მეილი მხოლოდ ორგანიზაციის წევრებს უგზავნის).
+
+- [ ] **resend.com** → ანგარიში Solen-ის Gmail-ით → **Domains → Add domain** → `solen.ge`.
+- [ ] **domeinebi.ge → DNS**: ჩაწერე ის ჩანაწერები, რასაც Resend აჩვენებს (TXT — SPF და DKIM, MX — `send` ქვედომეინზე).
+      არსებულ MX-ს და `google-site-verification`-ს **არ შეეხო**. → Resend-ში **Verify** → *Verified*.
+- [ ] Resend → **API Keys → Create** (Sending access, მხოლოდ `solen.ge`) — გასაღები დააკოპირე, **არსად ჩატში არ ჩასვა**.
+- [ ] **Supabase → Authentication → Emails → SMTP Settings** → Enable custom SMTP:
+      Sender `noreply@solen.ge`, სახელი `Solen`, host `smtp.resend.com`, port `465`, username `resend`, password = API key → Save.
+- [ ] **Emails → Templates → Reset password** → ბმული შეცვალე ამით (ნებისმიერ მოწყობილობაზე რომ იმუშაოს):
+      `{{ .SiteURL }}/admin/auth/confirm?token_hash={{ .TokenHash }}&type=recovery`
+- [ ] შემოწმება: `solen.ge/admin/login` → „პაროლი დაგავიწყდა?“ → შენი მეილი → ბმული ტელეფონზე გახსენი → ახალი პაროლი → შესვლა.
+
 ---
 
 ## 4. შემოწმება ცოცხალზე (~15 წთ, ტელეფონზეც და კომპიუტერზეც)
@@ -76,8 +90,8 @@
 
 ## 6. გადაცემა მფლობელს
 
-- [ ] **ადმინის ანგარიში**: მფლობელს საკუთარი შესვლა შეუქმენი (Supabase → Authentication → Users → Add user → Auto Confirm,
-      მერე SQL `insert into public.admins ...` — README → „Admin user“). შენი ადმინიც დარჩეს.
+- [x] **ადმინის ანგარიში** მფლობელს უკვე აქვს (2026-11-04, დროებითი პაროლით). გადაცემისას: შევიდეს და ადმინში
+      **„პაროლი“** ჩანართიდან საკუთარი პაროლი დააყენოს.
 - [ ] **ადმინის მოკლე სწავლება** (10 წთ): ტექსტები, სლოგანის ჩართვა/გამორთვა, ფასები (გადათრევით რიგი), ფოტოების ატვირთვა,
       კონტაქტები, **შეფასებები** — ახალი „მოლოდინშია“ და საიტზე მხოლოდ დადასტურების შემდეგ ჩანს.
 - [ ] გადაეცი ფურცელზე/პაროლების მენეჯერში (**არა ჩატში/Viber-ში**):
