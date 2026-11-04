@@ -19,7 +19,7 @@
 
 - [ ] **domenebi.ge**-ზე შესვლა (ან ის თვითონ შევიდეს შენთან ერთად) — DNS ჩანაწერების შესაცვლელად.
 - [ ] **ძველი საიტის Vercel ანგარიში** — იქიდან `solen.ge` უნდა მოიხსნას. თუ ძველი საიტი სხვა დეველოპერისაა, მას უნდა სთხოვოთ დომეინის მოხსნა (ან მფლობელმა წინასწარ დაურეკოს).
-- [ ] **Google Search Console** — ვისზეა `solen.ge`? (DNS-ში `google-site-verification` TXT არის — ესე იგი ვიღაცას დადასტურებული აქვს). სასურველია მფლობელის/Solen-ის Gmail დაემატოს Owner-ად.
+- [x] **Google Search Console** — Solen-ის Gmail Owner-ია (2026-11-04). ძველი TXT სხვისია — ვისზეა `solen.ge`? (DNS-ში `google-site-verification` TXT არის — ესე იგი ვიღაცას დადასტურებული აქვს). სასურველია მფლობელის/Solen-ის Gmail დაემატოს Owner-ად.
 - [ ] საბოლოო **შიგთავსი**: ტელეფონი, მისამართი/ზონა, ფასები, ტექსტები, ფოტოები (ბანერი + **og** ფოტო, რაც ფეისბუქზე გაზიარებისას ჩანს).
 
 ---
@@ -62,7 +62,7 @@
 
 ## 5. Google (~10 წთ)
 
-- [ ] **Search Console** → `solen.ge` → Sitemaps → `https://solen.ge/sitemap.xml` გაგზავნე;
+- [x] (2026-11-04, Solen-ის Gmail-ზე Domain property, დადასტურებული) **Search Console** → `solen.ge` → Sitemaps → `https://solen.ge/sitemap.xml` გაგზავნე;
       URL Inspection → `https://solen.ge/` → **Request indexing**.
 - [ ] **Business Profile** (Solen-ის Gmail, business.google.com) — მფლობელთან ერთად:
   1. Gmail-ის პაროლი შეცვალოს, **თავისი ნომერი** ჩაწეროს აღდგენაში და 2FA-ში (ყვითელი „!“ მოგვარდება).
