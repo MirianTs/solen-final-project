@@ -11,33 +11,50 @@ type Props = {
 };
 
 export function Hero({ slogan, banner, tel, stats }: Props) {
+  const hasSlogan = Boolean(slogan.trim());
+
   return (
     <section id="top" aria-labelledby="hero-title" className="container-site pt-3 md:pt-8">
       <div className="theme-dark relative isolate overflow-hidden rounded-card border border-line bg-card">
         {banner ? (
-          <Image
-            src={banner.url}
-            alt={banner.alt}
-            width={banner.width}
-            height={banner.height}
-            preload
-            loading="eager"
-            fetchPriority="high"
-            sizes="(min-width: 1536px) 1376px, (min-width: 1280px) 1216px, 100vw"
-            className="anim-zoom absolute inset-0 -z-10 size-full object-cover"
-          />
-        ) : (
-          // No photo yet: a slowly drifting yellow glow keeps the hero alive.
-          <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-            <div className="anim-glow absolute -top-1/3 -right-1/4 aspect-square w-[85%] rounded-full bg-accent/25 blur-3xl md:w-[60%]" />
-            <div className="anim-glow absolute -bottom-1/2 -left-1/4 aspect-square w-[60%] rounded-full bg-accent-hover/10 blur-3xl [animation-direction:alternate-reverse]" />
+          // Shown whole at its own aspect ratio on every screen: banners often carry text, so never crop them.
+          <div className="relative overflow-hidden">
+            <Image
+              src={banner.url}
+              alt={banner.alt}
+              width={banner.width}
+              height={banner.height}
+              preload
+              loading="eager"
+              fetchPriority="high"
+              sizes="(min-width: 1536px) 1376px, (min-width: 1280px) 1216px, 100vw"
+              className="anim-zoom block h-auto w-full"
+            />
+            {hasSlogan && (
+              // Darkens the photo under the slogan (only when the slogan sits on top of it, from sm up).
+              <div aria-hidden className="absolute inset-0 hidden bg-gradient-to-t from-black via-black/55 to-black/5 sm:block" />
+            )}
           </div>
+        ) : (
+          <>
+            {/* No photo yet: a slowly drifting yellow glow keeps the hero alive. */}
+            <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+              <div className="anim-glow absolute -top-1/3 -right-1/4 aspect-square w-[85%] rounded-full bg-accent/25 blur-3xl md:w-[60%]" />
+              <div className="anim-glow absolute -bottom-1/2 -left-1/4 aspect-square w-[60%] rounded-full bg-accent-hover/10 blur-3xl [animation-direction:alternate-reverse]" />
+            </div>
+            <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/55 to-black/5" />
+          </>
         )}
-        {/* Darkens the photo so the slogan stays readable. */}
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black via-black/55 to-black/5" />
 
-        <div className="flex min-h-[23rem] flex-col justify-end gap-6 p-5 sm:min-h-[26rem] sm:p-10 md:min-h-[32rem] md:p-14 lg:min-h-[36rem] 2xl:min-h-[40rem]">
-          {slogan.trim() ? (
+        <div
+          className={
+            banner
+              ? // With a photo: under it on phones, over its bottom edge from sm up.
+                "flex flex-col gap-4 p-4 sm:absolute sm:inset-x-0 sm:bottom-0 sm:gap-6 sm:p-10 md:p-14"
+              : "flex min-h-[23rem] flex-col justify-end gap-6 p-5 sm:min-h-[26rem] sm:p-10 md:min-h-[32rem] md:p-14 lg:min-h-[36rem] 2xl:min-h-[40rem]"
+          }
+        >
+          {hasSlogan ? (
             <h1
               id="hero-title"
               className="anim-rise max-w-4xl text-[1.75rem] leading-[1.18] font-extrabold text-balance [overflow-wrap:anywhere] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl 2xl:text-7xl"
@@ -53,7 +70,7 @@ export function Hero({ slogan, banner, tel, stats }: Props) {
           {tel && (
             <a
               href={tel}
-              className="anim-fade-up anim-delay-1 anim-ring inline-flex min-h-13 w-fit items-center gap-2 rounded-full bg-accent px-8 text-lg font-bold text-black transition hover:scale-[1.03] hover:bg-accent-hover hover:shadow-[0_0_32px_rgb(255_214_10/0.35)] motion-reduce:hover:scale-100 lg:min-h-14 lg:px-10 lg:text-xl"
+              className={`anim-fade-up anim-delay-1 anim-ring inline-flex min-h-13 items-center gap-2 rounded-full ${banner ? "w-full justify-center sm:w-fit" : "w-fit"} bg-accent px-8 text-lg font-bold text-black transition hover:scale-[1.03] hover:bg-accent-hover hover:shadow-[0_0_32px_rgb(255_214_10/0.35)] motion-reduce:hover:scale-100 lg:min-h-14 lg:px-10 lg:text-xl`}
             >
               <PhoneIcon className="size-5" />
               დარეკე
