@@ -2,9 +2,6 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { publicEnv } from "@/lib/env";
 
-/** Admin routes reachable without a session: login and the password reset flow. */
-const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin/forgot", "/admin/auth/confirm"]);
-
 /**
  * Refreshes the Supabase session cookie and keeps signed-out users out of /admin.
  * This is only the first line of defence: every admin page and server action
@@ -34,9 +31,9 @@ export async function proxy(request: NextRequest) {
   const signedIn = Boolean(data?.claims?.sub);
 
   const { pathname } = request.nextUrl;
-  const isPublic = PUBLIC_ADMIN_PATHS.has(pathname);
+  const isLogin = pathname === "/admin/login";
 
-  if (!signedIn && !isPublic) {
+  if (!signedIn && !isLogin) {
     return redirectKeepingCookies(request, response, "/admin/login");
   }
   // Signed-in admins visiting /admin/login are sent on by the login page itself (it checks is_admin()).

@@ -135,16 +135,15 @@ The admin panel is at `/admin` (email + password, Supabase Auth). There is no pu
 
 To remove an admin: `delete from public.admins where user_id = (select id from auth.users where email = '...');`
 
-**Passwords.** Signed-in admins change their password at `/admin/account` («პაროლი»). A forgotten password is
-reset from the login page («პაროლი დაგავიწყდა?» → `/admin/forgot`): Supabase emails a link to
-`/admin/auth/confirm`, which signs the user in and opens `/admin/reset`. Needs:
-- **Authentication → Emails → SMTP Settings**: a custom SMTP (e.g. the Solen Gmail with an App Password:
-  host `smtp.gmail.com`, port `465`). Without it Supabase only emails members of the Supabase organization,
-  max ~2 per hour.
-- Recommended — **Emails → Templates → Reset password**: link
-  `{{ .SiteURL }}/admin/auth/confirm?token_hash={{ .TokenHash }}&type=recovery`, so the link works on any device.
-  With the default template the link only works in the browser where the reset was requested.
-- Redirect URLs must include `<site>/**` (see *Supabase Auth URLs*).
+**Passwords.** Signed-in admins change their password at `/admin/account` («პაროლი»). There is no
+"forgot password" email (no SMTP is set up). A forgotten password is reset by hand in the **SQL Editor**
+(type the temporary password there yourself, then the admin changes it at `/admin/account`):
+
+```sql
+update auth.users
+set encrypted_password = extensions.crypt('TEMPORARY-PASSWORD', extensions.gen_salt('bf'))
+where email = 'admin@example.com';
+```
 
 Security: `proxy.ts` refreshes the session and redirects signed-out users to `/admin/login`, but every admin
 page and server action also re-checks the user **and** `is_admin()` on the server.

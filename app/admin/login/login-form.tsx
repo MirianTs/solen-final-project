@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { signIn, type SignInState } from "../actions/auth";
 
@@ -36,9 +35,6 @@ export function LoginForm({ notice }: { notice?: string }) {
       <button type="submit" disabled={pending} className="admin-btn-primary mt-2">
         {pending ? "მიმდინარეობს…" : "შესვლა"}
       </button>
-      <Link href="/admin/forgot" className="self-center text-sm text-muted underline-offset-4 hover:text-fg hover:underline">
-        პაროლი დაგავიწყდა?
-      </Link>
     </form>
   );
 }
