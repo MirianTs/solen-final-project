@@ -36,6 +36,7 @@
 - 2026-11-04 (NucBox_M8): Google Search Console — Solen-ის Gmail-ზე Domain property `solen.ge` (DNS TXT-ით დადასტურდა; root TXT-ში ახლა 2 google-site-verification მნიშვნელობაა — ძველი სხვისია, ორივე დარჩეს). Sitemap `https://solen.ge/sitemap.xml` გაიგზავნა (პირველად „Couldn't fetch“ — ახალ property-ზე ჩვეულებრივია; Googlebot-ს 200 application/xml უბრუნდება). მთავარი გვერდი უკვე Google-შია; Request indexing გაკეთდა.
 - 2026-11-04 (NucBox_M8): Google Business Profile განახლდა: საიტი → https://solen.ge/, ტელეფონი 568 88 32 79, Facebook (profile.php?id=100085867923367), მომსახურების ზონა მხოლოდ Tbilisi (Georgia ამოიღო). ვერიფიკაცია ჯერ არ არის (მფლობელი, საფოსტო მისამართი/ნომერი).
 - 2026-11-04 (NucBox_M8): **საიტი მფლობელს გადაეცა** (მომხმარებლის მეგობარია, ფორმალური გადაცემა არ სჭირდება). ყველაფერი რჩება როგორც არის: Vercel/Supabase/GitHub/Cloudflare მომხმარებლის ანგარიშებზე, მომავალ განახლებებს ის აკეთებს Claude-თან ერთად.
+- 2026-11-04 (NucBox_M8): ადმინში გაზიარების (og) ფოტო აიტვირთა — ბანერის 1200×630 ვერსია, alt „Solen — ცენტრალური გათბობის მონტაჟი“ (ძველი alt „MORIGI“ შეიცვალა). solen.ge-ზე og:image/twitter:image შემოწმდა. Google-ის ძიებაში ჯერ ძველი ჩანაწერი ჩანს (ძველი ტექსტი, ლოგოს გარეშე) — favicon (48×48 ico + svg) სწორია, recrawl-ის შემდეგ განახლდება.
 
 ## დარჩა
 - 2026-11-04 (NucBox_M8): Business Profile-ის ვერიფიკაციას მომხმარებელი 2026-11-05-ს გაატარებს. მის შემდეგ (სურვილისამებრ): საათები, ფოტოები, აღწერა, ლოგო.
