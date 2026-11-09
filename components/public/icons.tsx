@@ -94,3 +94,55 @@ export function MoonIcon(props: IconProps) {
     </svg>
   );
 }
+
+const line = {
+  ...base,
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.8,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+} as const;
+
+export function FlameIcon(props: IconProps) {
+  return (
+    <svg {...line} {...props}>
+      <path d="M12 21.5c-3.9 0-7-2.8-7-6.6 0-3.1 2-5.2 3.6-7 .4 1.7 1.2 2.9 2.4 3.6-.2-3.4 1.2-6.3 4-8 .2 2.6 1.5 4.3 2.8 5.9 1.1 1.4 2.2 3 2.2 5.5 0 3.8-3.1 6.6-8 6.6Z" />
+      <path d="M12 21.5c-1.7 0-3-1.2-3-2.9 0-1.6 1.1-2.6 2.2-3.6.3 1 .9 1.6 1.6 1.9.6-.7.9-1.6.9-2.6 1.2 1 2.3 2.4 2.3 4.2 0 1.7-1.5 3-4 3Z" />
+    </svg>
+  );
+}
+
+export function SnowflakeIcon(props: IconProps) {
+  return (
+    <svg {...line} {...props}>
+      <path d="M12 2.5v19M3.8 7.25l16.4 9.5M3.8 16.75l16.4-9.5" />
+      <path d="m9.5 4 2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5M4.2 10.6l3.4-.9-.9-3.4M19.8 13.4l-3.4.9.9 3.4M4.2 13.4l3.4.9-.9 3.4M19.8 10.6l-3.4-.9.9-3.4" />
+    </svg>
+  );
+}
+
+export function FaucetIcon(props: IconProps) {
+  return (
+    <svg {...line} {...props}>
+      <path d="M4 10h9a4 4 0 0 1 4 4v1h3v-1a7 7 0 0 0-7-7H4" />
+      <path d="M8 7V4M5.5 4h5M4 6v5M18.5 18.5c0 .8-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5c0-.9 1.5-2.5 1.5-2.5s1.5 1.6 1.5 2.5Z" />
+    </svg>
+  );
+}
+
+export function WrenchIcon(props: IconProps) {
+  return (
+    <svg {...line} {...props}>
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9l-3.8 3.8Z" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg {...line} strokeWidth={2} {...props}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
