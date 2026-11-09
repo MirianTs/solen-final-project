@@ -38,6 +38,7 @@
 - 2026-11-04 (NucBox_M8): **საიტი მფლობელს გადაეცა** (მომხმარებლის მეგობარია, ფორმალური გადაცემა არ სჭირდება). ყველაფერი რჩება როგორც არის: Vercel/Supabase/GitHub/Cloudflare მომხმარებლის ანგარიშებზე, მომავალ განახლებებს ის აკეთებს Claude-თან ერთად.
 - 2026-11-04 (NucBox_M8): ადმინში გაზიარების (og) ფოტო აიტვირთა — ბანერის 1200×630 ვერსია, alt „Solen — ცენტრალური გათბობის მონტაჟი“ (ძველი alt „MORIGI“ შეიცვალა). solen.ge-ზე og:image/twitter:image შემოწმდა. Google-ის ძიებაში ჯერ ძველი ჩანაწერი ჩანს (ძველი ტექსტი, ლოგოს გარეშე) — favicon (48×48 ico + svg) სწორია, recrawl-ის შემდეგ განახლდება.
 - 2026-11-05 (NucBox_M8): Search Console შემოწმდა (Chrome, Solen-ის ანგარიში): `solen.ge` — „You are a verified owner“ (Domain name provider, Successfully verified); sitemap — **Success**, 1 გვერდი. DNS-ში ორივე google-site-verification TXT ადგილზეა.
+- 2026-11-09 (NucBox_M8): Search Console (Chrome-ში Solen service ანგარიში = `/u/2/`): ინდექსში 20 გვერდი, 4 არაინდექსირებული („Page with redirect“ — ნორმალურია). Sitemap Success (1 გვერდი). ბოლო 7 დღე (1–7 ნოემბერი): 27 click, 339 impression, CTR 8%, საშ. პოზიცია 6.8; მთავარი 22/221. Google ჯერ ძველ `www.solen.ge/inventory/...` ბმულებსაც აჩვენებს — ყველა 301-ით solen.ge/-ზე მიდის, დროთა განმავლობაში ამოვარდება. Security/Manual actions პრობლემა არ ჩანს, HTTPS 3/0.
 
 ## დარჩა
 - 2026-11-04 (NucBox_M8): Business Profile-ის ვერიფიკაციას მომხმარებელი 2026-11-05-ს გაატარებს. მის შემდეგ (სურვილისამებრ): საათები, ფოტოები, აღწერა, ლოგო.
