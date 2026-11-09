@@ -6,7 +6,8 @@ type Props = { title: string; note: string; columns: PriceColumn[] };
 
 /** Services with starting prices: one category card per price column, prices open in a modal. */
 export function ServicesPrices({ title, note, columns }: Props) {
-  const groups = columns.filter((c) => c.services.length > 0);
+  // Empty columns still get a card (e.g. a new category before its prices are entered).
+  const groups = columns;
   if (groups.length === 0) return null;
 
   return (

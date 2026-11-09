@@ -93,7 +93,12 @@ export function ServiceCategories({ groups }: { groups: PriceColumn[] }) {
                 <CloseIcon className="size-5" />
               </button>
             </div>
-            <ul className="flex flex-col divide-y divide-line">
+            {open.services.length === 0 && (
+              <p className="leading-relaxed text-muted lg:text-lg">
+                ფასი შეთანხმებით — დაგვიკავშირდით და გეტყვით ზუსტ ღირებულებას.
+              </p>
+            )}
+            <ul className="flex flex-col divide-y divide-line empty:hidden">
               {open.services.map((service) => {
                 const [amount, suffix] = splitPrice(service.price);
                 return (
