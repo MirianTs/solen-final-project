@@ -92,7 +92,9 @@ export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
         className="m-auto w-[min(92vw,42rem)] rounded-card border border-line bg-card-raised p-0 text-fg backdrop:bg-black/80"
       >
         {open && (
-          <div className="flex max-h-[85vh] flex-col gap-5 overflow-y-auto p-6 md:p-8">
+          // No bottom padding with the call bar: sticky offsets count from the padding edge,
+          // so padding would lift the bar over the last price.
+          <div className={`flex max-h-[85vh] flex-col gap-5 overflow-y-auto p-6 md:p-8 ${tel ? "pb-0 md:pb-0" : ""}`}>
             <div className="flex items-center justify-between gap-4">
               <h3 id={titleId} className="text-2xl font-bold text-accent-ink">
                 {open.title}
@@ -131,7 +133,7 @@ export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
             </ul>
             {tel && (
               // Sticky so the call button stays visible when the price list scrolls.
-              <div className="sticky bottom-0 -mx-6 -mb-6 border-t border-line bg-card-raised px-6 py-4 md:-mx-8 md:-mb-8 md:px-8 md:py-5">
+              <div className="sticky bottom-0 -mx-6 border-t border-line bg-card-raised px-6 py-4 md:-mx-8 md:px-8 md:py-5">
                 <a
                   href={tel}
                   className="inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-8 text-lg font-bold text-black transition hover:bg-accent-hover"
