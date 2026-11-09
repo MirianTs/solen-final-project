@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import type { PriceColumn } from "@/lib/content";
-import { ArrowRightIcon, CloseIcon, FaucetIcon, FlameIcon, SnowflakeIcon, WrenchIcon } from "./icons";
+import { ArrowRightIcon, CloseIcon, FaucetIcon, FlameIcon, PhoneIcon, SnowflakeIcon, WrenchIcon } from "./icons";
 
 const CARD_HOVER =
   "transition duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_50px_-20px_rgb(255_214_10/0.25)] motion-reduce:hover:translate-y-0";
@@ -26,7 +26,9 @@ function category(title: string) {
 }
 
 /** One card per price column; clicking a card opens its services and prices in a modal. */
-export function ServiceCategories({ groups }: { groups: PriceColumn[] }) {
+type Props = { groups: PriceColumn[]; tel: string | null; phoneDisplay: string | null };
+
+export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -41,6 +43,17 @@ export function ServiceCategories({ groups }: { groups: PriceColumn[] }) {
     if (open && dialog && !dialog.open) dialog.showModal();
   }, [open]);
 
+  // The page behind the modal must not scroll while it is open.
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    root.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = previous;
+    };
+  }, [open]);
+
   return (
     <>
       <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
@@ -51,14 +64,14 @@ export function ServiceCategories({ groups }: { groups: PriceColumn[] }) {
                 type="button"
                 onClick={() => setOpenId(group.id)}
                 aria-haspopup="dialog"
-                className={`group flex h-full w-full flex-col gap-6 rounded-card border border-line bg-card p-6 text-left md:p-8 ${CARD_HOVER}`}
+                className={`group flex h-full min-h-56 w-full flex-col justify-between gap-8 rounded-card border border-line bg-card p-7 text-left md:min-h-72 md:p-9 ${CARD_HOVER}`}
               >
-                <span className="inline-flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent-ink md:size-16">
-                  <Icon className="size-7 md:size-8" />
+                <span className="inline-flex size-16 items-center justify-center rounded-full bg-accent/10 text-accent-ink md:size-20">
+                  <Icon className="size-8 md:size-10" />
                 </span>
-                <span className="flex flex-col gap-2">
-                  <span className="text-xl font-bold lg:text-2xl">{group.title}</span>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-accent-ink md:text-base">
+                <span className="flex flex-col gap-3">
+                  <span className="text-2xl leading-snug font-bold lg:text-3xl">{group.title}</span>
+                  <span className="inline-flex items-center gap-2 font-semibold text-accent-ink md:text-lg">
                     ნახეთ ფასები
                     <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
                   </span>
@@ -116,6 +129,18 @@ export function ServiceCategories({ groups }: { groups: PriceColumn[] }) {
                 );
               })}
             </ul>
+            {tel && (
+              // Sticky so the call button stays visible when the price list scrolls.
+              <div className="sticky bottom-0 -mx-6 -mb-6 border-t border-line bg-card-raised px-6 py-4 md:-mx-8 md:-mb-8 md:px-8 md:py-5">
+                <a
+                  href={tel}
+                  className="inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-8 text-lg font-bold text-black transition hover:bg-accent-hover"
+                >
+                  <PhoneIcon className="size-5" />
+                  დარეკე{phoneDisplay && <span className="font-semibold">· {phoneDisplay}</span>}
+                </a>
+              </div>
+            )}
           </div>
         )}
       </dialog>
