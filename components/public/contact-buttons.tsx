@@ -24,6 +24,8 @@ const styles: Record<Variant, { link: string; icon: string; list: string }> = {
 };
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
+// Screen readers are told that these links leave the page (same wording as the Google review button).
+const NEW_TAB = " (იხსნება ახალ ჩანართში)";
 
 /** Contact links (phone, Viber, WhatsApp, Facebook, map; "social": the middle three). Empty settings are hidden. */
 export function ContactButtons({ links, variant }: { links: ContactLinks; variant: Variant }) {
@@ -50,21 +52,24 @@ export function ContactButtons({ links, variant }: { links: ContactLinks; varian
       </ViberLink>
     ),
     links.whatsapp && (
-      <a href={links.whatsapp} {...external} className={s.link} aria-label={large ? undefined : "WhatsApp"}>
+      <a href={links.whatsapp} {...external} className={s.link} aria-label={large ? undefined : `WhatsApp${NEW_TAB}`}>
         <WhatsAppIcon className={s.icon} />
         {large && <span>WhatsApp</span>}
+        {large && <span className="sr-only">{NEW_TAB}</span>}
       </a>
     ),
     links.facebook && (
-      <a href={links.facebook} {...external} className={s.link} aria-label={large ? undefined : "Facebook"}>
+      <a href={links.facebook} {...external} className={s.link} aria-label={large ? undefined : `Facebook${NEW_TAB}`}>
         <FacebookIcon className={s.icon} />
         {large && <span>Facebook</span>}
+        {large && <span className="sr-only">{NEW_TAB}</span>}
       </a>
     ),
     !social && links.maps && (
-      <a href={links.maps} {...external} className={s.link} aria-label={large ? undefined : "მისამართი რუკაზე"}>
+      <a href={links.maps} {...external} className={s.link} aria-label={large ? undefined : `მისამართი რუკაზე${NEW_TAB}`}>
         <MapPinIcon className={s.icon} />
         {large && <span>რუკაზე ნახვა</span>}
+        {large && <span className="sr-only">{NEW_TAB}</span>}
       </a>
     ),
   ].filter(Boolean);
