@@ -107,6 +107,7 @@ export function TurnstileWidget({ siteKey, onToken, ref }: Props) {
 
   return (
     <div>
+      {/* Reserves the widget's 65px height, so the form does not jump when Turnstile renders. */}
       <div ref={containerRef} className="min-h-[65px]" />
       {failed && (
         <p role="alert" className="text-sm text-red-400">
