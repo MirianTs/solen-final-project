@@ -1,5 +1,6 @@
 // Minimal Supabase Storage REST helpers for the backup/restore scripts (no npm dependencies).
 
+/** Reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from the environment; exits if either is missing. */
 export function storageConfig() {
   const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -12,6 +13,7 @@ export function storageConfig() {
   return { url, headers };
 }
 
+/** fetch() against the Supabase API with auth headers; throws with status and body on a non-2xx response. */
 async function request(cfg, path, init = {}) {
   const res = await fetch(`${cfg.url}${path}`, { ...init, headers: { ...cfg.headers, ...init.headers } });
   if (!res.ok) {
@@ -44,11 +46,13 @@ export async function listAll(cfg, bucket, prefix = "") {
 
 const encodePath = (p) => p.split("/").map(encodeURIComponent).join("/");
 
+/** Downloads one object; returns its bytes and content type. */
 export async function download(cfg, bucket, path) {
   const res = await request(cfg, `/storage/v1/object/${bucket}/${encodePath(path)}`);
   return { body: Buffer.from(await res.arrayBuffer()), contentType: res.headers.get("content-type") };
 }
 
+/** Uploads one object, overwriting an existing file with the same path (x-upsert). */
 export async function upload(cfg, bucket, path, body, contentType) {
   await request(cfg, `/storage/v1/object/${bucket}/${encodePath(path)}`, {
     method: "POST",
