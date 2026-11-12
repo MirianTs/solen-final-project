@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { check, runAdminAction } from "@/lib/admin-action";
+import type { ReviewStatus } from "@/lib/supabase/database.types";
 
 const id = z.uuid();
 
 /** Moves a review between pending / approved / hidden; only approved ones show on the site. */
-export async function setReviewStatus(input: { id: string; status: "pending" | "approved" | "hidden" }) {
-  const schema = z.object({ id, status: z.enum(["pending", "approved", "hidden"]) });
+export async function setReviewStatus(input: { id: string; status: ReviewStatus }) {
+  const schema = z.object({ id, status: z.enum(["pending", "approved", "hidden"] satisfies ReviewStatus[]) });
   return runAdminAction(schema, input, async (data, { supabase }) => {
     check(await supabase.from("reviews").update({ status: data.status }).eq("id", data.id));
     // Refresh the pending badge in the admin nav.
