@@ -1,3 +1,4 @@
+// Admin panel sections, shared by the dashboard tiles (/admin) and the tab bar (AdminNav).
 export const ADMIN_SECTIONS = [
   { href: "/admin/prices", label: "სერვისები და ფასები", description: "სექციები და ბარათები ფასებით" },
   { href: "/admin/photos", label: "ფოტოები", description: "ბანერი და გაზიარების ფოტო" },
