@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { check, runAdminAction } from "@/lib/admin-action";
 import { SETTING_FIELDS, TEXT_FIELDS } from "@/lib/admin-fields";
-import { digitsOnly } from "@/lib/contact";
+import { digitsOnly, safeHttpUrl } from "@/lib/contact";
 import { plainText } from "@/lib/sanitize";
 
 const textsSchema = z.object(
@@ -43,15 +43,8 @@ const urlSchema = (label: string) =>
     .string()
     .trim()
     .max(500, `${label}: ბმული ძალიან გრძელია`)
-    .refine((v) => {
-      if (v === "") return true;
-      try {
-        const u = new URL(v);
-        return u.protocol === "https:" || u.protocol === "http:";
-      } catch {
-        return false;
-      }
-    }, `${label}: შეიყვანეთ სრული ბმული (https://...)`);
+    // Same check the public page uses before rendering a link (http/https only).
+    .refine((v) => v === "" || safeHttpUrl(v) !== null, `${label}: შეიყვანეთ სრული ბმული (https://...)`);
 
 const settingsSchema = z
   .object(
