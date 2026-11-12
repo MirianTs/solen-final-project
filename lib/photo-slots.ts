@@ -16,4 +16,6 @@ export function newPhotoPath(slot: PhotoSlot, ext: "webp" | "jpg" = "webp"): str
   return `${slot}-${Date.now()}.${ext}`;
 }
 
+// Valid uploaded file names. p1–p4 are slots of the removed P1–P4 blocks; they stay in the
+// database enum, so the pattern still accepts them.
 export const PHOTO_PATH_RE = /^(banner|p[1-4]|og)-\d{10,16}\.(webp|jpg)$/;
