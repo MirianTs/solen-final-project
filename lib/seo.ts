@@ -5,8 +5,8 @@ import type { SiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
 
 export const SITE_NAME = "Solen";
-const DEFAULT_TITLE = "Solen — გათბობა, რადიატორები და კონდიციონერები თბილისში";
-const DEFAULT_DESCRIPTION =
+export const DEFAULT_TITLE = "Solen — გათბობა, რადიატორები და კონდიციონერები თბილისში";
+export const DEFAULT_DESCRIPTION =
   "გაზის ქვაბების, რადიატორებისა და კონდიციონერების მონტაჟი, შეკეთება და მომსახურება თბილისში. სწრაფად და გარანტიით.";
 
 export function siteUrl(): string {
@@ -86,5 +86,3 @@ export function buildBusinessJsonLd(content: SiteContent) {
     }),
   };
 }
-
-export { DEFAULT_DESCRIPTION, DEFAULT_TITLE };
