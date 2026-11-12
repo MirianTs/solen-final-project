@@ -16,10 +16,15 @@ const TABS: { status: ReviewStatus; label: string }[] = [
 
 const LIMIT = 100;
 
+/** The ?status= value if it names one of the tabs (it may be missing, repeated or anything else). */
+function isTabStatus(value: string | string[] | undefined): value is ReviewStatus {
+  return TABS.some((t) => t.status === value);
+}
+
 export default async function ReviewsAdminPage({ searchParams }: PageProps<"/admin/reviews">) {
   const { supabase } = await requireAdmin();
   const { status: raw } = await searchParams;
-  const status: ReviewStatus = TABS.some((t) => t.status === raw) ? (raw as ReviewStatus) : "pending";
+  const status: ReviewStatus = isTabStatus(raw) ? raw : "pending";
 
   const countOf = (s: ReviewStatus) =>
     supabase.from("reviews").select("id", { count: "exact", head: true }).eq("status", s);
