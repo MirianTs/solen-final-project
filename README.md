@@ -16,6 +16,8 @@ Contents: [Local development](#local-development) · [Setup from zero](#setup-fr
 
 ## Local development
 
+Requires Node.js 20.9 or newer (the minimum for Next.js 16).
+
 ```bash
 npm install
 cp .env.example .env.local   # then fill in real values
