@@ -61,7 +61,7 @@ export default async function ReviewsAdminPage({ searchParams }: PageProps<"/adm
         </ul>
       </nav>
 
-      {list.error && <p className="text-red-400">შეფასებები ვერ ჩაიტვირთა. განაახლეთ გვერდი.</p>}
+      {list.error && <p role="alert" className="text-red-400">შეფასებები ვერ ჩაიტვირთა. განაახლეთ გვერდი.</p>}
 
       {!list.error && reviews.length === 0 && (
         <p className="rounded-card border border-line bg-card p-6 text-muted">
