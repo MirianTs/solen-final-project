@@ -11,6 +11,10 @@ const signInSchema = z.object({
   password: z.string().min(1, "შეიყვანეთ პაროლი").max(200),
 });
 
+/**
+ * Login form action. Signs in with email + password, then requires is_admin(); a non-admin is signed
+ * out again. On success redirects to /admin; otherwise returns a Georgian error and keeps the email.
+ */
 export async function signIn(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const raw = { email: String(formData.get("email") ?? "").trim(), password: String(formData.get("password") ?? "") };
   const parsed = signInSchema.safeParse(raw);
@@ -47,6 +51,7 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   redirect("/admin");
 }
 
+/** Ends the admin session and returns to the login page. */
 export async function signOut() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
