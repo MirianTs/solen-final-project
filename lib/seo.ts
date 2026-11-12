@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { digitsOnly, safeHttpUrl } from "@/lib/contact";
 import type { SiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
+import { formatRating } from "@/lib/format";
 
 export const SITE_NAME = "Solen";
 export const DEFAULT_TITLE = "Solen — გათბობა, რადიატორები და კონდიციონერები თბილისში";
@@ -80,7 +81,7 @@ export function buildBusinessJsonLd(content: SiteContent) {
     ...(stats.count > 0 && {
       aggregateRating: {
         "@type": "AggregateRating",
-        ratingValue: stats.average.toFixed(1),
+        ratingValue: formatRating(stats.average),
         reviewCount: stats.count,
         bestRating: 5,
         worstRating: 1,
