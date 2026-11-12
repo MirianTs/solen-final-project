@@ -25,9 +25,9 @@ function category(title: string) {
   return { rank: 3, Icon: WrenchIcon };
 }
 
-/** One card per price column; clicking a card opens its services and prices in a modal. */
 type Props = { groups: PriceColumn[]; tel: string | null; phoneDisplay: string | null };
 
+/** One card per price column; clicking a card opens its services and prices in a modal. */
 export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -57,29 +57,27 @@ export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
   return (
     <>
       <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
-        {sorted.map(({ group, Icon }) => {
-          return (
-            <li key={group.id} className="reveal">
-              <button
-                type="button"
-                onClick={() => setOpenId(group.id)}
-                aria-haspopup="dialog"
-                className={`group flex h-full min-h-56 w-full flex-col justify-between gap-8 rounded-card border border-line bg-card p-7 text-left md:min-h-72 md:p-9 ${CARD_HOVER}`}
-              >
-                <span className="inline-flex size-16 items-center justify-center rounded-full bg-accent/10 text-accent-ink md:size-20">
-                  <Icon className="size-8 md:size-10" />
+        {sorted.map(({ group, Icon }) => (
+          <li key={group.id} className="reveal">
+            <button
+              type="button"
+              onClick={() => setOpenId(group.id)}
+              aria-haspopup="dialog"
+              className={`group flex h-full min-h-56 w-full flex-col justify-between gap-8 rounded-card border border-line bg-card p-7 text-left md:min-h-72 md:p-9 ${CARD_HOVER}`}
+            >
+              <span className="inline-flex size-16 items-center justify-center rounded-full bg-accent/10 text-accent-ink md:size-20">
+                <Icon className="size-8 md:size-10" />
+              </span>
+              <span className="flex flex-col gap-3">
+                <span className="text-2xl leading-snug font-bold lg:text-3xl">{group.title}</span>
+                <span className="inline-flex items-center gap-2 font-semibold text-accent-ink md:text-lg">
+                  ნახეთ ფასები
+                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
                 </span>
-                <span className="flex flex-col gap-3">
-                  <span className="text-2xl leading-snug font-bold lg:text-3xl">{group.title}</span>
-                  <span className="inline-flex items-center gap-2 font-semibold text-accent-ink md:text-lg">
-                    ნახეთ ფასები
-                    <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
-                  </span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
+              </span>
+            </button>
+          </li>
+        ))}
       </ul>
 
       <dialog
