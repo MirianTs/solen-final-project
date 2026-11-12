@@ -9,10 +9,12 @@ export const DEFAULT_TITLE = "Solen — გათბობა, რადია�
 export const DEFAULT_DESCRIPTION =
   "გაზის ქვაბების, რადიატორებისა და კონდიციონერების მონტაჟი, შეკეთება და მომსახურება თბილისში. სწრაფად და გარანტიით.";
 
+/** Public site origin without a trailing slash (https://solen.ge in production). */
 export function siteUrl(): string {
   return publicEnv().NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
 }
 
+/** The slogan when it is long enough to describe the business, otherwise the default description. */
 function description(content: SiteContent): string {
   const slogan = content.texts.hero_slogan?.trim();
   return slogan && slogan.length >= 40 ? slogan.slice(0, 160) : DEFAULT_DESCRIPTION;
