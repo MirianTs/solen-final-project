@@ -27,10 +27,12 @@ const reviewSchema = z.object({
   token: z.string(),
 });
 
+/** Salted SHA-256 (HASH_SALT), so stored device/IP hashes cannot be matched against plain values. */
 function sha256(value: string): string {
   return createHash("sha256").update(`${serverEnv().HASH_SALT}:${value}`).digest("hex");
 }
 
+/** Visitor IP from the proxy headers (first x-forwarded-for entry on Vercel), or null. */
 async function clientIp(): Promise<string | null> {
   const h = await headers();
   const forwarded = h.get("x-forwarded-for")?.split(",")[0]?.trim();
