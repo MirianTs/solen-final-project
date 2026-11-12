@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition, type FormEvent } from "react";
 import { submitReview } from "@/app/actions/submit-review";
 import { StarIcon } from "./icons";
 import { TurnstileWidget, type TurnstileHandle } from "./turnstile-widget";
@@ -20,7 +20,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
   const [pending, startTransition] = useTransition();
   const turnstileRef = useRef<TurnstileHandle>(null);
 
-  function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
 

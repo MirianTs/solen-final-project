@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type ReactNode } from "react";
+import { useState, useTransition, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import type { ActionResult } from "@/lib/admin-action";
 
@@ -29,7 +29,7 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
   const [pending, startTransition] = useTransition();
   const dirty = Object.keys(values).some((k) => values[k] !== saved[k]);
 
-  function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
     startTransition(async () => {
       const result = await save(values);
