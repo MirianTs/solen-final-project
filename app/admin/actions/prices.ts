@@ -29,6 +29,7 @@ const serviceName = z
   .pipe(z.string().min(1, "სერვისის სახელი ცარიელია").max(200, "სახელი მაქსიმუმ 200 სიმბოლოა"));
 const price = z.string().transform(plainText).pipe(z.string().max(100, "ფასი მაქსიმუმ 100 სიმბოლოა"));
 
+/** Adds a price column ("სექცია") at the end and returns the new row. */
 export async function createColumn(input: { title: string }) {
   return runAdminAction(z.object({ title }), input, async (data, { supabase }) => {
     const { data: last } = await supabase
@@ -48,12 +49,14 @@ export async function createColumn(input: { title: string }) {
   });
 }
 
+/** Renames a price column. */
 export async function updateColumn(input: { id: string; title: string }) {
   return runAdminAction(z.object({ id, title }), input, async (data, { supabase }) => {
     check(await supabase.from("price_columns").update({ title: data.title }).eq("id", data.id));
   });
 }
 
+/** Deletes a price column with all its services. */
 export async function deleteColumn(input: { id: string }) {
   return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
     const { data: photos } = check(
@@ -65,6 +68,7 @@ export async function deleteColumn(input: { id: string }) {
   });
 }
 
+/** Adds a service ("ბარათი") at the end of its column and returns the new row. */
 export async function createService(input: { columnId: string; name: string; price: string }) {
   return runAdminAction(z.object({ columnId: id, name: serviceName, price }), input, async (data, { supabase }) => {
     const { data: last } = await supabase
@@ -85,12 +89,14 @@ export async function createService(input: { columnId: string; name: string; pri
   });
 }
 
+/** Updates a service name and price. */
 export async function updateService(input: { id: string; name: string; price: string }) {
   return runAdminAction(z.object({ id, name: serviceName, price }), input, async (data, { supabase }) => {
     check(await supabase.from("services").update({ name: data.name, price: data.price }).eq("id", data.id));
   });
 }
 
+/** Deletes one service. */
 export async function deleteService(input: { id: string }) {
   return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
     const { data: row } = check(await supabase.from("services").select("photo_path").eq("id", data.id).maybeSingle());
