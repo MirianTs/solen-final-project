@@ -8,6 +8,7 @@ import { PASSWORD_MIN_LENGTH } from "@/lib/password-rules";
 export function PasswordForm({ email }: { email: string }) {
   const [state, action, pending] = useActionState<PasswordState, FormData>(changePassword, {});
   const formRef = useRef<HTMLFormElement>(null);
+  const errorId = state.error ? "password-error" : undefined;
 
   useEffect(() => {
     if (state.ok) {
@@ -22,14 +23,21 @@ export function PasswordForm({ email }: { email: string }) {
       <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
 
       {state.error && (
-        <p role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <p id="password-error" role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {state.error}
         </p>
       )}
 
       <label className="flex flex-col gap-1.5">
         <span className="text-sm font-semibold">მიმდინარე პაროლი</span>
-        <input name="current" type="password" autoComplete="current-password" required className="admin-input" />
+        <input
+          name="current"
+          type="password"
+          autoComplete="current-password"
+          required
+          aria-describedby={errorId}
+          className="admin-input"
+        />
       </label>
 
       <label className="flex flex-col gap-1.5">
@@ -40,7 +48,7 @@ export function PasswordForm({ email }: { email: string }) {
           autoComplete="new-password"
           required
           minLength={PASSWORD_MIN_LENGTH}
-          aria-describedby="password-hint"
+          aria-describedby={errorId ? `password-hint ${errorId}` : "password-hint"}
           className="admin-input"
         />
         <span id="password-hint" className="text-xs text-muted">
@@ -50,7 +58,14 @@ export function PasswordForm({ email }: { email: string }) {
 
       <label className="flex flex-col gap-1.5">
         <span className="text-sm font-semibold">გაიმეორეთ ახალი პაროლი</span>
-        <input name="confirm" type="password" autoComplete="new-password" required className="admin-input" />
+        <input
+          name="confirm"
+          type="password"
+          autoComplete="new-password"
+          required
+          aria-describedby={errorId}
+          className="admin-input"
+        />
       </label>
 
       <button type="submit" disabled={pending} className="admin-btn-primary mt-2">
