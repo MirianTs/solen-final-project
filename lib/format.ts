@@ -5,6 +5,7 @@ const dateFormatter = new Intl.DateTimeFormat("ka-GE", {
   timeZone: "Asia/Tbilisi",
 });
 
+/** ISO timestamp -> Georgian long date in Tbilisi time, e.g. for review cards. Call on the server. */
 export function formatDate(iso: string): string {
   return dateFormatter.format(new Date(iso));
 }
