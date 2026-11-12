@@ -41,12 +41,14 @@ export async function savePhoto(input: z.input<typeof savePhotoSchema>) {
   });
 }
 
+/** Updates only the alt text of a slot, without touching its file. */
 export async function saveAlt(input: { slot: string; alt: string }) {
   return runAdminAction(z.object({ slot, alt }), input, async (data, { supabase }) => {
     check(await supabase.from("photos").upsert({ slot: data.slot, alt: data.alt }, { onConflict: "slot" }));
   });
 }
 
+/** Clears a slot (the row stays with its alt text) and deletes its file from Storage. */
 export async function deletePhoto(input: { slot: string }) {
   return runAdminAction(z.object({ slot }), input, async (data, { supabase }) => {
     const { data: current } = check(await supabase.from("photos").select("path").eq("slot", data.slot).maybeSingle());
