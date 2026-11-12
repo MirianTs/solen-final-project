@@ -125,7 +125,10 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
       {/* Sticky save bar: easy to reach on a phone. */}
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-bg/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-end gap-3">
-          {dirty && <span className="text-sm text-muted">შეუნახავი ცვლილებები</span>}
+          {/* Live region, so screen readers hear when there is something to save. */}
+          <span role="status" className="text-sm text-muted">
+            {dirty ? "შეუნახავი ცვლილებები" : ""}
+          </span>
           <button type="submit" disabled={pending || !dirty} className="admin-btn-primary">
             {pending ? "ინახება…" : "შენახვა"}
           </button>
