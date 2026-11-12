@@ -2,10 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import type { PriceColumn } from "@/lib/content";
+import { CARD_HOVER } from "./card-styles";
 import { ArrowRightIcon, CloseIcon, FaucetIcon, FlameIcon, PhoneIcon, SnowflakeIcon, WrenchIcon } from "./icons";
-
-const CARD_HOVER =
-  "transition duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_50px_-20px_rgb(255_214_10/0.25)] motion-reduce:hover:translate-y-0";
 
 /** "200₾-დან" → ["200₾", "-დან"], so the amount can be big and the suffix small. */
 function splitPrice(price: string): [string, string] {
