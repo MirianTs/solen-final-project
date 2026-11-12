@@ -1,6 +1,6 @@
 import "server-only";
 import type { Metadata } from "next";
-import { digitsOnly, safeHttpUrl } from "@/lib/contact";
+import { buildContactLinks, digitsOnly } from "@/lib/contact";
 import type { SiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
 import { formatRating } from "@/lib/format";
@@ -59,7 +59,9 @@ export function buildBusinessJsonLd(content: SiteContent) {
   const phone = digitsOnly(settings.phone);
   const image = shareImage(content);
   const url = siteUrl();
-  const sameAs = [safeHttpUrl(settings.facebook_url), safeHttpUrl(settings.maps_url)].filter((u): u is string => !!u);
+  // Same validated links as the contact buttons, so JSON-LD never lists a link the page hides.
+  const { facebook, maps } = buildContactLinks(settings);
+  const sameAs = [facebook, maps].filter((u): u is string => !!u);
 
   return {
     "@context": "https://schema.org",
