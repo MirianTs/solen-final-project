@@ -138,13 +138,14 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
           id={inputId}
           type="file"
           accept={ACCEPT}
-          className="sr-only"
+          className="peer sr-only"
           disabled={busy}
           onChange={(e) => void onFile(e.target.files?.[0])}
         />
+        {/* The file input itself is hidden, so its keyboard focus ring is drawn on this label. */}
         <label
           htmlFor={inputId}
-          className={`admin-btn-primary cursor-pointer ${busy ? "pointer-events-none opacity-60" : ""}`}
+          className={`admin-btn-primary cursor-pointer peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-ink ${busy ? "pointer-events-none opacity-60" : ""}`}
         >
           {url ? "შეცვლა" : "ატვირთვა"}
         </label>
