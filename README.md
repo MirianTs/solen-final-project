@@ -221,7 +221,7 @@ Only the encrypted file leaves the runner. The repository must stay **private**.
 Needs `psql` 17 (Windows: install PostgreSQL 17 from postgresql.org — only *Command Line Tools* are needed)
 and Node.js.
 
-1. Create the new project and run the 4 migrations (**not** `seed.sql`) — see [Database](#database).
+1. Create the new project and run all 6 migrations (**not** `seed.sql`) — see [Database](#database).
 2. Restore admin accounts, then the site data (use the new project's *Session pooler* URI):
 
    ```bash
