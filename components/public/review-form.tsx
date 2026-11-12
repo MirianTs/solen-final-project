@@ -104,6 +104,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           value={name}
           maxLength={60}
           autoComplete="given-name"
+          aria-required="true"
           onChange={(e) => setName(e.target.value)}
           aria-invalid={error?.field === "name" || undefined}
           aria-describedby={error?.field === "name" ? "review-error" : undefined}
