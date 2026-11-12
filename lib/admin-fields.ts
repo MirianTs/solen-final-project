@@ -30,7 +30,7 @@ export const TEXT_GROUPS: { title: string; fields: TextField[] }[] = [
   },
 ];
 
-/** Flat list; fullLabel names the group too ("ბლოკი P2 — სათაური") for error messages. */
+/** Flat list; fullLabel names the group too ("კონტაქტი და ფუტერი — ფუტერის ტექსტი") for error messages. */
 export const TEXT_FIELDS = TEXT_GROUPS.flatMap((g) => g.fields.map((f) => ({ ...f, fullLabel: `${g.title} — ${f.label}` })));
 
 export type SettingKind = "phone" | "url" | "text";
