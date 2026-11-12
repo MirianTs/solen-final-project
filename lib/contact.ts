@@ -15,7 +15,8 @@ export function digitsOnly(value: string | undefined | null): string {
   return (value ?? "").replace(/\D/g, "");
 }
 
-function safeHttpUrl(value: string | undefined | null): string | null {
+/** Returns the normalized URL if it is a valid http(s) link, otherwise null (blocks javascript: etc.). */
+export function safeHttpUrl(value: string | undefined | null): string | null {
   const v = (value ?? "").trim();
   if (!v) return null;
   try {
@@ -51,5 +52,3 @@ export function buildContactLinks(settings: Record<string, string>): ContactLink
     maps: safeHttpUrl(settings.maps_url),
   };
 }
-
-export { safeHttpUrl };
