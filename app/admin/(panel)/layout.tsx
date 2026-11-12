@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { Logo } from "@/components/ui/logo";
+import { NEW_TAB_HINT } from "@/lib/a11y";
 import { requireAdmin } from "@/lib/auth";
 import { signOut } from "../actions/auth";
 
@@ -24,7 +25,7 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
             <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">{user.email}</span>
             <Link href="/" target="_blank" className="admin-btn-ghost">
               საიტი
-              <span className="sr-only"> (იხსნება ახალ ჩანართში)</span>
+              <span className="sr-only">{NEW_TAB_HINT}</span>
             </Link>
             <form action={signOut}>
               <button type="submit" className="admin-btn-ghost">

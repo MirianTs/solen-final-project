@@ -1,3 +1,4 @@
+import { NEW_TAB_HINT } from "@/lib/a11y";
 import type { PublicReview, ReviewStats } from "@/lib/content";
 import { formatRating } from "@/lib/format";
 import { GoogleIcon } from "./icons";
@@ -42,7 +43,7 @@ export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl
           >
             <GoogleIcon className="size-5 shrink-0" />
             შეგვაფასეთ Google-ზე
-            <span className="sr-only"> (იხსნება ახალ ჩანართში)</span>
+            <span className="sr-only">{NEW_TAB_HINT}</span>
           </a>
         </p>
       )}

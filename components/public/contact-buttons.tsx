@@ -1,3 +1,4 @@
+import { NEW_TAB_HINT as NEW_TAB } from "@/lib/a11y";
 import type { ContactLinks } from "@/lib/contact";
 import { FacebookIcon, MapPinIcon, PhoneIcon, ViberIcon, WhatsAppIcon } from "./icons";
 import { ViberLink } from "./viber-link";
@@ -24,8 +25,6 @@ const styles: Record<Variant, { link: string; icon: string; list: string }> = {
 };
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
-// Screen readers are told that these links leave the page (same wording as the Google review button).
-const NEW_TAB = " (იხსნება ახალ ჩანართში)";
 
 /** Contact links (phone, Viber, WhatsApp, Facebook, map; "social": the middle three). Empty settings are hidden. */
 export function ContactButtons({ links, variant }: { links: ContactLinks; variant: Variant }) {
