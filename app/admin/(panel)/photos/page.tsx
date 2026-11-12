@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PhotoSlotCard } from "@/components/admin/photo-slot-card";
 import { requireAdmin } from "@/lib/auth";
-import { publicEnv } from "@/lib/env";
+import { photosBaseUrl } from "@/lib/content";
 import { PHOTO_SLOTS } from "@/lib/photo-slots";
 
 export const metadata: Metadata = { title: "ფოტოები" };
@@ -10,7 +10,7 @@ export default async function PhotosPage() {
   const { supabase } = await requireAdmin();
   const { data } = await supabase.from("photos").select("*");
   const rows = new Map((data ?? []).map((r) => [r.slot, r]));
-  const base = `${publicEnv().NEXT_PUBLIC_SUPABASE_URL.replace(/\/$/, "")}/storage/v1/object/public/photos`;
+  const base = photosBaseUrl();
 
   return (
     <>

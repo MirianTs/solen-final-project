@@ -38,10 +38,14 @@ const TEXT_FALLBACKS: Record<string, string> = {
 // Texts the admin may clear on purpose: a saved empty value hides the text instead of using the fallback.
 const CLEARABLE_TEXTS = new Set(["hero_slogan"]);
 
+/** Public URL of the `photos` Storage bucket, without a trailing slash. */
+export function photosBaseUrl(): string {
+  return `${publicEnv().NEXT_PUBLIC_SUPABASE_URL.replace(/\/$/, "")}/storage/v1/object/public/photos`;
+}
+
+/** Public URL of one uploaded photo (each path segment URL-encoded). */
 export function photoUrl(path: string): string {
-  const base = publicEnv().NEXT_PUBLIC_SUPABASE_URL.replace(/\/$/, "");
-  const encoded = path.split("/").map(encodeURIComponent).join("/");
-  return `${base}/storage/v1/object/public/photos/${encoded}`;
+  return `${photosBaseUrl()}/${path.split("/").map(encodeURIComponent).join("/")}`;
 }
 
 function toRecord(rows: { key: string; value: string }[] | null): Record<string, string> {
