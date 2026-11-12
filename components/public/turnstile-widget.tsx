@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 
 type TurnstileApi = {
   render: (el: HTMLElement, opts: Record<string, unknown>) => string;
@@ -39,13 +39,15 @@ export type TurnstileHandle = { reset: () => void };
 type Props = {
   siteKey: string;
   onToken: (token: string | null) => void;
+  /** React 19 passes ref as a normal prop, so no forwardRef wrapper is needed. */
+  ref?: Ref<TurnstileHandle>;
 };
 
 /**
  * Cloudflare Turnstile, loaded only when the widget scrolls near the viewport
  * (keeps the third-party script off the critical path).
  */
-export const TurnstileWidget = forwardRef<TurnstileHandle, Props>(function TurnstileWidget({ siteKey, onToken }, ref) {
+export function TurnstileWidget({ siteKey, onToken, ref }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
   const onTokenRef = useRef(onToken);
@@ -113,4 +115,4 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, Props>(function Turns
       )}
     </div>
   );
-});
+}
