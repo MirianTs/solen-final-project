@@ -24,16 +24,8 @@ export default async function TextsPage() {
         ცარიელი ველის ნაცვლად საიტზე სტანდარტული ტექსტი გამოჩნდება (სლოგანის გარდა — ის ცარიელი დარჩება).
       </p>
       <KeyValueForm
-        groups={TEXT_GROUPS.map((g) => ({
-          title: g.title,
-          fields: g.fields.map((f) => ({
-            key: f.key,
-            label: f.label,
-            multiline: f.multiline,
-            max: f.max,
-            visibleKey: f.visibleKey,
-          })),
-        }))}
+        // TextField already has the shape KeyValueForm expects.
+        groups={TEXT_GROUPS}
         initial={initial}
         save={saveTexts}
       />
