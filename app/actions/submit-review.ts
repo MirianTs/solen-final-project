@@ -12,6 +12,8 @@ export type SubmitReviewResult = { ok: true } | { ok: false; error: string; fiel
 
 const DEVICE_COOKIE = "solen_did";
 const LIMIT_DAYS = 30;
+// Shape of randomUUID() output; anything else in the cookie is replaced with a fresh id.
+const DEVICE_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const reviewSchema = z.object({
   rating: z.coerce
@@ -71,7 +73,7 @@ export async function submitReview(input: {
     // Device id: random, httpOnly, 1 year. Only its salted hash is stored.
     const cookieStore = await cookies();
     let deviceId = cookieStore.get(DEVICE_COOKIE)?.value;
-    if (!deviceId || !/^[0-9a-f-]{36}$/.test(deviceId)) {
+    if (!deviceId || !DEVICE_ID_RE.test(deviceId)) {
       deviceId = randomUUID();
       cookieStore.set(DEVICE_COOKIE, deviceId, {
         httpOnly: true,
