@@ -175,7 +175,7 @@ For development, `.env.example` contains Cloudflare's official always-pass Turns
 - `/robots.txt` (blocks `/admin`), `/sitemap.xml`, admin pages send `noindex` (meta + `X-Robots-Tag`).
 - 301 redirects from the old site: `/inventory`, `/inventory/*`, `/gallery`, `/gallery/*` → `/`.
 - `/` is static (ISR): rebuilt on every admin save and at most hourly otherwise.
-- Placeholder icon: `app/icon.svg` and `app/apple-icon.tsx` (replace when a logo exists).
+- Icons from the Solen logo: `app/icon.svg`, `app/favicon.ico` and `app/apple-icon.png`; JSON-LD `logo` uses `public/brand/solen-icon-512.png`.
 
 Lighthouse (mobile, `npm run build && npm run start`, local test data), 3 runs on 2026-10-31:
 Performance 96–97 · Accessibility 100 · Best Practices 100 · SEO 100 (LCP ≈ 2.7 s simulated, CLS 0, TBT ≈ 65 ms).
