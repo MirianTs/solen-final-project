@@ -56,6 +56,8 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
             const id = `field-${f.key}`;
             const visibleKey = f.visibleKey;
             const visible = visibleKey ? values[visibleKey] !== "0" : true;
+            const counterId = `${id}-count`;
+            const tooLong = f.max !== undefined && value.length > f.max;
             return (
               <div key={f.key} className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between gap-3">
@@ -64,7 +66,7 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
                   </label>
                   <div className="flex items-center gap-4">
                     {f.max && (
-                      <span className={`text-xs ${value.length > f.max ? "text-red-400" : "text-muted"}`}>
+                      <span id={counterId} className={`text-xs ${tooLong ? "text-red-400" : "text-muted"}`}>
                         {value.length}/{f.max}
                       </span>
                     )}
@@ -96,6 +98,8 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
                     rows={f.max && f.max > 300 ? 6 : 3}
                     value={value}
                     placeholder={f.placeholder}
+                    aria-describedby={f.max ? counterId : undefined}
+                    aria-invalid={tooLong || undefined}
                     onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
                     className="admin-input py-3 leading-relaxed"
                   />
@@ -106,6 +110,8 @@ export function KeyValueForm({ groups, initial, save, intro }: Props) {
                     inputMode={f.type === "tel" ? "tel" : f.type === "url" ? "url" : undefined}
                     value={value}
                     placeholder={f.placeholder}
+                    aria-describedby={f.max ? counterId : undefined}
+                    aria-invalid={tooLong || undefined}
                     onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
                     className="admin-input"
                   />
