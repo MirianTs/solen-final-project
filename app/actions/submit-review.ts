@@ -12,6 +12,9 @@ export type SubmitReviewResult = { ok: true } | { ok: false; error: string; fiel
 
 const DEVICE_COOKIE = "solen_did";
 const LIMIT_DAYS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
+// Cookie maxAge is in seconds.
+const DEVICE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 // Shape of randomUUID() output; anything else in the cookie is replaced with a fresh id.
 const DEVICE_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -80,14 +83,14 @@ export async function submitReview(input: {
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24 * 365,
+        maxAge: DEVICE_COOKIE_MAX_AGE,
       });
     }
     const deviceHash = sha256(`device:${deviceId}`);
     const ipHash = ip ? sha256(`ip:${ip}`) : null;
 
     const db = createSupabaseAdminClient();
-    const since = new Date(Date.now() - LIMIT_DAYS * 24 * 60 * 60 * 1000).toISOString();
+    const since = new Date(Date.now() - LIMIT_DAYS * DAY_MS).toISOString();
     // Hashes are hex strings, so they are safe inside the PostgREST or() filter.
     const orFilter = ipHash ? `device_hash.eq.${deviceHash},ip_hash.eq.${ipHash}` : `device_hash.eq.${deviceHash}`;
     const { count, error: countError } = await db
