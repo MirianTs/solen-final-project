@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { changePassword, type PasswordState } from "@/app/admin/actions/account";
+import { PASSWORD_MIN_LENGTH } from "@/lib/password-rules";
 
 export function PasswordForm({ email }: { email: string }) {
   const [state, action, pending] = useActionState<PasswordState, FormData>(changePassword, {});
@@ -38,12 +39,12 @@ export function PasswordForm({ email }: { email: string }) {
           type="password"
           autoComplete="new-password"
           required
-          minLength={8}
+          minLength={PASSWORD_MIN_LENGTH}
           aria-describedby="password-hint"
           className="admin-input"
         />
         <span id="password-hint" className="text-xs text-muted">
-          მინიმუმ 8 სიმბოლო
+          მინიმუმ {PASSWORD_MIN_LENGTH} სიმბოლო
         </span>
       </label>
 

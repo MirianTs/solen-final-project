@@ -2,13 +2,17 @@
 
 import { z } from "zod";
 import { assertAdmin, isRateLimited, NotAdminError, SESSION_EXPIRED_MESSAGE } from "@/lib/auth";
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password-rules";
 
 export type PasswordState = { ok?: boolean; error?: string; at?: number };
 
 const passwordSchema = z
   .object({
     current: z.string().min(1, "შეიყვანეთ მიმდინარე პაროლი").max(200),
-    next: z.string().min(8, "ახალი პაროლი მინიმუმ 8 სიმბოლო უნდა იყოს").max(72, "ახალი პაროლი ძალიან გრძელია"),
+    next: z
+      .string()
+      .min(PASSWORD_MIN_LENGTH, `ახალი პაროლი მინიმუმ ${PASSWORD_MIN_LENGTH} სიმბოლო უნდა იყოს`)
+      .max(PASSWORD_MAX_LENGTH, "ახალი პაროლი ძალიან გრძელია"),
     confirm: z.string(),
   })
   .refine((d) => d.next === d.confirm, { message: "ახალი პაროლები ერთმანეთს არ ემთხვევა" })
