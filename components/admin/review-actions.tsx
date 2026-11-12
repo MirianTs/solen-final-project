@@ -33,7 +33,8 @@ export function ReviewActions({ id, status, name }: { id: string; status: Review
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    // Names the reviewer, so the repeated button labels are not ambiguous to screen readers.
+    <div role="group" aria-label={`„${name}“-ის შეფასება`} className="flex flex-wrap gap-2">
       {status !== "approved" && (
         <button type="button" disabled={pending} onClick={() => setStatus("approved")} className="admin-btn-primary min-h-10 px-5 text-sm">
           დადასტურება
