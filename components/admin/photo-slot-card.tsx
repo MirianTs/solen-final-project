@@ -65,7 +65,8 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
 
       setUrl(`${publicBaseUrl}/${path}`);
       setSize({ width, height });
-      setSavedAlt(alt);
+      // The server trims the alt text; compare against the same value so no stray "save" button appears.
+      setSavedAlt(alt.trim());
       toast.success(`ფოტო განახლდა (${width}×${height}, ${Math.round(blob.size / 1024)} KB)`);
     } catch (error) {
       if (uploadedPath) await supabase.storage.from("photos").remove([uploadedPath]);
