@@ -29,15 +29,15 @@ const serviceName = z
   .pipe(z.string().min(1, "სერვისის სახელი ცარიელია").max(200, "სახელი მაქსიმუმ 200 სიმბოლოა"));
 const price = z.string().transform(plainText).pipe(z.string().max(100, "ფასი მაქსიმუმ 100 სიმბოლოა"));
 
-/** Adds a price column ("სექცია") at the end and returns the new row. */
+/**
+ * Adds a price column ("სექცია") at the end and returns the new row.
+ * A failed position lookup aborts the insert instead of silently placing the column first.
+ */
 export async function createColumn(input: { title: string }) {
   return runAdminAction(z.object({ title }), input, async (data, { supabase }) => {
-    const { data: last } = await supabase
-      .from("price_columns")
-      .select("position")
-      .order("position", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    const { data: last } = check(
+      await supabase.from("price_columns").select("position").order("position", { ascending: false }).limit(1).maybeSingle(),
+    );
     const { data: row } = check(
       await supabase
         .from("price_columns")
@@ -71,13 +71,15 @@ export async function deleteColumn(input: { id: string }) {
 /** Adds a service ("ბარათი") at the end of its column and returns the new row. */
 export async function createService(input: { columnId: string; name: string; price: string }) {
   return runAdminAction(z.object({ columnId: id, name: serviceName, price }), input, async (data, { supabase }) => {
-    const { data: last } = await supabase
-      .from("services")
-      .select("position")
-      .eq("column_id", data.columnId)
-      .order("position", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    const { data: last } = check(
+      await supabase
+        .from("services")
+        .select("position")
+        .eq("column_id", data.columnId)
+        .order("position", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    );
     const { data: row } = check(
       await supabase
         .from("services")
