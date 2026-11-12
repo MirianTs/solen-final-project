@@ -1,5 +1,6 @@
 import type { PublicReview, ReviewStats } from "@/lib/content";
 import { formatRating } from "@/lib/format";
+import { GoogleIcon } from "./icons";
 import { ReviewForm } from "./review-form";
 import { ReviewsList } from "./reviews-list";
 import { Section } from "./section";
@@ -28,14 +29,16 @@ export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl
       <ReviewsList initial={reviews} initialHasMore={hasMore} />
 
       {googleReviewUrl && (
-        <p className="mt-6 text-center">
+        <p className="mt-8 flex justify-center">
           <a
             href={googleReviewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-accent-ink underline-offset-4 hover:underline"
+            className="inline-flex min-h-12 items-center gap-3 rounded-full border border-line bg-card px-6 font-semibold transition-colors hover:border-accent-ink"
           >
+            <GoogleIcon className="size-5 shrink-0" />
             შეგვაფასეთ Google-ზე
+            <span className="sr-only"> (იხსნება ახალ ჩანართში)</span>
           </a>
         </p>
       )}

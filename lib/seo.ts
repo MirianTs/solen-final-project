@@ -1,6 +1,6 @@
 import "server-only";
 import type { Metadata } from "next";
-import { digitsOnly } from "@/lib/contact";
+import { digitsOnly, safeHttpUrl } from "@/lib/contact";
 import type { SiteContent } from "@/lib/content";
 import { publicEnv } from "@/lib/env";
 
@@ -56,7 +56,7 @@ export function buildBusinessJsonLd(content: SiteContent) {
   const phone = digitsOnly(settings.phone);
   const image = shareImage(content);
   const url = siteUrl();
-  const facebook = settings.facebook_url?.trim();
+  const sameAs = [safeHttpUrl(settings.facebook_url), safeHttpUrl(settings.maps_url)].filter((u): u is string => !!u);
 
   return {
     "@context": "https://schema.org",
@@ -74,7 +74,7 @@ export function buildBusinessJsonLd(content: SiteContent) {
       addressCountry: "GE",
     },
     areaServed: { "@type": "City", name: "Tbilisi" },
-    ...(facebook && { sameAs: [facebook] }),
+    ...(sameAs.length > 0 && { sameAs }),
     ...(stats.count > 0 && {
       aggregateRating: {
         "@type": "AggregateRating",
