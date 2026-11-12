@@ -3,15 +3,13 @@
 import { z } from "zod";
 import { check, runAdminAction, UserError } from "@/lib/admin-action";
 import { plainText } from "@/lib/sanitize";
-import type { createSupabaseServerClient } from "@/lib/supabase/server";
-
-type Supabase = Awaited<ReturnType<typeof createSupabaseServerClient>>;
+import type { SupabaseServerClient } from "@/lib/supabase/server";
 
 /**
  * Deletes Storage files of removed price items (photos from the old product catalog).
  * The rows are gone either way, so failures are only logged.
  */
-async function removePhotoFiles(supabase: Supabase, paths: (string | null)[]) {
+async function removePhotoFiles(supabase: SupabaseServerClient, paths: (string | null)[]) {
   const files = paths.filter((p): p is string => !!p);
   if (files.length === 0) return;
   const { error } = await supabase.storage.from("photos").remove(files);

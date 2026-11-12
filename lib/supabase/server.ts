@@ -28,3 +28,6 @@ export async function createSupabaseServerClient() {
     },
   });
 }
+
+/** The cookie-based admin client, for helpers that receive it as a parameter. */
+export type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
