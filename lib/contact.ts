@@ -11,6 +11,7 @@ export type ContactLinks = {
   maps: string | null;
 };
 
+/** Strips everything except digits ("+995 568-88" -> "99556888"). */
 export function digitsOnly(value: string | undefined | null): string {
   return (value ?? "").replace(/\D/g, "");
 }
@@ -37,6 +38,7 @@ export function formatPhone(value: string | undefined | null): string | null {
   return `+${d}`;
 }
 
+/** tel:, viber:// and wa.me links plus display numbers from the `settings` table values. */
 export function buildContactLinks(settings: Record<string, string>): ContactLinks {
   const phone = digitsOnly(settings.phone);
   const viber = digitsOnly(settings.viber);
