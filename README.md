@@ -5,7 +5,7 @@ Next.js 16 · Tailwind CSS v4 · Supabase · Cloudflare Turnstile · Vercel · G
 
 - Public page `/` — header, banner + rating, services and prices (category cards with a price list each), reviews + review form, contacts.
   All content comes from the database; the page is static (ISR) and rebuilt on every admin save.
-- Admin panel `/admin` — photos, prices (drag-and-drop), texts, contacts, review moderation. Georgian, mobile-friendly.
+- Admin panel `/admin` — photos, prices (drag-and-drop), texts, contacts, review moderation, password change. Georgian, mobile-friendly.
 - Daily encrypted backup of the database and photos (GitHub Actions), which also keeps Supabase awake.
 
 Contents: [Local development](#local-development) · [Setup from zero](#setup-from-zero) ·
