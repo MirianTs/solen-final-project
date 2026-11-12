@@ -1,3 +1,4 @@
+/** sessionStorage key for the light/dark choice (written by ThemeToggle, read by THEME_SCRIPT). */
 export const THEME_STORAGE_KEY = "solen-theme";
 
 export type Theme = "light" | "dark";
