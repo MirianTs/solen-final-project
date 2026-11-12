@@ -4,6 +4,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { z } from "zod";
 import { serverEnv } from "@/lib/env";
+import { REVIEW_COMMENT_MAX, REVIEW_NAME_MAX } from "@/lib/review-limits";
 import { plainText } from "@/lib/sanitize";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -27,8 +28,11 @@ const reviewSchema = z.object({
   name: z
     .string()
     .transform(plainText)
-    .pipe(z.string().min(1, "შეიყვანეთ სახელი.").max(60, "სახელი მაქსიმუმ 60 სიმბოლოა.")),
-  comment: z.string().transform(plainText).pipe(z.string().max(1000, "კომენტარი მაქსიმუმ 1000 სიმბოლოა.")),
+    .pipe(z.string().min(1, "შეიყვანეთ სახელი.").max(REVIEW_NAME_MAX, `სახელი მაქსიმუმ ${REVIEW_NAME_MAX} სიმბოლოა.`)),
+  comment: z
+    .string()
+    .transform(plainText)
+    .pipe(z.string().max(REVIEW_COMMENT_MAX, `კომენტარი მაქსიმუმ ${REVIEW_COMMENT_MAX} სიმბოლოა.`)),
   token: z.string(),
 });
 

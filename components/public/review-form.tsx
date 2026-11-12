@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
 import { submitReview } from "@/app/actions/submit-review";
+import { REVIEW_COMMENT_MAX, REVIEW_NAME_MAX } from "@/lib/review-limits";
 import { StarIcon } from "./icons";
 import { TurnstileWidget, type TurnstileHandle } from "./turnstile-widget";
 
@@ -102,7 +103,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
         <input
           id="review-name"
           value={name}
-          maxLength={60}
+          maxLength={REVIEW_NAME_MAX}
           autoComplete="given-name"
           aria-required="true"
           onChange={(e) => setName(e.target.value)}
@@ -117,13 +118,13 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           <label htmlFor="review-comment" className="text-sm font-semibold">
             კომენტარი <span className="font-normal text-muted">(არასავალდებულო)</span>
           </label>
-          <span className="text-xs text-muted">{comment.length}/1000</span>
+          <span className="text-xs text-muted">{comment.length}/{REVIEW_COMMENT_MAX}</span>
         </div>
         <textarea
           id="review-comment"
           value={comment}
           rows={4}
-          maxLength={1000}
+          maxLength={REVIEW_COMMENT_MAX}
           onChange={(e) => setComment(e.target.value)}
           aria-invalid={error?.field === "comment" || undefined}
           aria-describedby={error?.field === "comment" ? "review-error" : undefined}
