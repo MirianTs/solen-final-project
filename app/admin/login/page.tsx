@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
-import { getAdmin } from "@/lib/auth";
+import { getAdmin, NOT_ADMIN_MESSAGE } from "@/lib/auth";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = { title: "შესვლა" };
@@ -11,7 +11,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
   if (admin?.isAdmin) redirect("/admin");
 
   const { error } = await searchParams;
-  const notice = error === "forbidden" || admin ? "ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს." : undefined;
+  const notice = error === "forbidden" || admin ? NOT_ADMIN_MESSAGE : undefined;
 
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-12">

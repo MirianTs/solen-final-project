@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { isRateLimited } from "@/lib/auth";
+import { isRateLimited, NOT_ADMIN_MESSAGE } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type SignInState = { error?: string; email?: string };
@@ -46,7 +46,7 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   const { data: isAdmin, error: rpcError } = await supabase.rpc("is_admin");
   if (rpcError || isAdmin !== true) {
     await supabase.auth.signOut();
-    return { error: "ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს.", email: raw.email };
+    return { error: NOT_ADMIN_MESSAGE, email: raw.email };
   }
 
   redirect("/admin");

@@ -26,6 +26,9 @@ export async function requireAdmin() {
 /** Shown when a server action runs after the admin session has ended. */
 export const SESSION_EXPIRED_MESSAGE = "სესია ამოიწურა. შედით თავიდან.";
 
+/** Shown on the login page when a signed-in account is not in public.admins. */
+export const NOT_ADMIN_MESSAGE = "ამ ანგარიშს ადმინისტრატორის წვდომა არ აქვს.";
+
 /** Supabase Auth refused the request because of too many attempts (HTTP 429 or its error code). */
 export function isRateLimited(error: { status?: number; code?: string }): boolean {
   return error.status === 429 || error.code === "over_request_rate_limit";
