@@ -24,6 +24,7 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
             <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">{user.email}</span>
             <Link href="/" target="_blank" className="admin-btn-ghost">
               საიტი
+              <span className="sr-only"> (იხსნება ახალ ჩანართში)</span>
             </Link>
             <form action={signOut}>
               <button type="submit" className="admin-btn-ghost">
