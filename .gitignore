@@ -44,3 +44,7 @@ next-env.d.ts
 # Windows Explorer metadata
 Thumbs.db
 desktop.ini
+
+# Supabase CLI local state
+/supabase/.temp/
+/supabase/.branches/
