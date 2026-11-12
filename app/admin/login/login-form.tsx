@@ -10,7 +10,7 @@ export function LoginForm({ notice }: { notice?: string }) {
   return (
     <form action={action} className="flex flex-col gap-4" noValidate>
       {message && (
-        <p role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <p id="login-error" role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {message}
         </p>
       )}
@@ -23,13 +23,21 @@ export function LoginForm({ notice }: { notice?: string }) {
           autoComplete="username"
           required
           defaultValue={state.email}
+          aria-describedby={message ? "login-error" : undefined}
           className="admin-input"
         />
       </label>
 
       <label className="flex flex-col gap-1.5">
         <span className="text-sm font-semibold">პაროლი</span>
-        <input name="password" type="password" autoComplete="current-password" required className="admin-input" />
+        <input
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          aria-describedby={message ? "login-error" : undefined}
+          className="admin-input"
+        />
       </label>
 
       <button type="submit" disabled={pending} className="admin-btn-primary mt-2">
