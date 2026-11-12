@@ -21,7 +21,11 @@ export function ReviewsSection({ title, stats, reviews, hasMore, googleReviewUrl
       {stats.count > 0 && (
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <span className="text-4xl font-extrabold">{formatRating(stats.average)}</span>
-          <Stars rating={Math.round(stats.average)} className="size-6" />
+          <Stars
+            rating={Math.round(stats.average)}
+            label={`${formatRating(stats.average)} ვარსკვლავი 5-დან`}
+            className="size-6"
+          />
           <span className="text-muted">{stats.count} შეფასება</span>
         </div>
       )}
