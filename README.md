@@ -269,7 +269,7 @@ Moving **solen.ge** from the old Vercel project to this one:
       (make `solen.ge` primary; `www` redirects to it).
 - [ ] **domenebi.ge** DNS:
   - update the **`www` CNAME** to the exact value Vercel shows for `www.solen.ge`;
-  - **keep** the **A record `76.76.21.21`** for `solen.ge`;
+  - set the **A record** for `solen.ge` to the value Vercel shows (live since 2026-11-04: `216.198.79.1`);
   - **keep** the **`google-site-verification` TXT** record.
 - [ ] Wait until Vercel shows both domains as *Valid Configuration* (HTTPS certificate issued).
 - [ ] Vercel env: `NEXT_PUBLIC_SITE_URL=https://solen.ge` → **redeploy** (canonical URL, sitemap, JSON-LD use it).
