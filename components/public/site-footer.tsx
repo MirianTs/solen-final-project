@@ -25,7 +25,7 @@ export function SiteFooter({ text, links, address }: Props) {
               {phoneDisplay}
             </a>
           )}
-          {address && <span>{address}</span>}
+          {address && <address className="not-italic">{address}</address>}
           <span>© {year} Solen</span>
         </div>
       </div>
