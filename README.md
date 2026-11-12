@@ -170,7 +170,7 @@ For development, `.env.example` contains Cloudflare's official always-pass Turns
 
 - Georgian title/description, `lang="ka"`, canonical URL and Open Graph/Twitter tags; the share image is the
   **og** photo slot (falls back to the banner). `metadataBase` = `NEXT_PUBLIC_SITE_URL`.
-- JSON-LD `HVACBusiness` (name, phone, address, area served, image, Facebook, `aggregateRating` only when
+- JSON-LD `HVACBusiness` (name, phone, address, area served, image, Facebook and Google Maps links in `sameAs`, `aggregateRating` only when
   there are approved reviews).
 - `/robots.txt` (blocks `/admin`), `/sitemap.xml`, admin pages send `noindex` (meta + `X-Robots-Tag`).
 - 301 redirects from the old site: `/inventory`, `/inventory/*`, `/gallery`, `/gallery/*` → `/`.
