@@ -1,17 +1,21 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { CloseIcon, MenuIcon } from "./icons";
 
 /** Hamburger toggle for the mobile header. The panel content is server-rendered and passed as children. */
 export function MobileMenu({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      // Focus may be inside the panel that is about to be hidden; keep it on the toggle instead.
+      buttonRef.current?.focus();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -20,6 +24,7 @@ export function MobileMenu({ children }: { children: ReactNode }) {
   return (
     <>
       <button
+        ref={buttonRef}
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
