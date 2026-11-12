@@ -6,6 +6,7 @@ import { check, runAdminAction } from "@/lib/admin-action";
 
 const id = z.uuid();
 
+/** Moves a review between pending / approved / hidden; only approved ones show on the site. */
 export async function setReviewStatus(input: { id: string; status: "pending" | "approved" | "hidden" }) {
   const schema = z.object({ id, status: z.enum(["pending", "approved", "hidden"]) });
   return runAdminAction(schema, input, async (data, { supabase }) => {
@@ -15,6 +16,7 @@ export async function setReviewStatus(input: { id: string; status: "pending" | "
   });
 }
 
+/** Permanently deletes a review. */
 export async function deleteReview(input: { id: string }) {
   return runAdminAction(z.object({ id }), input, async (data, { supabase }) => {
     check(await supabase.from("reviews").delete().eq("id", data.id));
