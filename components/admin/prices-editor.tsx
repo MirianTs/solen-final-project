@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import {
   createColumn,
@@ -104,7 +104,7 @@ function ColumnCard({
   onServiceChanged,
   onServiceDeleted,
 }: {
-  handle: React.ReactNode;
+  handle: ReactNode;
   column: Column;
   onRenamed: (title: string) => void;
   onDeleted: () => void;
@@ -204,7 +204,7 @@ function ServiceRow({
   onChanged,
   onDeleted,
 }: {
-  handle: React.ReactNode;
+  handle: ReactNode;
   service: Service;
   onChanged: (s: Service) => void;
   onDeleted: () => void;
@@ -235,7 +235,7 @@ function ServiceRow({
     });
   }
 
-  const onEnter = (e: React.KeyboardEvent) => e.key === "Enter" && dirty && save();
+  const onEnter = (e: KeyboardEvent) => e.key === "Enter" && dirty && save();
 
   return (
     <div className="flex items-start gap-1 p-2">
@@ -287,7 +287,7 @@ function AddServiceForm({ columnId, onAdded }: { columnId: string; onAdded: (s: 
   const nameId = `new-svc-${columnId}`;
   const priceId = `new-price-${columnId}`;
 
-  function submit(e: React.FormEvent) {
+  function submit(e: FormEvent) {
     e.preventDefault();
     startTransition(async () => {
       const result = await createService({ columnId, name, price });
@@ -342,7 +342,7 @@ function AddColumnForm({ onAdded }: { onAdded: (c: Column) => void }) {
   const [title, setTitle] = useState("");
   const [pending, startTransition] = useTransition();
 
-  function submit(e: React.FormEvent) {
+  function submit(e: FormEvent) {
     e.preventDefault();
     startTransition(async () => {
       const result = await createColumn({ title });
