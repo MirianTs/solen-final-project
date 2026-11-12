@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { assertAdmin, NotAdminError, SESSION_EXPIRED_MESSAGE } from "@/lib/auth";
+import { assertAdmin, isRateLimited, NotAdminError, SESSION_EXPIRED_MESSAGE } from "@/lib/auth";
 
 export type PasswordState = { ok?: boolean; error?: string; at?: number };
 
@@ -32,7 +32,7 @@ export async function changePassword(_prev: PasswordState, formData: FormData): 
       password: parsed.data.current,
     });
     if (signInError) {
-      if (signInError.status === 429) return { error: "ძალიან ბევრი მცდელობა. სცადეთ რამდენიმე წუთში." };
+      if (isRateLimited(signInError)) return { error: "ძალიან ბევრი მცდელობა. სცადეთ რამდენიმე წუთში." };
       return { error: "მიმდინარე პაროლი არასწორია." };
     }
 

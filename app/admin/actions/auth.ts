@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { isRateLimited } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type SignInState = { error?: string; email?: string };
@@ -33,7 +34,7 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
   }
 
   if (authError) {
-    if (authError.status === 429 || authError.code === "over_request_rate_limit") {
+    if (isRateLimited(authError)) {
       return { error: "ძალიან ბევრი მცდელობა. სცადეთ რამდენიმე წუთში.", email: raw.email };
     }
     if (authError.code === "invalid_credentials" || authError.status === 400) {
