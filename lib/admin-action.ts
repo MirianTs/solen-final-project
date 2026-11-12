@@ -1,7 +1,7 @@
 import "server-only";
 import { revalidatePath } from "next/cache";
 import type { z } from "zod";
-import { assertAdmin, NotAdminError } from "@/lib/auth";
+import { assertAdmin, NotAdminError, SESSION_EXPIRED_MESSAGE } from "@/lib/auth";
 
 export type ActionResult<T = undefined> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -30,7 +30,7 @@ export async function runAdminAction<S extends z.ZodType, T>(
     return { ok: true, data };
   } catch (error) {
     if (error instanceof NotAdminError) {
-      return { ok: false, error: "სესია ამოიწურა. შედით თავიდან." };
+      return { ok: false, error: SESSION_EXPIRED_MESSAGE };
     }
     if (error instanceof UserError) {
       return { ok: false, error: error.message };

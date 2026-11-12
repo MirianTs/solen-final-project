@@ -23,6 +23,9 @@ export async function requireAdmin() {
   return { supabase: admin.supabase, user: admin.user };
 }
 
+/** Shown when a server action runs after the admin session has ended. */
+export const SESSION_EXPIRED_MESSAGE = "სესია ამოიწურა. შედით თავიდან.";
+
 export class NotAdminError extends Error {
   constructor() {
     super("Not an admin");

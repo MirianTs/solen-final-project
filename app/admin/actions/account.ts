@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { assertAdmin, NotAdminError } from "@/lib/auth";
+import { assertAdmin, NotAdminError, SESSION_EXPIRED_MESSAGE } from "@/lib/auth";
 
 export type PasswordState = { ok?: boolean; error?: string; at?: number };
 
@@ -45,7 +45,7 @@ export async function changePassword(_prev: PasswordState, formData: FormData): 
     }
     return { ok: true, at: Date.now() };
   } catch (error) {
-    if (error instanceof NotAdminError) return { error: "სესია ამოიწურა. შედით თავიდან." };
+    if (error instanceof NotAdminError) return { error: SESSION_EXPIRED_MESSAGE };
     console.error("[change password]", error);
     return { error: "პაროლი ვერ შეიცვალა. სცადეთ თავიდან." };
   }
