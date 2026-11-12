@@ -19,6 +19,10 @@ type Props = {
 };
 
 const ACCEPT = "image/jpeg,image/png,image/webp,image/heic,image/heif";
+// Phone photos are big; anything above this is rejected before compression starts.
+const MAX_INPUT_BYTES = 30 * 1024 * 1024;
+// Every upload gets a new file name (newPhotoPath), so a file can be cached for a year.
+const CACHE_SECONDS = "31536000";
 
 export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initialSize, publicBaseUrl }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +40,7 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
       toast.error("აირჩიეთ სურათის ფაილი (JPG, PNG, WebP).");
       return;
     }
-    if (file.size > 30 * 1024 * 1024) {
+    if (file.size > MAX_INPUT_BYTES) {
       toast.error("ფაილი ძალიან დიდია (მაქს. 30 MB).");
       return;
     }
@@ -51,7 +55,7 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
       const path = newPhotoPath(slot, ext);
       const { error: uploadError } = await supabase.storage
         .from("photos")
-        .upload(path, blob, { contentType: type, cacheControl: "31536000", upsert: false });
+        .upload(path, blob, { contentType: type, cacheControl: CACHE_SECONDS, upsert: false });
       if (uploadError) throw uploadError;
       uploadedPath = path;
 
