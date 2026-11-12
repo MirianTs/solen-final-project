@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { publicEnv } from "@/lib/env";
 import { formatDate } from "@/lib/format";
+import { groupPriceColumns } from "@/lib/prices";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { PhotoSlot, Views } from "@/lib/supabase/database.types";
 
@@ -112,13 +113,7 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
     settings: toRecord(settings),
     texts: { ...TEXT_FALLBACKS, ...Object.fromEntries(Object.entries(toRecord(texts)).filter(([k, v]) => v.trim() || CLEARABLE_TEXTS.has(k))) },
     photos: photoMap,
-    columns: (columns ?? []).map((c) => ({
-      id: c.id,
-      title: c.title,
-      services: (services ?? [])
-        .filter((s) => s.column_id === c.id)
-        .map((s) => ({ id: s.id, name: s.name, price: s.price })),
-    })),
+    columns: groupPriceColumns(columns, services),
     stats: { average: Number(stats?.average ?? 0), count: Number(stats?.count ?? 0) },
     reviews: firstReviews.reviews,
     hasMoreReviews: firstReviews.hasMore,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PricesEditor } from "@/components/admin/prices-editor";
 import { requireAdmin } from "@/lib/auth";
+import { groupPriceColumns } from "@/lib/prices";
 
 export const metadata: Metadata = { title: "სერვისები და ფასები" };
 
@@ -11,13 +12,7 @@ export default async function PricesPage() {
     supabase.from("services").select("id, column_id, name, price, position").order("position"),
   ]);
 
-  const initial = (columns ?? []).map((c) => ({
-    id: c.id,
-    title: c.title,
-    services: (services ?? [])
-      .filter((s) => s.column_id === c.id)
-      .map((s) => ({ id: s.id, name: s.name, price: s.price })),
-  }));
+  const initial = groupPriceColumns(columns, services);
 
   return (
     <>
