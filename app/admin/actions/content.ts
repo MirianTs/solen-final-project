@@ -21,6 +21,7 @@ const textsSchema = z.object(
   ),
 );
 
+/** Saves all page texts at once; unknown keys are rejected (strict schema). Returns the cleaned values. */
 export async function saveTexts(input: Record<string, string>) {
   return runAdminAction(textsSchema.strict(), input, async (data, { supabase }) => {
     const rows = Object.entries(data).map(([key, value]) => ({ key, value: value as string }));
@@ -67,6 +68,7 @@ const settingsSchema = z
   )
   .strict();
 
+/** Saves all contact settings at once. Phones come back as "+<digits>", so the form can show them normalized. */
 export async function saveSettings(input: Record<string, string>) {
   return runAdminAction(settingsSchema, input, async (data, { supabase }) => {
     const rows = Object.entries(data).map(([key, value]) => ({ key, value: value as string }));
