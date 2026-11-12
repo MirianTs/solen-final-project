@@ -22,8 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const content = await getSiteContent();
   const { texts, settings, photos } = content;
+  const env = publicEnv();
   // Photos are served from Supabase Storage (another origin): open the connection early for the banner.
-  preconnect(publicEnv().NEXT_PUBLIC_SUPABASE_URL);
+  preconnect(env.NEXT_PUBLIC_SUPABASE_URL);
   const links = buildContactLinks(settings);
   const address = settings.address_text?.trim() ?? "";
 
@@ -46,7 +47,7 @@ export default async function Home() {
       </a>
       <SiteHeader links={links} />
       <main id="main" className="flex flex-col">
-        <Hero slogan={texts.hero_slogan_visible === "0" ? "" : texts.hero_slogan}banner={photos.banner} tel={links.tel} stats={content.stats} />
+        <Hero slogan={texts.hero_slogan_visible === "0" ? "" : texts.hero_slogan} banner={photos.banner} tel={links.tel} stats={content.stats} />
         <ServicesPrices title={texts.services_title} note={texts.prices_note} columns={content.columns} tel={links.tel} phoneDisplay={links.phoneDisplay} />
         <ReviewsSection
           title={texts.reviews_title}
@@ -54,7 +55,7 @@ export default async function Home() {
           reviews={content.reviews}
           hasMore={content.hasMoreReviews}
           googleReviewUrl={safeHttpUrl(settings.google_review_url)}
-          turnstileSiteKey={publicEnv().NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          turnstileSiteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         />
         <ContactSection title={texts.contact_title} text={texts.contact_text} address={address} links={links} />
       </main>
