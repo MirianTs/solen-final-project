@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import type { PublicReview } from "@/lib/content";
-import { CloseIcon } from "./icons";
+import { DialogCloseButton } from "./dialog-close-button";
 import { Stars } from "./stars";
 
 /** Full review in a modal. Open while `review` is set; onClose clears it (Esc, backdrop, close button). */
@@ -39,14 +39,7 @@ export function ReviewDialog({ review, onClose }: { review: PublicReview | null;
                 </time>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => dialogRef.current?.close()}
-              aria-label="დახურვა"
-              className="-m-2 inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted hover:bg-card hover:text-fg"
-            >
-              <CloseIcon className="size-5" />
-            </button>
+            <DialogCloseButton onClick={() => dialogRef.current?.close()} />
           </div>
           {review.comment ? (
             <p className="leading-relaxed whitespace-pre-line lg:text-lg">{review.comment}</p>

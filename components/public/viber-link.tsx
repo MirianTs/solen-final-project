@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState, type ReactNode } from "react";
-import { CloseIcon } from "./icons";
+import { DialogCloseButton } from "./dialog-close-button";
 
 type Props = {
   href: string;
@@ -69,14 +69,7 @@ export function ViberLink({ href, numberDisplay, className, ariaLabel, children 
             <h2 id={titleId} className="text-left text-lg font-bold">
               მოგვწერეთ Viber-ში
             </h2>
-            <button
-              type="button"
-              onClick={closeModal}
-              aria-label="დახურვა"
-              className="-m-2 inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted hover:bg-card hover:text-fg"
-            >
-              <CloseIcon className="size-5" />
-            </button>
+            <DialogCloseButton onClick={closeModal} />
           </div>
 
           <p className="text-2xl font-bold tracking-wide text-accent-ink">{numberDisplay}</p>

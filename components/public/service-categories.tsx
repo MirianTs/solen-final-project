@@ -3,7 +3,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { PriceColumn } from "@/lib/content";
 import { CARD_HOVER } from "./card-styles";
-import { ArrowRightIcon, CloseIcon, FaucetIcon, FlameIcon, PhoneIcon, SnowflakeIcon, WrenchIcon } from "./icons";
+import { DialogCloseButton } from "./dialog-close-button";
+import { ArrowRightIcon, FaucetIcon, FlameIcon, PhoneIcon, SnowflakeIcon, WrenchIcon } from "./icons";
 
 /** "200₾-დან" → ["200₾", "-დან"], so the amount can be big and the suffix small. */
 function splitPrice(price: string): [string, string] {
@@ -95,14 +96,7 @@ export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
               <h3 id={titleId} className="text-2xl font-bold text-accent-ink">
                 {open.title}
               </h3>
-              <button
-                type="button"
-                onClick={() => dialogRef.current?.close()}
-                aria-label="დახურვა"
-                className="-m-2 inline-flex size-10 shrink-0 items-center justify-center rounded-full text-muted hover:bg-card hover:text-fg"
-              >
-                <CloseIcon className="size-5" />
-              </button>
+              <DialogCloseButton onClick={() => dialogRef.current?.close()} />
             </div>
             {open.services.length === 0 && (
               <p className="leading-relaxed text-muted lg:text-lg">
