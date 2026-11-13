@@ -5,7 +5,8 @@ import { PhoneIcon } from "./icons";
 import { MobileMenu } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
 
-export const NAV_ITEMS = [
+// In-page anchors, shown in the desktop nav and in the mobile menu.
+const NAV_ITEMS = [
   { href: "#services", label: "სერვისები და ფასები" },
   { href: "#reviews", label: "შეფასებები" },
   { href: "#contact", label: "კონტაქტი" },
