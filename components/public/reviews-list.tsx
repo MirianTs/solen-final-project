@@ -38,7 +38,7 @@ export function ReviewsList({ initial, initialHasMore }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-live="polite">
+      <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-live="polite" aria-busy={pending}>
         {reviews.map((review) => (
           <ReviewCard key={review.id} review={review} onOpen={() => setOpened(review)} />
         ))}
