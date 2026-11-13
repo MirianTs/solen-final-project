@@ -53,6 +53,12 @@ function toRecord(rows: { key: string; value: string }[] | null): Record<string,
   return Object.fromEntries((rows ?? []).map((r) => [r.key, r.value]));
 }
 
+/** Stored texts over TEXT_FALLBACKS. Blank values fall back too, except for CLEARABLE_TEXTS. */
+function withFallbacks(stored: Record<string, string>): Record<string, string> {
+  const kept = Object.entries(stored).filter(([key, value]) => value.trim() || CLEARABLE_TEXTS.has(key));
+  return { ...TEXT_FALLBACKS, ...Object.fromEntries(kept) };
+}
+
 /** Runs a query and returns null (logging the error) instead of throwing. */
 async function safe<T>(label: string, run: () => PromiseLike<{ data: T | null; error: unknown }>): Promise<T | null> {
   try {
@@ -111,7 +117,7 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
 
   return {
     settings: toRecord(settings),
-    texts: { ...TEXT_FALLBACKS, ...Object.fromEntries(Object.entries(toRecord(texts)).filter(([k, v]) => v.trim() || CLEARABLE_TEXTS.has(k))) },
+    texts: withFallbacks(toRecord(texts)),
     photos: photoMap,
     columns: groupPriceColumns(columns, services),
     stats: { average: Number(stats?.average ?? 0), count: Number(stats?.count ?? 0) },
