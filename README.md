@@ -1,3 +1,22 @@
+# SOLEN FINAL PROJECT
+
+საფინალო პროექტი — Front-end პროგრამირება, მოდული „პრაქტიკული პროექტი" (06.1.1.9).
+ცოცხალი საიტი: **https://solen.ge**
+
+| დოკუმენტი | შიგთავსი |
+| --- | --- |
+| [docs/PROJECT-PLAN.md](docs/PROJECT-PLAN.md) | სამუშაო გეგმა: ეტაპები, ვადები, რისკები, რესურსები და მეთოდები |
+| [docs/ROLES.md](docs/ROLES.md) | როლები, კომუნიკაცია, პროფესიული პასუხისმგებლობები |
+| [docs/REPORT.md](docs/REPORT.md) | პროექტის ანგარიში შეფასების კრიტერიუმების მიხედვით |
+| [docs/screenshots](docs/screenshots) | სქრინები: დესკტოპი, პლანშეტი, მობილური |
+
+![Desktop](docs/screenshots/solen-desktop-hero.png)
+
+> ეს რეპოზიტორი solen.ge-ს სამუშაო რეპოზიტორიუმის დამოუკიდებელი ასლია შეფასებისთვის; მასზე საიტის
+> გაშვება (deploy) და ბექაპი არ არის მიბმული.
+
+---
+
 # Solen v2 — solen.ge
 
 Website for **Solen** (heating, radiators, air conditioning — Tbilisi): one public page and an admin panel.
