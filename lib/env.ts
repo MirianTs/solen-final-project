@@ -16,13 +16,13 @@ const serverSchema = z.object({
 export type PublicEnv = z.infer<typeof publicSchema>;
 export type ServerEnv = z.infer<typeof serverSchema>;
 
-function parse<T extends z.ZodType>(schema: T, values: Record<string, string | undefined>, label: string) {
+function parse<T extends z.ZodType>(schema: T, values: Record<string, string | undefined>, label: string): z.infer<T> {
   const result = schema.safeParse(values);
   if (!result.success) {
     const issues = result.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
     throw new Error(`Invalid ${label} environment variables:\n${issues}\nSee .env.example.`);
   }
-  return result.data as z.infer<T>;
+  return result.data;
 }
 
 let publicCache: PublicEnv | undefined;
