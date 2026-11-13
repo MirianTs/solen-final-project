@@ -16,6 +16,10 @@ if (!dir) {
 
 const cfg = storageConfig();
 const manifest = JSON.parse(await readFile(join(dir, "_manifest.json"), "utf8"));
+if (!Array.isArray(manifest.files)) {
+  console.error(`${join(dir, "_manifest.json")} has no "files" list. Is this a folder made by backup-photos.mjs?`);
+  process.exit(1);
+}
 
 for (const path of manifest.files) {
   const body = await readFile(join(dir, path));
