@@ -45,9 +45,11 @@ export async function proxy(request: NextRequest) {
 function redirectKeepingCookies(request: NextRequest, from: NextResponse, path: string) {
   const redirect = NextResponse.redirect(new URL(path, request.url));
   from.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
-  from.headers.forEach((value, key) => {
-    if (key.toLowerCase() === "cache-control" || key.toLowerCase() === "expires") redirect.headers.set(key, value);
-  });
+  // Carry over the no-store headers set by setAll (Headers yields lower-case names).
+  for (const key of ["cache-control", "expires"]) {
+    const value = from.headers.get(key);
+    if (value !== null) redirect.headers.set(key, value);
+  }
   redirect.headers.set("X-Robots-Tag", "noindex, nofollow");
   return redirect;
 }
