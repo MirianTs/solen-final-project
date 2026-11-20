@@ -77,7 +77,7 @@ Do these once, in order. Each step links to the detailed section.
 1. https://supabase.com → **New project**. Region: **Central EU (Frankfurt)** (closest to Georgia).
    Save the database password in your password manager.
 2. **Settings → Infrastructure**: note the Postgres major version (e.g. 17). If it is higher than
-   `PG_MAJOR` in [`.github/workflows/backup.yml`](.github/workflows/backup.yml), update that value.
+   `PG_MAJOR` in `.github/workflows/backup.yml` (in the working repository), update that value.
 3. Run the SQL files — see [Database](#database).
 4. Create the admin user — see [Admin user](#admin-user).
 
@@ -209,7 +209,10 @@ npx lighthouse http://localhost:3000/ --chrome-flags="--headless=new" --view
 
 ## Backups and restore
 
-[`.github/workflows/backup.yml`](.github/workflows/backup.yml) runs **daily at 02:17 UTC** and on demand
+> The workflow file is not part of this final-project copy; it lives only in the working repository
+> that deploys solen.ge. The steps below describe that setup.
+
+`.github/workflows/backup.yml` runs **daily at 02:17 UTC** and on demand
 (**Actions → Backup → Run workflow**). It:
 
 1. sends a REST request to the Supabase API (keep-alive — free projects pause after a week without activity);
