@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ADMIN_SECTIONS } from "@/lib/admin-sections";
+
+export const metadata: Metadata = { title: "მართვის პანელი" };
 
 export default function AdminHome() {
   return (
