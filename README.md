@@ -9,6 +9,7 @@
 | [docs/ROLES.md](docs/ROLES.md) | როლები, კომუნიკაცია, პროფესიული პასუხისმგებლობები |
 | [docs/REPORT.md](docs/REPORT.md) | პროექტის ანგარიში შეფასების კრიტერიუმების მიხედვით |
 | [docs/screenshots](docs/screenshots) | სქრინები: დესკტოპი, პლანშეტი, მობილური |
+| [HANDOVER.md](HANDOVER.md) | go-live-ისა და მფლობელისთვის გადაცემის ჩეკლისტი |
 
 ![Desktop](docs/screenshots/solen-desktop-hero.png)
 
