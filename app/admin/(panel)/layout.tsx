@@ -15,6 +15,12 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
 
   return (
     <div className="flex min-h-full flex-1 flex-col">
+      <a
+        href="#admin-main"
+        className="sr-only z-50 rounded-full bg-accent px-4 py-2 font-bold text-black focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+      >
+        მთავარ შიგთავსზე გადასვლა
+      </a>
       <header className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
           <Link href="/admin" className="flex items-center gap-2" aria-label="Solen ადმინი — მთავარი">
@@ -36,7 +42,7 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
         </div>
       </header>
       <AdminNav pendingReviews={count ?? 0} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:py-10">{children}</main>
+      <main id="admin-main" className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:py-10">{children}</main>
     </div>
   );
 }
