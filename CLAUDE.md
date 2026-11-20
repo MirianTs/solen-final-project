@@ -41,7 +41,8 @@ One public page (`/`) + an admin panel (`/admin`). All content comes from Supaba
 ## Layout
 - `app/` routes · `components/public|admin|ui` · `lib/` helpers · `supabase/migrations` + `supabase/seed.sql`
 - `scripts/` dependency-free Node scripts (`backup-photos.mjs`, `restore-photos.mjs`, shared Storage REST helpers in `storage-api.mjs`)
-- `.github/workflows/backup.yml` — daily encrypted backup + Supabase keep-alive (`PG_MAJOR` must be >= Supabase Postgres major)
+- `.github/workflows/backup.yml` — daily encrypted backup + Supabase keep-alive (`PG_MAJOR` must be >= Supabase Postgres major).
+  Not included in this final-project copy; it exists only in the working repository that deploys solen.ge.
 - Setup, restore and go-live steps live in README.md — keep them in sync with code changes.
 
 ## Commands
