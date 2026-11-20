@@ -23,7 +23,7 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
           </Link>
           <div className="flex items-center gap-2">
             <span className="hidden max-w-48 truncate text-sm text-muted sm:inline">{user.email}</span>
-            <Link href="/" target="_blank" className="admin-btn-ghost">
+            <Link href="/" target="_blank" rel="noopener noreferrer" className="admin-btn-ghost">
               საიტი
               <span className="sr-only">{NEW_TAB_HINT}</span>
             </Link>

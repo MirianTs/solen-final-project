@@ -91,6 +91,8 @@ function RatingStrip({ stats }: { stats: ReviewStats }) {
         <a href="#reviews" className="flex items-center gap-2 font-semibold transition-colors hover:text-accent-ink">
           <span className="text-lg font-bold lg:text-xl">{formatRating(stats.average)}</span>
           <StarIcon className="size-5 text-accent" />
+          {/* The star icon is decorative; say what the number means. */}
+          <span className="sr-only">ვარსკვლავი 5-დან,</span>
           <span aria-hidden className="text-muted">
             ·
           </span>

@@ -118,7 +118,9 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           <label htmlFor="review-comment" className="text-sm font-semibold">
             კომენტარი <span className="font-normal text-muted">(არასავალდებულო)</span>
           </label>
-          <span className="text-xs text-muted">{comment.length}/{REVIEW_COMMENT_MAX}</span>
+          <span id="review-comment-count" className="text-xs text-muted">
+            {comment.length}/{REVIEW_COMMENT_MAX}
+          </span>
         </div>
         <textarea
           id="review-comment"
@@ -127,7 +129,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
           maxLength={REVIEW_COMMENT_MAX}
           onChange={(e) => setComment(e.target.value)}
           aria-invalid={error?.field === "comment" || undefined}
-          aria-describedby={error?.field === "comment" ? "review-error" : undefined}
+          aria-describedby={error?.field === "comment" ? "review-error review-comment-count" : "review-comment-count"}
           className="rounded-xl border border-line bg-bg px-4 py-3 text-base leading-relaxed focus:border-accent-ink"
         />
       </div>
