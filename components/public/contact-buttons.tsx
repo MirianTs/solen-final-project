@@ -34,7 +34,7 @@ export function ContactButtons({ links, variant }: { links: ContactLinks; varian
 
   const items = [
     !social && links.tel && (
-      <a href={links.tel} className={s.link} aria-label={large ? undefined : "დარეკვა"}>
+      <a href={links.tel} className={s.link} aria-label={large ? undefined : `დარეკვა ${links.phoneDisplay ?? ""}`.trim()}>
         <PhoneIcon className={s.icon} />
         {large && <span>{links.phoneDisplay}</span>}
       </a>
