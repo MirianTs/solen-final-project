@@ -36,6 +36,7 @@ export function PasswordForm({ email }: { email: string }) {
           autoComplete="current-password"
           required
           aria-describedby={errorId}
+          aria-invalid={state.error ? true : undefined}
           className="admin-input"
         />
       </label>
@@ -49,6 +50,7 @@ export function PasswordForm({ email }: { email: string }) {
           required
           minLength={PASSWORD_MIN_LENGTH}
           aria-describedby={errorId ? `password-hint ${errorId}` : "password-hint"}
+          aria-invalid={state.error ? true : undefined}
           className="admin-input"
         />
         <span id="password-hint" className="text-xs text-muted">
@@ -64,6 +66,7 @@ export function PasswordForm({ email }: { email: string }) {
           autoComplete="new-password"
           required
           aria-describedby={errorId}
+          aria-invalid={state.error ? true : undefined}
           className="admin-input"
         />
       </label>
