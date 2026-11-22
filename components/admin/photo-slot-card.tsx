@@ -154,7 +154,13 @@ export function PhotoSlotCard({ slot, label, hint, initialUrl, initialAlt, initi
           {url ? "შეცვლა" : "ატვირთვა"}
         </label>
         {url && (
-          <button type="button" onClick={onDelete} disabled={busy} className="admin-btn-danger min-h-12">
+          <button
+            type="button"
+            onClick={onDelete}
+            disabled={busy}
+            aria-label={`წაშლა: ${label}`}
+            className="admin-btn-danger min-h-12"
+          >
             წაშლა
           </button>
         )}
