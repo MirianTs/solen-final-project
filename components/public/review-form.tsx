@@ -137,7 +137,7 @@ export function ReviewForm({ siteKey }: { siteKey: string }) {
       <TurnstileWidget ref={turnstileRef} siteKey={siteKey} onToken={setToken} />
 
       {error && (
-        <p id="review-error" role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-300">
+        <p id="review-error" role="alert" className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-300 light:text-red-700">
           {error.message}
         </p>
       )}
