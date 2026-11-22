@@ -162,7 +162,13 @@ function ColumnCard({
             შენახვა
           </button>
         )}
-        <button type="button" onClick={remove} disabled={pending} className="admin-btn-danger shrink-0">
+        <button
+          type="button"
+          onClick={remove}
+          disabled={pending}
+          aria-label={`სექცია „${column.title}“ — წაშლა`}
+          className="admin-btn-danger shrink-0"
+        >
           წაშლა
         </button>
       </div>
