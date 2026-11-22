@@ -24,6 +24,7 @@ export function LoginForm({ notice }: { notice?: string }) {
           required
           defaultValue={state.email}
           aria-describedby={message ? "login-error" : undefined}
+          aria-invalid={state.error ? true : undefined}
           className="admin-input"
         />
       </label>
@@ -36,6 +37,7 @@ export function LoginForm({ notice }: { notice?: string }) {
           autoComplete="current-password"
           required
           aria-describedby={message ? "login-error" : undefined}
+          aria-invalid={state.error ? true : undefined}
           className="admin-input"
         />
       </label>
