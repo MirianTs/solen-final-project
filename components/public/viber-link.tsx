@@ -19,19 +19,26 @@ export function ViberLink({ href, numberDisplay, className, ariaLabel, children 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLAnchorElement>(null);
   const [qr, setQr] = useState<string | null>(null);
+  const [qrFailed, setQrFailed] = useState(false);
   const titleId = useId();
 
   async function openModal() {
     dialogRef.current?.showModal();
     if (!qr) {
-      // Loaded on demand so the QR library is not part of the initial page JS.
-      const QRCode = await import("qrcode");
-      const dataUrl = await QRCode.toDataURL(href, {
-        width: 240,
-        margin: 1,
-        color: { dark: "#000000", light: "#ffffff" },
-      });
-      setQr(dataUrl);
+      setQrFailed(false);
+      try {
+        // Loaded on demand so the QR library is not part of the initial page JS.
+        const QRCode = await import("qrcode");
+        const dataUrl = await QRCode.toDataURL(href, {
+          width: 240,
+          margin: 1,
+          color: { dark: "#000000", light: "#ffffff" },
+        });
+        setQr(dataUrl);
+      } catch {
+        // e.g. the chunk failed to load offline: the number and the button below still work.
+        setQrFailed(true);
+      }
     }
   }
 
@@ -79,7 +86,7 @@ export function ViberLink({ href, numberDisplay, className, ariaLabel, children 
               // eslint-disable-next-line @next/next/no-img-element -- data URL, nothing to optimize
               <img src={qr} alt="Viber-ის QR კოდი" width={184} height={184} className="size-full" />
             ) : (
-              <span className="text-sm text-neutral-500">იტვირთება…</span>
+              <span className="text-sm text-neutral-500">{qrFailed ? "QR კოდი ვერ ჩაიტვირთა" : "იტვირთება…"}</span>
             )}
           </div>
 
