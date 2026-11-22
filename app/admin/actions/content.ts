@@ -39,7 +39,7 @@ const phoneSchema = (label: string) =>
   z
     .string()
     .trim()
-    .refine((v) => v === "" || /^\+?[\d\s()-]+$/.test(v), `${label}: დასაშვებია მხოლოდ ციფრები და +`)
+    .refine((v) => v === "" || /^\+?[\d\s()-]+$/.test(v), `${label}: დასაშვებია მხოლოდ ციფრები, +, ინტერვალი, ტირე და ფრჩხილები`)
     .transform((v) => (v ? `+${withCountryCode(digitsOnly(v))}` : ""))
     .refine((v) => v === "" || (v.length >= 10 && v.length <= 16), `${label}: ნომერი არასწორია (მაგ. +995568883279)`);
 
