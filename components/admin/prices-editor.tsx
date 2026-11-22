@@ -154,7 +154,7 @@ function ColumnCard({
           value={title}
           maxLength={100}
           onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && dirty && save()}
+          onKeyDown={(e) => e.key === "Enter" && dirty && !pending && save()}
           className="admin-input font-bold text-accent"
         />
         {dirty && (
@@ -241,7 +241,8 @@ function ServiceRow({
     });
   }
 
-  const onEnter = (e: KeyboardEvent) => e.key === "Enter" && dirty && save();
+  // Ignore Enter while a save is running, so a quick double press does not send it twice.
+  const onEnter = (e: KeyboardEvent) => e.key === "Enter" && dirty && !pending && save();
 
   return (
     <div className="flex items-start gap-1 p-2">
