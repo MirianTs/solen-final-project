@@ -15,6 +15,17 @@ export function ReviewDialog({ review, onClose }: { review: PublicReview | null;
     if (review && dialog && !dialog.open) dialog.showModal();
   }, [review]);
 
+  // Same as the prices modal: the page behind must not scroll while the review is open.
+  useEffect(() => {
+    if (!review) return;
+    const root = document.documentElement;
+    const previous = root.style.overflow;
+    root.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = previous;
+    };
+  }, [review]);
+
   return (
     <dialog
       ref={dialogRef}
