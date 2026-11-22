@@ -93,9 +93,9 @@ export function ServiceCategories({ groups, tel, phoneDisplay }: Props) {
           // so padding would lift the bar over the last price.
           <div className={`flex max-h-[85vh] flex-col gap-5 overflow-y-auto p-6 md:p-8 ${tel ? "pb-0 md:pb-0" : ""}`}>
             <div className="flex items-center justify-between gap-4">
-              <h3 id={titleId} className="text-2xl font-bold text-accent-ink">
+              <h2 id={titleId} className="text-2xl font-bold text-accent-ink">
                 {open.title}
-              </h3>
+              </h2>
               <DialogCloseButton onClick={() => dialogRef.current?.close()} />
             </div>
             {open.services.length === 0 && (
