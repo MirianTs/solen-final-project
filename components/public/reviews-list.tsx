@@ -45,7 +45,7 @@ export function ReviewsList({ initial, initialHasMore }: Props) {
       </ul>
       <ReviewDialog review={opened} onClose={() => setOpened(null)} />
       {failed && (
-        <p role="alert" className="text-center text-red-400">
+        <p role="alert" className="text-center text-red-400 light:text-red-700">
           ვერ ჩაიტვირთა. სცადეთ თავიდან.
         </p>
       )}
