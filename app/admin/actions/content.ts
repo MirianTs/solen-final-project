@@ -30,12 +30,17 @@ export async function saveTexts(input: Record<string, string>) {
   });
 }
 
+/** "568883279" (local Georgian mobile, 9 digits starting with 5) -> "995568883279"; other numbers stay as typed. */
+function withCountryCode(digits: string): string {
+  return digits.length === 9 && digits.startsWith("5") ? `995${digits}` : digits;
+}
+
 const phoneSchema = (label: string) =>
   z
     .string()
     .trim()
     .refine((v) => v === "" || /^\+?[\d\s()-]+$/.test(v), `${label}: დასაშვებია მხოლოდ ციფრები და +`)
-    .transform((v) => (v ? `+${digitsOnly(v)}` : ""))
+    .transform((v) => (v ? `+${withCountryCode(digitsOnly(v))}` : ""))
     .refine((v) => v === "" || (v.length >= 10 && v.length <= 16), `${label}: ნომერი არასწორია (მაგ. +995568883279)`);
 
 const urlSchema = (label: string) =>
